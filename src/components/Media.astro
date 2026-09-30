@@ -1,0 +1,36 @@
+---
+// AI 이미지가 있으면 이미지를, 없으면 톤을 맞춘 자리표시를 보여준다.
+interface Props {
+  src?: string;
+  srcset?: string;
+  sizes?: string;
+  alt?: string;
+  label?: string;
+  tone?: 'sage' | 'sand' | 'stone' | 'clay';
+  eager?: boolean;
+  width?: number;
+  height?: number;
+}
+const { src, srcset, sizes = '(min-width: 900px) 33vw, 50vw', alt = '', label, tone = 'sand', eager = false, width = 1200, height = 1500 } = Astro.props;
+---
+
+{
+  src ? (
+    <img
+      class="media"
+      src={src}
+      srcset={srcset}
+      sizes={srcset ? sizes : undefined}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      decoding="async"
+    />
+  ) : (
+    <div class="ph media" data-tone={tone} role={alt ? 'img' : undefined} aria-label={alt || undefined}>
+      {label && <span class="ph__label" aria-hidden="true">{label}</span>}
+    </div>
+  )
+}

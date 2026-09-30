@@ -1,0 +1,178 @@
+import site from '../../site.config.mjs';
+
+export const LANGS = ['ko', 'en'] as const;
+export type Lang = (typeof LANGS)[number];
+export const PUBLIC_LANGS = site.PUBLIC_LANGS as Lang[];
+export const DEFAULT_LANG: Lang = PUBLIC_LANGS[0];
+
+export const ui = {
+  ko: {
+    siteName: '말끔',
+    tagline: '어려운 청소도 말끔하게',
+    siteDescription:
+      '쉬운 청소부터 방충망·세탁조·소파 묵은때까지. 난이도, 소요 시간, 준비물, 단계별 방법을 한눈에 정리한 청소 가이드 플랫폼, 말끔.',
+    nav: { guides: '청소법', magazine: '매거진', picks: '추천', store: '스토어', search: '검색' },
+    featured: 'FEATURED',
+    readMore: '보러가기',
+    viewAll: '전체 보기',
+    more: '더보기',
+    home: '홈',
+    intro: ['어려운 청소도 순서만 알면 쉬워집니다.', '오늘, 미뤄둔 청소 하나를 끝내보세요.'],
+    seasonNow: '지금 할 청소',
+    all: '전체',
+    hardOnes: '어려운 청소',
+    filterSpace: '공간',
+    filterTarget: '대상',
+    filterDifficulty: '난이도',
+    difficulty: { easy: '쉬움', medium: '보통', hard: '어려움' },
+    space: {
+      kitchen: '주방',
+      bathroom: '욕실',
+      living: '거실',
+      bedroom: '침실',
+      entrance: '현관',
+      window: '베란다·창',
+    },
+    target: {
+      appliance: '가전',
+      furniture: '가구·패브릭',
+      screen: '창·방충망',
+      kitchenware: '주방용품',
+      fixture: '수전·설비',
+      surface: '바닥·벽',
+    },
+    season: { spring: '봄', summer: '여름', autumn: '가을', winter: '겨울', all: '연중' },
+    kind: { season: '시즌', guide: '가이드', column: '칼럼' },
+    minutes: (n: number) => (n >= 60 ? `${Math.floor(n / 60)}시간${n % 60 ? ` ${n % 60}분` : ''}` : `${n}분`),
+    count: (n: number) => `${n}개`,
+    meta: { difficulty: '난이도', duration: '소요 시간', frequency: '권장 주기' },
+    sections: {
+      prepare: '준비물',
+      materials: '재료',
+      tools: '도구',
+      steps: '이렇게 하세요',
+      cautions: '주의하세요',
+      tips: '말끔 팁',
+      usedPicks: '이 청소에 쓴 아이템',
+      related: '함께 보면 좋은 청소법',
+      relatedMagazine: '함께 읽으면 좋은 글',
+    },
+    guidesIntro: (n: number) => [`말끔하게 끝내는 청소 가이드 ${n}개.`, '공간, 대상, 난이도로 골라보세요.'],
+    magazineIntro: ['지금 이 계절에 필요한 청소,', '살림을 가볍게 만드는 이야기.'],
+    picksIntro: ['무엇을 사야 할지 고민될 때,', '고르는 기준부터 알려드려요.'],
+    storeIntro: ['말끔이 고른 청소 아이템.', '어디에 어떻게 쓰는지까지 함께 알려드려요.'],
+    productCategory: { cleaner: '세제·클리너', laundry: '세탁', bathroom: '욕실', tool: '청소 도구' },
+    howToUse: '이럴 때 써요',
+    readPick: '관련 추천 글',
+    sheet: { download: 'PDF로 받기', print: '인쇄하기', desc: 'A4 한 장으로 정리했어요. 뽑아서 붙여 두고 쓰세요.', badge: 'PDF' },
+    safetyBanner: { title: '섞으면 위험한 세제 조합, 알고 계신가요?', cta: '읽어보기' },
+    buy: '구매하러 가기',
+    noResults: '조건에 맞는 청소법이 아직 없어요. 다른 조건을 골라보세요.',
+    published: '발행',
+    updated: '수정',
+    footer: {
+      about: '소개',
+      contact: '문의',
+      privacy: '개인정보처리방침',
+      terms: '이용약관',
+      desc: '쉬운 청소부터 미뤄둔 어려운 청소까지, 순서대로 따라 하면 끝나는 청소 가이드.',
+    },
+    skip: '본문 바로가기',
+    langName: '한국어',
+    ad: '광고',
+    notFound: { title: '페이지를 찾을 수 없어요', body: '주소가 바뀌었거나 삭제된 페이지예요.', cta: '홈으로' },
+  },
+  en: {
+    siteName: 'Malkkeum',
+    tagline: 'Cleaning, done neatly',
+    siteDescription:
+      'From quick wipes to window screens, washing machines and stubborn sofa stains. Step-by-step cleaning guides with difficulty, time and supplies at a glance.',
+    nav: { guides: 'Guides', magazine: 'Magazine', picks: 'Picks', store: 'Store', search: 'Search' },
+    featured: 'FEATURED',
+    readMore: 'Read',
+    viewAll: 'View all',
+    more: 'More',
+    home: 'Home',
+    intro: ['Even the hardest cleaning gets easy once you know the steps.', 'Finish one job you have been putting off, today.'],
+    seasonNow: 'Clean this season',
+    all: 'All',
+    hardOnes: 'Tough jobs',
+    filterSpace: 'Room',
+    filterTarget: 'Item',
+    filterDifficulty: 'Difficulty',
+    difficulty: { easy: 'Easy', medium: 'Medium', hard: 'Hard' },
+    space: {
+      kitchen: 'Kitchen',
+      bathroom: 'Bathroom',
+      living: 'Living room',
+      bedroom: 'Bedroom',
+      entrance: 'Entryway',
+      window: 'Windows & balcony',
+    },
+    target: {
+      appliance: 'Appliances',
+      furniture: 'Furniture & fabric',
+      screen: 'Windows & screens',
+      kitchenware: 'Kitchenware',
+      fixture: 'Fixtures',
+      surface: 'Floors & walls',
+    },
+    season: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', all: 'All year' },
+    kind: { season: 'Season', guide: 'Guide', column: 'Column' },
+    minutes: (n: number) => (n >= 60 ? `${Math.floor(n / 60)} hr${n % 60 ? ` ${n % 60} min` : ''}` : `${n} min`),
+    count: (n: number) => `${n}`,
+    meta: { difficulty: 'Difficulty', duration: 'Time', frequency: 'How often' },
+    sections: {
+      prepare: 'What you need',
+      materials: 'Supplies',
+      tools: 'Tools',
+      steps: 'How to do it',
+      cautions: 'Be careful',
+      tips: 'Malkkeum tips',
+      usedPicks: 'Used in this guide',
+      related: 'Related guides',
+      relatedMagazine: 'Further reading',
+    },
+    guidesIntro: (n: number) => [`${n} cleaning guides, step by step.`, 'Filter by room, item or difficulty.'],
+    magazineIntro: ['The cleaning this season calls for,', 'and stories that make housework lighter.'],
+    picksIntro: ['Not sure what to buy?', 'Start with how to choose.'],
+    storeIntro: ['Cleaning items we picked,', 'with where and how to use them.'],
+    productCategory: { cleaner: 'Cleaners', laundry: 'Laundry', bathroom: 'Bathroom', tool: 'Tools' },
+    howToUse: 'Use it for',
+    readPick: 'Related picks',
+    sheet: { download: 'Download PDF', print: 'Print', desc: 'One A4 page. Print it and keep it handy.', badge: 'PDF' },
+    safetyBanner: { title: 'Do you know which cleaners should never be mixed?', cta: 'Read' },
+    buy: 'View product',
+    noResults: 'No guides match yet. Try another filter.',
+    published: 'Published',
+    updated: 'Updated',
+    footer: {
+      about: 'About',
+      contact: 'Contact',
+      privacy: 'Privacy',
+      terms: 'Terms',
+      desc: 'Cleaning guides you can simply follow, from quick wipes to the jobs you have been putting off.',
+    },
+    skip: 'Skip to content',
+    langName: 'English',
+    ad: 'Advertisement',
+    notFound: { title: 'Page not found', body: 'This page may have moved or been removed.', cta: 'Go home' },
+  },
+} as const;
+
+export function t(lang: Lang) {
+  return ui[lang];
+}
+
+export function path(lang: Lang, p = '') {
+  const clean = p.replace(/^\/+|\/+$/g, '');
+  return `/${lang}/${clean ? `${clean}/` : ''}`;
+}
+
+export function formatDate(d: Date, lang: Lang) {
+  return new Intl.DateTimeFormat(lang === 'ko' ? 'ko-KR' : 'en-US', {
+    year: 'numeric',
+    month: lang === 'ko' ? 'long' : 'short',
+    day: 'numeric',
+  }).format(d);
+}

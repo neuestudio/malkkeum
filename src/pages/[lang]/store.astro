@@ -1,0 +1,156 @@
+---
+// 스토어: 지금은 제휴 링크로 연결하고, 나중에 직접 판매 상품으로 바꿀 수 있게 상품 데이터를 따로 둔다.
+// 상품별 상세 페이지는 만들지 않는다 (외부 링크만 있는 얇은 페이지는 애드센스 심사에 불리)
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import { entries, langPaths, pickBySlugs, slugOf } from '../../lib/content';
+import { path, t, type Lang } from '../../lib/i18n';
+import { imageOf } from '../../lib/images';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const guides = await entries('guides', lang);
+const picks = await entries('picks', lang);
+const products = (await entries('products', lang)).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+const items = products.map((p) => ({
+  ...p.data,
+  id: slugOf(p.id),
+  img: imageOf('products', slugOf(p.id), p.data.image),
+  uses: pickBySlugs(guides, p.data.guides, p.id).slice(0, 3),
+  pick: p.data.pick ? pickBySlugs(picks, [p.data.pick], p.id)[0] : undefined,
+}));
+const cats = (Object.keys(s.productCategory) as (keyof typeof s.productCategory)[])
+  .map((c) => ({ c, n: items.filter((i) => i.category === c).length }))
+  .filter((o) => o.n > 0);
+const tones = { cleaner: 'sand', laundry: 'sage', bathroom: 'stone', tool: 'clay' } as const;
+---
+
+<Base lang={lang} title={s.nav.store} description={s.storeIntro.join(' ')}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.store}</h1>
+    <p class="lead">{s.storeIntro[0]} <span class="dim">{s.storeIntro[1]}</span></p>
+  </section>
+
+  <section class="wrap" data-store>
+    <p class="filter" style="margin:28px 0 12px">
+      <button type="button" data-value="" aria-pressed="true">{s.all}<sup>({items.length})</sup></button>
+      {
+        cats.map(({ c }) => (
+          <>
+            <span class="sep">, </span>
+            <button type="button" data-value={c} aria-pressed="false">
+              {s.productCategory[c]}
+            </button>
+          </>
+        ))
+      }
+    </p>
+    <div style="margin-bottom:32px"><Disclosure lang={lang} /></div>
+
+    <ul class="grid products">
+      {
+        items.map((p) => (
+          <li class="prod" data-category={p.category}>
+            <div class="prod__img">
+              <Media {...p.img} sizes="(min-width: 1100px) 25vw, (min-width: 900px) 33vw, 50vw" alt={p.name} label={s.productCategory[p.category]} tone={tones[p.category]} width={800} height={800} />
+            </div>
+            <p class="card__cap">{s.productCategory[p.category]} · {p.type}</p>
+            <h2 class="card__title">{p.name}</h2>
+            <p class="card__meta">{p.point}</p>
+            {p.uses.length > 0 && (
+              <div class="prod__uses">
+                <p class="prod__uses-h">{s.howToUse}</p>
+                <ul>
+                  {p.uses.map((g) => (
+                    <li>
+                      <a href={path(lang, `guides/${slugOf(g.id)}`)}>{g.data.title.split(/ — |, /)[0]}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <p class="prod__links">
+              {p.url && (
+                <a class="btn" href={p.url} target="_blank" rel="sponsored nofollow noopener">
+                  {s.buy} ↗
+                </a>
+              )}
+              {p.pick && <a class="more-link" href={path(lang, `picks/${slugOf(p.pick.id)}`)}>{s.readPick} →</a>}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  @media (min-width: 1100px) {
+    .products {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .prod__img {
+    aspect-ratio: 1;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .prod__img :global(.media) {
+    width: 100%;
+    height: 100%;
+  }
+  .prod__uses {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .prod__uses-h {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+  .prod__uses li {
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 3px 0;
+  }
+  .prod__uses a {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .prod__uses a::before {
+    content: '→';
+    color: var(--accent-deep);
+  }
+  .prod__uses a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prod__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-top: 12px;
+  }
+  .prod__links .btn {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-store]')!;
+  const items = [...root.querySelectorAll<HTMLElement>('.prod')];
+  root.querySelector('.filter')!.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!btn) return;
+    const v = btn.dataset.value ?? '';
+    root.querySelectorAll('.filter button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    items.forEach((i) => (i.hidden = !!v && i.dataset.category !== v));
+  });
+</script>

@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Media from './Media.astro';
+import { slugOf } from '../lib/content';
+import { path, type Lang } from '../lib/i18n';
+import { imageOf } from '../lib/images';
+
+interface Props {
+  entry: CollectionEntry<'picks'>;
+  lang: Lang;
+}
+const { entry, lang } = Astro.props;
+const d = entry.data;
+---
+
+<a class="card pick-card" href={path(lang, `picks/${slugOf(entry.id)}`)}>
+  <div class="card__img pick-card__img">
+    <Media {...imageOf('picks', slugOf(entry.id), d.heroImage)} sizes="(min-width: 900px) 25vw, 50vw" alt={d.heroAlt ?? d.title} label="Picks" tone="stone" />
+  </div>
+  <h3 class="card__title">{d.title}</h3>
+  <p class="card__meta">{d.summary}</p>
+</a>
+
+<style>
+  .pick-card__img {
+    aspect-ratio: 1 / 1;
+  }
+</style>

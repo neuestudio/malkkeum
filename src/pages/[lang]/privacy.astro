@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../../site.config.mjs';
+import { langPaths } from '../../lib/content';
+import { path, t, type Lang } from '../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const ko = lang === 'ko';
+const date = site.POLICY_DATE;
+---
+
+<Base lang={lang} title={s.footer.privacy} description={ko ? '말끔이 수집하는 개인정보의 항목과 이용 목적, 보관 기간, 쿠키와 광고(Google AdSense), 제휴 링크에 관한 안내예요.' : 'How Malkkeum collects and uses personal information, cookies, advertising (Google AdSense) and affiliate links.'}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.footer.privacy}</h1>
+    <p class="meta">{ko ? `시행일 ${date}` : `Effective ${date}`}</p>
+  </section>
+  <section class="wrap section split">
+    <div></div>
+    <div class="prose">
+      {
+        ko ? (
+          <>
+            <p>말끔(이하 "사이트")은 이용자의 개인정보를 소중히 다루며, 「개인정보 보호법」 등 관련 법령을 지킵니다. 이 방침은 사이트가 어떤 정보를 왜 수집하고 어떻게 보호하는지 설명합니다.</p>
+
+            <h2>1. 수집하는 개인정보와 목적</h2>
+            <p>사이트는 회원가입 없이 이용할 수 있으며, 아래의 경우에만 개인정보를 수집합니다.</p>
+            <table>
+              <thead><tr><th>구분</th><th>항목</th><th>목적</th><th>보관 기간</th></tr></thead>
+              <tbody>
+                <tr><td>문의하기</td><td>이름, 이메일, 문의 내용</td><td>문의 확인 및 답변</td><td>답변 완료 후 1년</td></tr>
+                <tr><td>자동 수집</td><td>접속 기록, 브라우저 정보, 쿠키</td><td>서비스 안정성 확보, 광고 제공</td><td>아래 쿠키 항목 참고</td></tr>
+              </tbody>
+            </table>
+
+            <h2>2. 쿠키와 광고</h2>
+            <p>사이트는 Google AdSense를 통해 광고를 게재할 수 있습니다. Google을 포함한 제3자 광고 사업자는 쿠키를 사용해 이용자가 이 사이트나 다른 웹사이트를 방문한 기록을 바탕으로 광고를 제공합니다.</p>
+            <ul>
+              <li>Google은 광고 쿠키를 사용해 이 사이트 및 인터넷의 다른 사이트 방문 기록에 기반한 광고를 이용자에게 제공할 수 있습니다.</li>
+              <li>이용자는 <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google 광고 설정</a>에서 맞춤 광고를 해제할 수 있습니다.</li>
+              <li>제3자 사업자의 맞춤 광고 쿠키는 <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">www.aboutads.info</a>에서 해제할 수 있습니다.</li>
+              <li>Google이 데이터를 사용하는 방식은 <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">Google 파트너 사이트 정책</a>에서 확인할 수 있습니다.</li>
+            </ul>
+            <p>브라우저 설정에서 쿠키 저장을 거부할 수 있으며, 이 경우에도 사이트의 글은 모두 읽을 수 있습니다.</p>
+
+            <h2>3. 제휴 링크</h2>
+            <p>사이트는 쿠팡 파트너스 등 제휴 프로그램에 참여하고 있습니다. 제휴 링크를 누르면 해당 쇼핑몰이 자체 쿠키로 구매 여부를 확인하며, 이 과정에서 수집되는 정보는 해당 쇼핑몰의 개인정보처리방침을 따릅니다. 사이트는 이용자의 구매 내역이나 결제 정보를 받지 않습니다.</p>
+
+            <h2>4. 처리 위탁</h2>
+            <table>
+              <thead><tr><th>수탁자</th><th>위탁 업무</th></tr></thead>
+              <tbody>
+                <tr><td>Cloudflare, Inc.</td><td>웹사이트 호스팅, 문의 메일 전달</td></tr>
+                <tr><td>Google LLC</td><td>광고 게재 (AdSense)</td></tr>
+              </tbody>
+            </table>
+
+            <h2>5. 개인정보의 파기</h2>
+            <p>보관 기간이 끝난 개인정보는 지체 없이 복구할 수 없는 방법으로 삭제합니다.</p>
+
+            <h2>6. 이용자의 권리</h2>
+            <p>이용자는 언제든지 본인의 개인정보 열람, 정정, 삭제, 처리 정지를 요청할 수 있습니다. <a href={path(lang, 'contact')}>문의 페이지</a>로 요청하시면 지체 없이 처리합니다.</p>
+
+            <h2>7. 만 14세 미만 아동</h2>
+            <p>사이트는 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.</p>
+
+            <h2>8. 개인정보 보호책임자</h2>
+            <p>개인정보 관련 문의, 불만, 피해 구제는 <a href={path(lang, 'contact')}>문의 페이지</a>로 연락해 주세요. 개인정보 침해에 대한 신고나 상담은 개인정보침해신고센터(privacy.kisa.or.kr, 국번 없이 118)에도 할 수 있습니다.</p>
+
+            <h2>9. 방침의 변경</h2>
+            <p>이 방침이 바뀌면 시행일과 함께 이 페이지에 공지합니다.</p>
+          </>
+        ) : (
+          <>
+            <p>Malkkeum ("the site") respects your privacy. This policy explains what we collect, why, and how we protect it.</p>
+            <h2>1. What we collect</h2>
+            <table>
+              <thead><tr><th>When</th><th>What</th><th>Why</th><th>Kept for</th></tr></thead>
+              <tbody>
+                <tr><td>Contact form</td><td>Name, email, message</td><td>To reply</td><td>1 year after reply</td></tr>
+                <tr><td>Automatically</td><td>Access logs, browser info, cookies</td><td>Stability, advertising</td><td>See cookies</td></tr>
+              </tbody>
+            </table>
+            <h2>2. Cookies and advertising</h2>
+            <p>We may show ads through Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this and other websites.</p>
+            <ul>
+              <li>Google's use of advertising cookies enables it and its partners to serve ads based on your visits to this and other sites.</li>
+              <li>You can opt out of personalized advertising in <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a>.</li>
+              <li>You can opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">www.aboutads.info</a>.</li>
+              <li>See <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses data from partner sites</a>.</li>
+            </ul>
+            <p>Visitors from the EEA, UK and Switzerland are asked for consent before personalized ads are shown.</p>
+            <h2>3. Affiliate links</h2>
+            <p>We take part in affiliate programs. Retailers use their own cookies to track purchases under their own privacy policies. We never receive your payment details.</p>
+            <h2>4. Processors</h2>
+            <p>Cloudflare, Inc. (hosting, contact email delivery), Google LLC (advertising).</p>
+            <h2>5. Your rights</h2>
+            <p>You may request access to, correction or deletion of your information at any time via the <a href={path(lang, 'contact')}>contact page</a>.</p>
+            <h2>6. Children</h2>
+            <p>We do not knowingly collect information from children under 14.</p>
+            <h2>7. Changes</h2>
+            <p>Changes to this policy will be posted on this page with a new effective date.</p>
+          </>
+        )
+      }
+    </div>
+  </section>
+</Base>

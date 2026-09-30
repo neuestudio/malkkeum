@@ -1,0 +1,272 @@
+---
+// A4 인쇄·PDF용 시트. 사이트 레이아웃 없이 종이 한 장 기준으로 그린다.
+// scripts/pdf.mjs 가 이 페이지를 dist/pdf/<lang>-<slug>.pdf 로 만든다.
+import { getCollection } from 'astro:content';
+import site from '../../../../site.config.mjs';
+import { langOf, slugOf } from '../../../lib/content';
+import { PUBLIC_LANGS, path, t, type Lang } from '../../../lib/i18n';
+
+export async function getStaticPaths() {
+  const all = await getCollection('magazine');
+  return all
+    .filter((e) => e.data.sheet && PUBLIC_LANGS.includes(langOf(e.id)))
+    .map((entry) => ({ params: { lang: langOf(entry.id), slug: slugOf(entry.id) }, props: { entry } }));
+}
+
+const { entry } = Astro.props as { entry: import('astro:content').CollectionEntry<'magazine'> };
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const sheet = entry.data.sheet!;
+const articleUrl = new URL(path(lang, `magazine/${slugOf(entry.id)}`), site.SITE_URL).toString();
+const host = new URL(site.SITE_URL).host;
+
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{sheet.title} | {s.siteName}</title>
+    <link rel="canonical" href={articleUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="top">
+        <span class="mark">Malkkeum</span>
+        <span class="host">{host}</span>
+      </header>
+
+      <h1>{sheet.title}</h1>
+      {sheet.subtitle && <p class="sub">{sheet.subtitle}</p>}
+
+      {
+        sheet.sections.map((sec) => (
+          <section>
+            <div class="sec-head">
+              <h2>{sec.title}</h2>
+              {sec.columns && (
+                <div class="cols" style={`--n:${sec.columns.length}`}>
+                  {sec.columns.map((c) => (
+                    <span>{c}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+            <ul>
+              {sec.items.map((item) => (
+                <li class:list={{ plain: !sec.check }}>
+                  {sec.check && !sec.columns && <span class="box" />}
+                  <span class="txt">{item}</span>
+                  {sec.columns && (
+                    <span class="cols" style={`--n:${sec.columns.length}`}>
+                      {sec.columns.map(() => (
+                        <span class="box" />
+                      ))}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+
+      <footer class="foot">
+        {sheet.note && <p class="note">{sheet.note}</p>}
+        <p class="src">{lang === 'ko' ? '자세한 방법' : 'Full guide'}: {articleUrl}</p>
+      </footer>
+    </main>
+
+    <script is:inline>
+      // A4 한 장(여백 제외 약 271mm)에 들어가는 가장 큰 배율을 찾는다.
+      // 화면에서도 종이 폭(210mm, 안쪽 여백 14mm)으로 그리므로 인쇄·PDF와 결과가 같다.
+      window.fitSheet = () => {
+        const page = document.querySelector('.page');
+        const root = document.documentElement;
+        const limit = (271 * 96) / 25.4;
+        const pad = (28 * 96) / 25.4;
+        const fits = () => page.scrollHeight - pad <= limit;
+        let s = 1.6;
+        root.style.setProperty('--s', s);
+        while (!fits() && s > 0.8) {
+          s = Math.round((s - 0.025) * 1000) / 1000;
+          root.style.setProperty('--s', s);
+        }
+        return s;
+      };
+      document.fonts.ready.then(() => {
+        if (innerWidth > 820 || new URLSearchParams(location.search).has('print')) fitSheet();
+        // ?print 로 열면 바로 인쇄 창을 띄운다 (글의 "인쇄하기" 버튼)
+        if (new URLSearchParams(location.search).has('print')) setTimeout(() => print(), 200);
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 14mm 14mm 12mm;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body {
+    margin: 0;
+    background: #e9e5da;
+    color: #2a211a;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+    word-break: keep-all;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 24px auto;
+    padding: 14mm;
+    background: #fffdf7;
+    box-shadow: 0 2px 24px rgba(42, 33, 26, 0.12);
+  }
+  @media print {
+    body {
+      background: #fff;
+    }
+    .page {
+      width: auto;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      background: #fff;
+    }
+  }
+  @media screen and (max-width: 820px) {
+    .page {
+      width: auto;
+      min-height: 0;
+      margin: 0;
+      padding: 24px 16px;
+    }
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #2a211a;
+    padding-bottom: 8px;
+  }
+  .mark {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 22px;
+  }
+  .host {
+    font-size: 10px;
+    color: #8a8278;
+  }
+  /* --s: 내용이 A4 한 장을 꽉 채우도록 스크립트가 정하는 배율 (0.8 ~ 1.6) */
+  h1 {
+    margin: calc(var(--s, 1) * 18px) 0 4px;
+    font-size: calc(var(--s, 1) * 26px);
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+  .sub {
+    margin: 0 0 calc(var(--s, 1) * 6px);
+    font-size: calc(var(--s, 1) * 12px);
+    color: #8a8278;
+    line-height: 1.5;
+  }
+  section {
+    margin-top: calc(var(--s, 1) * 14px);
+    break-inside: avoid;
+  }
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1.5px solid #56654a;
+    padding-bottom: 4px;
+  }
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+    font-size: calc(var(--s, 1) * 13px);
+    font-weight: 700;
+    color: #2a211a;
+  }
+  h2::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #56654a;
+    transform: rotate(45deg);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--s, 1) * 9px);
+    min-height: calc(var(--s, 1) * 25px);
+    padding: calc(var(--s, 1) * 4px) 0;
+    border-bottom: 1px solid #e3ddcf;
+    font-size: calc(var(--s, 1) * 11.5px);
+    line-height: 1.45;
+  }
+  li.plain {
+    padding-left: 2px;
+  }
+  .txt {
+    flex: 1;
+  }
+  .box {
+    flex: none;
+    width: calc(var(--s, 1) * 12px);
+    height: calc(var(--s, 1) * 12px);
+    border: 1px solid #56654a;
+    border-radius: 2px;
+    background: #fff;
+  }
+  .cols {
+    flex: none;
+    display: grid;
+    grid-template-columns: repeat(var(--n), 20px);
+    justify-items: center;
+    gap: 2px;
+    font-size: 9px;
+    color: #8a8278;
+  }
+  .foot {
+    margin-top: calc(var(--s, 1) * 16px);
+    padding-top: 8px;
+    border-top: 1px solid #e3ddcf;
+    font-size: 9.5px;
+    color: #8a8278;
+    line-height: 1.6;
+  }
+  .note {
+    margin: 0 0 2px;
+    color: #2a211a;
+  }
+  .src {
+    margin: 0;
+  }
+</style>

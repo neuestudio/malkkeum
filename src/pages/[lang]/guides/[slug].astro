@@ -1,0 +1,317 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Media from '../../../components/Media.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import GuideCard from '../../../components/GuideCard.astro';
+import PickCard from '../../../components/PickCard.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import Disclosure from '../../../components/Disclosure.astro';
+import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../../../lib/content';
+import { formatDate, path, t, type Lang } from '../../../lib/i18n';
+import { toneOf } from '../../../lib/tone';
+import { imageOf } from '../../../lib/images';
+
+export const getStaticPaths = () => detailPaths('guides');
+
+const { entry } = Astro.props as { entry: import('astro:content').CollectionEntry<'guides'> };
+const lang = Astro.params.lang as Lang;
+const slug = slugOf(entry.id);
+const s = t(lang);
+const d = entry.data;
+const { Content } = await render(entry);
+const hero = imageOf('guides', slug, d.heroImage);
+
+const allGuides = await entries('guides', lang);
+const related = pickBySlugs(allGuides, d.related, entry.id).slice(0, 3);
+const usedPicks = pickBySlugs(await entries('picks', lang), d.picks, entry.id).slice(0, 3);
+const alternates = Object.fromEntries((await translationsOf('guides', slug)).map((l) => [l, path(l, `guides/${slug}`)]));
+
+const url = new URL(path(lang, `guides/${slug}`), Astro.site).toString();
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: d.title,
+    description: d.description,
+    inLanguage: lang,
+    totalTime: `PT${d.duration}M`,
+    supply: d.materials.map((name) => ({ '@type': 'HowToSupply', name })),
+    tool: d.tools.map((name) => ({ '@type': 'HowToTool', name })),
+    step: d.steps.map((st, i) => ({ '@type': 'HowToStep', position: i + 1, name: st.title, text: st.body, url: `${url}#step-${i + 1}` })),
+    datePublished: d.publishedAt.toISOString(),
+    dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: s.home, item: new URL(path(lang), Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: s.nav.guides, item: new URL(path(lang, 'guides'), Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 한 칸
+---
+
+<Base lang={lang} title={d.title} description={d.description} image={hero.src} type="article" alternates={alternates} jsonLd={jsonLd}>
+  <article class="wrap page-top" data-pagefind-body>
+    <Crumbs items={[{ name: s.nav.guides, href: path(lang, 'guides') }, { name: s.space[d.space], href: `${path(lang, 'guides')}?space=${d.space}` }]} />
+
+    <header class="g-head split">
+      <div></div>
+      <div>
+        <h1 class="title-xl">{d.title}</h1>
+        <p class="g-sum dim">{d.summary}</p>
+      </div>
+    </header>
+
+    <figure class="g-hero">
+      <Media {...hero} sizes="100vw" alt={d.heroAlt ?? d.title} label={s.target[d.target]} tone={toneOf(d.space)} eager width={2000} height={1125} />
+    </figure>
+
+    <dl class="g-meta">
+      <div><dt>{s.meta.difficulty}</dt><dd><span class={`diff diff--${d.difficulty}`}>{s.difficulty[d.difficulty]}</span></dd></div>
+      <div><dt>{s.meta.duration}</dt><dd>{s.minutes(d.duration)}</dd></div>
+      <div><dt>{s.meta.frequency}</dt><dd>{d.frequency}</dd></div>
+    </dl>
+
+    <section class="g-sec split">
+      <h2 class="label">{s.sections.prepare}</h2>
+      <div class="prep">
+        <div><h3 class="prep__h">{s.sections.materials}</h3><ul>{d.materials.map((m) => <li>{m}</li>)}</ul></div>
+        <div><h3 class="prep__h">{s.sections.tools}</h3><ul>{d.tools.map((m) => <li>{m}</li>)}</ul></div>
+      </div>
+    </section>
+
+    <AdSlot lang={lang} />
+
+    <section class="g-sec split">
+      <h2 class="label">{s.sections.steps}</h2>
+      <ol class="steps">
+        {
+          d.steps.map((st, i) => (
+            <>
+              <li class="step" id={`step-${i + 1}`}>
+                <span class="step__no">{String(i + 1).padStart(2, '0')}</span>
+                <div class="step__body">
+                  <h3 class="step__title">{st.title}</h3>
+                  <p>{st.body}</p>
+                </div>
+                {st.image && (
+                  <div class="step__img">
+                    <Media src={st.image} alt={st.title} width={800} height={800} />
+                  </div>
+                )}
+              </li>
+              {midAd > 0 && i === midAd - 1 && (
+                <li class="step-ad">
+                  <AdSlot lang={lang} />
+                </li>
+              )}
+            </>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="g-sec split">
+      <h2 class="label">{s.sections.cautions}</h2>
+      <ul class="bullets bullets--warn">{d.cautions.map((c) => <li>{c}</li>)}</ul>
+    </section>
+
+    <section class="g-sec split">
+      <h2 class="label">{s.sections.tips}</h2>
+      <ul class="bullets bullets--tip">{d.tips.map((c) => <li>{c}</li>)}</ul>
+    </section>
+
+    <section class="g-sec split">
+      <div></div>
+      <div class="prose"><Content /></div>
+    </section>
+
+    <p class="g-date split"><span></span><span class="meta">{s.published} {formatDate(d.publishedAt, lang)}{d.updatedAt && ` · ${s.updated} ${formatDate(d.updatedAt, lang)}`}</span></p>
+  </article>
+
+  {
+    usedPicks.length > 0 && (
+      <section class="wrap section split">
+        <h2 class="label">{s.sections.usedPicks}</h2>
+        <div>
+          <div class="picks3">{usedPicks.map((p) => <PickCard entry={p} lang={lang} />)}</div>
+          <div style="margin-top:16px"><Disclosure lang={lang} /></div>
+        </div>
+      </section>
+    )
+  }
+
+  <div class="wrap"><AdSlot lang={lang} /></div>
+
+  {
+    related.length > 0 && (
+      <section class="wrap section">
+        <div class="section-head"><h2 class="label">{s.sections.related}</h2></div>
+        <div class="grid">{related.map((g) => <GuideCard entry={g} lang={lang} />)}</div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .g-head {
+    margin: 28px 0 32px;
+  }
+  .g-sum {
+    margin-top: 16px;
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.6;
+    max-width: 34em;
+  }
+  .g-hero {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .g-hero :global(.media) {
+    width: 100%;
+    height: 100%;
+  }
+  .g-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+    margin: 0;
+  }
+  .g-meta > div {
+    padding: 18px 0;
+    border-right: 1px solid var(--line);
+    padding-left: clamp(0px, 2vw, 20px);
+  }
+  .g-meta > div:first-child {
+    padding-left: 0;
+  }
+  .g-meta > div:last-child {
+    border-right: 0;
+  }
+  .g-meta dt {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .g-meta dd {
+    margin: 4px 0 0;
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .g-sec {
+    padding: clamp(48px, 6vw, 80px) 0 0;
+  }
+  .prep {
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 640px) {
+    .prep {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .prep__h {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .prep li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 16px;
+  }
+
+  /* 번호형 단계 (레퍼런스4) */
+  .steps {
+    border-top: 1px solid var(--text);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 8px 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 900px) {
+    .step {
+      grid-template-columns: 72px 1fr 200px;
+    }
+  }
+  .step__no {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 28px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .step__title {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  .step__body p {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .step__img {
+    grid-column: 2;
+    aspect-ratio: 1;
+    max-width: 240px;
+  }
+  @media (min-width: 900px) {
+    .step__img {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+  .step-ad :global(.ad-slot) {
+    margin: 24px 0;
+  }
+
+  .bullets li {
+    position: relative;
+    padding: 12px 0 12px 28px;
+    border-bottom: 1px solid var(--line);
+    font-size: 16px;
+  }
+  .bullets li::before {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-weight: 700;
+  }
+  .bullets--warn li::before {
+    content: '!';
+    color: var(--hard);
+    left: 6px;
+  }
+  .bullets--tip li::before {
+    content: '✦';
+    color: var(--accent-deep);
+  }
+  .g-date {
+    margin-top: 40px;
+  }
+  .picks3 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
+  }
+  @media (min-width: 900px) {
+    .picks3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

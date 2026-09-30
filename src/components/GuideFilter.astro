@@ -1,0 +1,123 @@
+---
+// 텍스트형 필터 + 청소법 카드 그리드 (레퍼런스5).
+// JS가 없어도 카드는 모두 보이고, JS가 있으면 클릭한 조건으로 걸러진다.
+import type { CollectionEntry } from 'astro:content';
+import GuideCard from './GuideCard.astro';
+import AdSlot from './AdSlot.astro';
+import { t, type Lang } from '../lib/i18n';
+
+type Axis = 'space' | 'target' | 'difficulty';
+interface Props {
+  lang: Lang;
+  guides: CollectionEntry<'guides'>[];
+  axes: Axis[];
+  limit?: number; // 보여줄 최대 개수 (메인용)
+  adAfter?: number; // n번째 카드 뒤에 광고 칸
+  syncUrl?: boolean; // 목록 페이지: 선택한 조건을 주소(?space=kitchen)에 반영
+}
+const { lang, guides, axes, limit = 0, adAfter = 0, syncUrl = false } = Astro.props;
+const s = t(lang);
+
+const names: Record<Axis, string> = { space: s.filterSpace, target: s.filterTarget, difficulty: s.filterDifficulty };
+const labels: Record<Axis, Record<string, string>> = { space: s.space, target: s.target, difficulty: s.difficulty };
+
+// 글이 하나라도 있는 값만 필터로 노출 (빈 결과 방지)
+const options = axes.map((axis) => ({
+  axis,
+  values: Object.keys(labels[axis])
+    .map((v) => ({ v, n: guides.filter((g) => g.data[axis] === v).length }))
+    .filter((o) => o.n > 0),
+}));
+---
+
+<div class="gf" data-gf data-limit={limit} data-sync={syncUrl ? '' : undefined}>
+  <div class="filters">
+    {
+      options.map(({ axis, values }) => (
+        <div class="filter-row">
+          {axes.length > 1 && <p class="filter-row__name">{names[axis]}</p>}
+          <p class="filter" data-axis={axis}>
+            <button type="button" data-value="" aria-pressed="true">
+              {s.all}
+              <sup>({guides.length})</sup>
+            </button>
+            {values.map(({ v }) => (
+              <>
+                <span class="sep">, </span>
+                <button type="button" data-value={v} aria-pressed="false">
+                  {labels[axis][v]}
+                </button>
+              </>
+            ))}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="grid">
+    {
+      guides.map((g, i) => (
+        <>
+          <div class="gf__item" hidden={limit > 0 && i >= limit}>
+            <GuideCard entry={g} lang={lang} />
+          </div>
+          {adAfter > 0 && i === adAfter - 1 && guides.length > adAfter && <AdSlot lang={lang} />}
+        </>
+      ))
+    }
+  </div>
+  <p class="gf__empty dim" hidden>{s.noResults}</p>
+</div>
+
+<style>
+  .gf__empty {
+    padding: 48px 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gf]').forEach((root) => {
+    const limit = Number(root.dataset.limit) || Infinity;
+    const sync = root.hasAttribute('data-sync');
+    const state: Record<string, string> = {};
+    const items = [...root.querySelectorAll<HTMLElement>('.gf__item')];
+    const empty = root.querySelector<HTMLElement>('.gf__empty')!;
+
+    const apply = () => {
+      let shown = 0;
+      for (const item of items) {
+        const card = item.querySelector<HTMLElement>('.card')!;
+        const match = Object.entries(state).every(([axis, v]) => !v || card.dataset[axis] === v);
+        const visible = match && shown < limit;
+        item.hidden = !visible;
+        if (visible) shown++;
+      }
+      empty.hidden = shown > 0;
+      root.querySelectorAll<HTMLElement>('.filter').forEach((row) => {
+        const v = state[row.dataset.axis!] ?? '';
+        row.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.value === v)));
+      });
+      if (sync) {
+        const url = new URL(location.href);
+        for (const [axis, v] of Object.entries(state)) v ? url.searchParams.set(axis, v) : url.searchParams.delete(axis);
+        history.replaceState(null, '', url);
+      }
+    };
+
+    root.querySelectorAll<HTMLElement>('.filter').forEach((row) => {
+      const axis = row.dataset.axis!;
+      if (sync) {
+        const v = new URL(location.href).searchParams.get(axis);
+        if (v && row.querySelector(`[data-value="${CSS.escape(v)}"]`)) state[axis] = v;
+      }
+      row.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+        if (!btn) return;
+        state[axis] = btn.dataset.value ?? '';
+        apply();
+      });
+    });
+    if (Object.keys(state).length) apply();
+  });
+</script>

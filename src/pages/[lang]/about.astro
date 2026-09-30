@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths } from '../../lib/content';
+import { path, t, type Lang } from '../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const ko = lang === 'ko';
+---
+
+<Base lang={lang} title={s.footer.about} description={ko ? '말끔은 쉬운 청소부터 어려운 청소까지 단계별로 정리한 청소 가이드 플랫폼이에요. 말끔이 콘텐츠를 만드는 원칙을 소개해요.' : 'Malkkeum is a cleaning guide platform with step-by-step instructions for every job, from quick wipes to the tough ones.'}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.footer.about}</h1>
+    {
+      ko ? (
+        <p class="lead">
+          미뤄둔 청소를 끝내는 가장 쉬운 방법은 <span class="serif">순서</span>를 아는 것.{' '}
+          <span class="dim">말끔은 그 순서를 정리합니다.</span>
+        </p>
+      ) : (
+        <p class="lead">
+          The easiest way to finish the cleaning you have put off is knowing the <span class="serif">steps</span>.{' '}
+          <span class="dim">Malkkeum writes them down.</span>
+        </p>
+      )
+    }
+  </section>
+  <section class="wrap section split">
+    <div></div>
+    <div class="prose">
+      {
+        ko ? (
+          <>
+            <p>
+              말끔은 집 안 곳곳의 청소 방법을 한곳에 모은 청소 가이드 플랫폼이에요. 전자레인지처럼 5분이면 끝나는 청소부터, 방충망·세탁조·소파
+              묵은때처럼 어디서부터 손대야 할지 막막한 청소까지 다뤄요.
+            </p>
+            <h2>말끔이 글을 쓰는 원칙</h2>
+            <ul>
+              <li><strong>같은 형식으로.</strong> 모든 청소법에 난이도, 소요 시간, 권장 주기, 준비물, 단계, 주의사항을 빠짐없이 적어요.</li>
+              <li><strong>안전이 먼저.</strong> 세제 조합이나 가전 사용처럼 위험할 수 있는 내용은 제조사 안내와 공공기관 자료를 확인해 적어요.</li>
+              <li><strong>직접 해 볼 수 있게.</strong> 집에 흔히 있는 재료와 도구를 먼저 소개하고, 꼭 필요할 때만 전용 제품을 권해요.</li>
+              <li><strong>계속 고쳐요.</strong> 더 좋은 방법을 알게 되거나 틀린 내용을 발견하면 글을 수정하고 수정일을 표시해요.</li>
+            </ul>
+            <h2>추천 아이템과 광고</h2>
+            <p>
+              말끔은 광고와 제휴 링크(쿠팡 파트너스 등)로 운영돼요. 추천 글의 링크를 통해 구매하면 말끔이 일정액의 수수료를 받을 수 있지만, 구매 가격은
+              달라지지 않아요. 제휴 여부와 관계없이 선택 기준을 먼저 설명하고, 제휴 링크가 있는 페이지에는 항상 고지 문구를 표시해요.
+            </p>
+            <h2>제안과 제보</h2>
+            <p>
+              다뤄 줬으면 하는 청소나 틀린 내용을 발견했다면 <a href={path(lang, 'contact')}>문의 페이지</a>로 알려주세요. 보내주신 의견은 글을 만들고
+              고치는 데 반영해요.
+            </p>
+          </>
+        ) : (
+          <>
+            <p>
+              Malkkeum collects cleaning methods for every corner of the home, from a five-minute microwave wipe to window screens, washing machine drums and
+              stubborn sofa stains.
+            </p>
+            <h2>How we write</h2>
+            <ul>
+              <li><strong>Consistent format.</strong> Every guide lists difficulty, time, frequency, supplies, steps and cautions.</li>
+              <li><strong>Safety first.</strong> Anything risky, like mixing cleaners, is checked against manufacturer and public guidance.</li>
+              <li><strong>Doable at home.</strong> We start with common household supplies and recommend special products only when needed.</li>
+              <li><strong>Always improving.</strong> When we learn a better way or find a mistake, we update the guide and show the date.</li>
+            </ul>
+            <h2>Picks and ads</h2>
+            <p>
+              Malkkeum is supported by ads and affiliate links. We may earn a commission when you buy through our links, at no extra cost to you. Every page with
+              affiliate links says so.
+            </p>
+            <h2>Suggestions</h2>
+            <p>
+              Found a mistake or want a guide on something? Let us know on the <a href={path(lang, 'contact')}>contact page</a>.
+            </p>
+          </>
+        )
+      }
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,39 @@
+---
+import Base from '../../../layouts/Base.astro';
+import MagazineCard from '../../../components/MagazineCard.astro';
+import { entries, langPaths } from '../../../lib/content';
+import { t, type Lang } from '../../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const list = await entries('magazine', lang);
+const [lead, ...rest] = list;
+---
+
+<Base lang={lang} title={s.nav.magazine} description={s.magazineIntro.join(' ')}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.magazine}</h1>
+    <p class="lead">{s.magazineIntro[0]} <span class="dim">{s.magazineIntro[1]}</span></p>
+  </section>
+  <section class="wrap section">
+    {lead && <div class="m-lead"><MagazineCard entry={lead} lang={lang} size="lg" /></div>}
+    {rest.length > 0 && <div class="m-grid">{rest.map((m) => <MagazineCard entry={m} lang={lang} size="lg" />)}</div>}
+  </section>
+</Base>
+
+<style>
+  .m-grid {
+    display: grid;
+    gap: 48px 16px;
+    margin-top: 64px;
+  }
+  @media (min-width: 900px) {
+    .m-lead {
+      max-width: 66%;
+    }
+    .m-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+import site from '../../site.config.mjs';
+import type { Lang } from '../lib/i18n';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<p class="disclosure">* {site.AFFILIATE_NOTICE[lang]}</p>

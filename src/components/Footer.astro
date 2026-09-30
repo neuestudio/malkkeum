@@ -1,0 +1,89 @@
+---
+import site from '../../site.config.mjs';
+import { path, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = t(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__top split">
+      <p class="ft__desc">{s.footer.desc}</p>
+      <div class="ft__cols">
+        <ul>
+          <li><a href={path(lang, 'guides')}>{s.nav.guides}</a></li>
+          <li><a href={path(lang, 'magazine')}>{s.nav.magazine}</a></li>
+          <li><a href={path(lang, 'picks')}>{s.nav.picks}</a></li>
+          <li><a href={path(lang, 'store')}>{s.nav.store}</a></li>
+        </ul>
+        <ul>
+          <li><a href={path(lang, 'about')}>{s.footer.about}</a></li>
+          <li><a href={path(lang, 'contact')}>{s.footer.contact}</a></li>
+          <li><a href={path(lang, 'privacy')}>{s.footer.privacy}</a></li>
+          <li><a href={path(lang, 'terms')}>{s.footer.terms}</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="ft__notice">{site.AFFILIATE_NOTICE[lang]}</p>
+    <p class="ft__mark serif" aria-hidden="true">Malkkeum</p>
+    <div class="ft__bottom">
+      <span>© {year} {s.siteName}</span>
+      <a href="#top">↑ Top</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    margin-top: clamp(96px, 12vw, 180px);
+    background: var(--text);
+    color: var(--ink-on-dark);
+    padding: clamp(48px, 6vw, 80px) 0 24px;
+    overflow: hidden;
+  }
+  .ft__desc {
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.45;
+    max-width: 22em;
+    letter-spacing: -0.015em;
+  }
+  .ft__cols {
+    display: flex;
+    gap: clamp(40px, 8vw, 120px);
+    font-size: 14px;
+  }
+  .ft__cols li + li {
+    margin-top: 6px;
+  }
+  .ft a {
+    opacity: 0.8;
+  }
+  .ft a:hover {
+    opacity: 1;
+  }
+  .ft__notice {
+    margin-top: 48px;
+    font-size: 12px;
+    opacity: 0.55;
+  }
+  .ft__mark {
+    font-size: clamp(88px, 22vw, 340px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin: 32px 0 20px -0.04em;
+    white-space: nowrap;
+  }
+  .ft__bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    opacity: 0.7;
+    border-top: 1px solid rgba(247, 244, 234, 0.2);
+    padding-top: 16px;
+  }
+</style>

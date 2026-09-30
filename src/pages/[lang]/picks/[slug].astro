@@ -1,0 +1,140 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Media from '../../../components/Media.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import GuideCard from '../../../components/GuideCard.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import Disclosure from '../../../components/Disclosure.astro';
+import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../../../lib/content';
+import { formatDate, path, t, type Lang } from '../../../lib/i18n';
+import { imageOf } from '../../../lib/images';
+
+export const getStaticPaths = () => detailPaths('picks');
+
+const { entry } = Astro.props as { entry: import('astro:content').CollectionEntry<'picks'> };
+const lang = Astro.params.lang as Lang;
+const slug = slugOf(entry.id);
+const s = t(lang);
+const d = entry.data;
+const { Content } = await render(entry);
+const related = pickBySlugs(await entries('guides', lang), d.related, entry.id).slice(0, 3);
+const catalog = await entries('products', lang);
+const products = pickBySlugs(catalog, d.products.map((p) => p.id), entry.id).map((p, i) => ({ ...p.data, img: imageOf('products', slugOf(p.id), p.data.image), point: d.products[i].point }));
+const hero = imageOf('picks', slug, d.heroImage);
+const alternates = Object.fromEntries((await translationsOf('picks', slug)).map((l) => [l, path(l, `picks/${slug}`)]));
+const url = new URL(path(lang, `picks/${slug}`), Astro.site).toString();
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.title,
+    description: d.description,
+    inLanguage: lang,
+    mainEntityOfPage: url,
+    datePublished: d.publishedAt.toISOString(),
+    dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
+    author: { '@type': 'Organization', name: s.siteName },
+  },
+];
+---
+
+<Base lang={lang} title={d.title} description={d.description} image={hero.src} type="article" alternates={alternates} jsonLd={jsonLd}>
+  <article class="wrap page-top" data-pagefind-body>
+    <Crumbs items={[{ name: s.nav.picks, href: path(lang, 'picks') }]} />
+    <header class="p-head split">
+      <div></div>
+      <div>
+        <h1 class="title-xl">{d.title}</h1>
+        <p class="p-sum dim">{d.summary}</p>
+        <div style="margin-top:20px"><Disclosure lang={lang} /></div>
+      </div>
+    </header>
+
+    <div class="split">
+      <div></div>
+      <div class="prose"><Content /></div>
+    </div>
+
+    <ul class="products">
+      {
+        products.map((p, i) => (
+          <li class="product">
+            <span class="product__no">{String(i + 1).padStart(2, '0')}</span>
+            <div class="product__img">
+              <Media {...p.img} sizes="200px" alt={p.name} label={p.type.split('·')[0]} tone="stone" width={800} height={800} />
+            </div>
+            <div class="product__body">
+              <p class="meta">{p.type}</p>
+              <h3 class="product__name">{p.name}</h3>
+              <p>{p.point}</p>
+              {p.url && (
+                <a class="btn" href={p.url} target="_blank" rel="sponsored nofollow noopener">
+                  {s.buy} ↗
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <Disclosure lang={lang} />
+    <p class="meta" style="margin-top:24px">{s.published} {formatDate(d.publishedAt, lang)}</p>
+  </article>
+
+  <div class="wrap"><AdSlot lang={lang} /></div>
+
+  {
+    related.length > 0 && (
+      <section class="wrap section">
+        <div class="section-head"><h2 class="label">{s.sections.related}</h2></div>
+        <div class="grid">{related.map((g) => <GuideCard entry={g} lang={lang} />)}</div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .p-head {
+    margin: 28px 0 48px;
+  }
+  .p-sum {
+    margin-top: 16px;
+    font-size: clamp(17px, 1.6vw, 20px);
+    max-width: 34em;
+  }
+  .products {
+    margin: 64px 0 24px;
+    border-top: 1px solid var(--text);
+  }
+  .product {
+    display: grid;
+    grid-template-columns: 40px 110px 1fr;
+    gap: 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .product {
+      grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1.6fr);
+      gap: 32px;
+    }
+  }
+  .product__no {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .product__img {
+    aspect-ratio: 1;
+  }
+  .product__name {
+    font-size: clamp(18px, 1.8vw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 4px 0 8px;
+  }
+  .product__body .btn {
+    margin-top: 16px;
+  }
+</style>

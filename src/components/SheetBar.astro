@@ -1,0 +1,65 @@
+---
+// 매거진 글의 A4 체크리스트 받기 영역
+import { path, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  slug: string;
+  title: string;
+}
+const { lang, slug, title } = Astro.props;
+const s = t(lang).sheet;
+const fileName = `${lang === 'ko' ? '말끔' : 'Malkkeum'}_${title.replace(/[\\/:*?"<>|]/g, '')}.pdf`;
+---
+
+<aside class="sheet-bar">
+  <div class="sheet-bar__txt">
+    <p class="sheet-bar__tag">A4 · PDF</p>
+    <p class="sheet-bar__title">{title}</p>
+    <p class="sheet-bar__desc">{s.desc}</p>
+  </div>
+  <div class="sheet-bar__btns">
+    <a class="btn" href={`/pdf/${lang}-${slug}.pdf`} download={fileName}>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"></path></svg>
+      {s.download}
+    </a>
+    <a class="btn btn--line" href={`${path(lang, `sheets/${slug}`)}?print`} target="_blank" rel="noopener">{s.print}</a>
+  </div>
+</aside>
+
+<style>
+  .sheet-bar {
+    display: grid;
+    gap: 16px;
+    align-items: center;
+    background: var(--accent-soft);
+    padding: 20px 22px;
+    margin: 40px 0;
+  }
+  @media (min-width: 640px) {
+    .sheet-bar {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  .sheet-bar__tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent-deep);
+  }
+  .sheet-bar__title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-top: 2px;
+  }
+  .sheet-bar__desc {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .sheet-bar__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>

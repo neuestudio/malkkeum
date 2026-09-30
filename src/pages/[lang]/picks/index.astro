@@ -1,0 +1,23 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PickCard from '../../../components/PickCard.astro';
+import Disclosure from '../../../components/Disclosure.astro';
+import { entries, langPaths } from '../../../lib/content';
+import { t, type Lang } from '../../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const list = await entries('picks', lang);
+---
+
+<Base lang={lang} title={s.nav.picks} description={s.picksIntro.join(' ')}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.picks}</h1>
+    <p class="lead">{s.picksIntro[0]} <span class="dim">{s.picksIntro[1]}</span></p>
+  </section>
+  <section class="wrap section">
+    <div class="grid">{list.map((p) => <PickCard entry={p} lang={lang} />)}</div>
+    <div style="margin-top:40px"><Disclosure lang={lang} /></div>
+  </section>
+</Base>

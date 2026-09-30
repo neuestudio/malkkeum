@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "malkkeum",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  // 도메인 연결 후에도 workers.dev 주소를 살려둬야 301 리다이렉트가 동작한다 (최소 6~12개월 유지)
+  "workers_dev": true,
+  // Cloudflare에서 구매한 도메인. 배포할 때 DNS 레코드와 인증서가 자동으로 만들어진다
+  "routes": [
+    { "pattern": "malkkeumi.com", "custom_domain": true },
+    { "pattern": "www.malkkeumi.com", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "force-trailing-slash",
+    "run_worker_first": true
+  },
+  "vars": {
+    // 이 호스트가 아닌 주소(www, workers.dev)로 온 요청은 전부 같은 경로로 301
+    "CANONICAL_HOST": "malkkeumi.com",
+    // 문의 메일: 보내는 주소(도메인의 주소)와 받는 주소(Email Routing에서 인증한 주소)
+    "CONTACT_FROM": "contact@malkkeumi.com",
+    "CONTACT_TO": "malkkeumi01@gmail.com"
+  },
+  // 문의폼 메일 발송. 받는 주소는 Cloudflare Email Routing에서 인증돼 있어야 한다 (CONTACT_TO와 같은 주소)
+  "send_email": [{ "name": "MAILER", "destination_address": "malkkeumi01@gmail.com" }]
+}

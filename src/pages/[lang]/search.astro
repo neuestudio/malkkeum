@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths } from '../../lib/content';
+import { t, type Lang } from '../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const ph = lang === 'ko' ? '방충망, 곰팡이, 세탁기…' : 'Window screen, mold, washer…';
+---
+
+<Base lang={lang} title={s.nav.search} noindex>
+  <link slot="head" rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.search}</h1>
+    <div id="search" data-placeholder={ph}></div>
+  </section>
+</Base>
+
+<style is:global>
+  #search {
+    --pagefind-ui-primary: var(--text);
+    --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: var(--bg);
+    --pagefind-ui-border: var(--text);
+    --pagefind-ui-tag: var(--accent-soft);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0;
+    --pagefind-ui-font: var(--font-sans);
+  }
+  #search .pagefind-ui__search-input {
+    font-weight: 500;
+  }
+</style>
+
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('search');
+    if (!window.PagefindUI) return;
+    const ui = new window.PagefindUI({ element: '#search', showSubResults: true, showImages: false, translations: { placeholder: el.dataset.placeholder } });
+    const q = new URLSearchParams(location.search).get('q');
+    if (q) ui.triggerSearch(q);
+  });
+</script>

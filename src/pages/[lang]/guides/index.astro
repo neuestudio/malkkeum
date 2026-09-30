@@ -1,0 +1,22 @@
+---
+import Base from '../../../layouts/Base.astro';
+import GuideFilter from '../../../components/GuideFilter.astro';
+import { entries, langPaths } from '../../../lib/content';
+import { t, type Lang } from '../../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const guides = await entries('guides', lang);
+const [a, b] = s.guidesIntro(guides.length);
+---
+
+<Base lang={lang} title={s.nav.guides} description={`${a} ${b}`}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.guides}</h1>
+    <p class="lead">{a} <span class="dim">{b}</span></p>
+  </section>
+  <section class="wrap">
+    <GuideFilter lang={lang} guides={guides} axes={['space', 'target', 'difficulty']} adAfter={6} syncUrl />
+  </section>
+</Base>

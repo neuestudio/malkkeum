@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import site from '../../site.config.mjs';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { DEFAULT_LANG, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  title?: string; // 비우면 사이트 기본 제목
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  // 번역본이 있는 언어만 넣는다. 현재 언어 포함. 예: { ko: '/ko/guides/x/' }
+  alternates?: Partial<Record<Lang, string>>;
+  jsonLd?: object[];
+  overlayHeader?: boolean;
+  noindex?: boolean;
+}
+
+const { lang, title, description, image, type = 'website', jsonLd = [], overlayHeader = false, noindex = false } = Astro.props;
+const s = t(lang);
+const alternates = Astro.props.alternates ?? { [lang]: Astro.url.pathname };
+const abs = (p: string) => new URL(p, site.SITE_URL).toString();
+
+const fullTitle = title ? `${title} | ${s.siteName}` : `${s.siteName} — ${s.tagline}`;
+const desc = description ?? s.siteDescription;
+const canonical = abs(Astro.url.pathname);
+const ogImage = abs(image ?? '/og-default.png');
+const altEntries = Object.entries(alternates) as [Lang, string][];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {altEntries.length > 1 && altEntries.map(([l, href]) => <link rel="alternate" hreflang={l} href={abs(href)} />)}
+    {altEntries.length > 1 && alternates[DEFAULT_LANG] && <link rel="alternate" hreflang="x-default" href={abs(alternates[DEFAULT_LANG]!)} />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={s.siteName} />
+    <meta property="og:title" content={title ?? fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'ko' ? 'ko_KR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#f7f4ea" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title={s.siteName} href={`/${lang}/rss.xml`} />
+    {site.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={site.GOOGLE_SITE_VERIFICATION} />}
+    {site.NAVER_SITE_VERIFICATION && <meta name="naver-site-verification" content={site.NAVER_SITE_VERIFICATION} />}
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
+
+    {
+      site.ADSENSE_PUB_ID && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${site.ADSENSE_PUB_ID}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
+
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <slot name="head" />
+  </head>
+  <body id="top">
+    <a class="skip" href="#main">{s.skip}</a>
+    <Header lang={lang} overlay={overlayHeader} alternates={alternates} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

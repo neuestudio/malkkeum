@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../../site.config.mjs';
+import { langPaths } from '../../lib/content';
+import { path, t, type Lang } from '../../lib/i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+const ko = lang === 'ko';
+const date = site.POLICY_DATE;
+---
+
+<Base lang={lang} title={s.footer.terms} description={ko ? '말끔 이용약관. 콘텐츠 이용 범위, 청소 정보의 활용과 책임, 광고와 제휴 링크 고지에 관한 안내예요.' : 'Terms of use for Malkkeum: content use, responsibility for cleaning information, ads and affiliate disclosure.'}>
+  <section class="wrap page-top split">
+    <h1 class="label">{s.footer.terms}</h1>
+    <p class="meta">{ko ? `시행일 ${date}` : `Effective ${date}`}</p>
+  </section>
+  <section class="wrap section split">
+    <div></div>
+    <div class="prose">
+      {
+        ko ? (
+          <>
+            <h2>1. 목적</h2>
+            <p>이 약관은 말끔(이하 "사이트")이 제공하는 청소 정보와 관련 서비스의 이용 조건을 정합니다.</p>
+            <h2>2. 콘텐츠의 이용</h2>
+            <p>사이트의 글과 이미지의 저작권은 사이트에 있습니다. 개인적인 참고와 비상업적 공유(출처와 링크 표시)는 자유롭게 할 수 있지만, 전체 또는 상당 부분을 복제해 다른 곳에 게시하거나 상업적으로 이용하려면 사전 동의가 필요합니다.</p>
+            <h2>3. 청소 정보의 활용과 책임</h2>
+            <ul>
+              <li>사이트의 청소 방법은 일반적인 가정 환경을 기준으로 한 참고 정보입니다.</li>
+              <li>제품과 소재에 따라 결과가 다를 수 있으니, 가전·가구 제조사의 사용 설명서를 먼저 확인하고 눈에 띄지 않는 곳에서 시험해 보세요.</li>
+              <li>세제는 제품 라벨의 사용법과 주의사항을 따르세요. 서로 다른 세제를 섞어 쓰지 마세요.</li>
+              <li>사이트는 정확한 정보를 제공하려고 노력하지만, 정보 활용으로 생긴 손해에 대해 법령이 허용하는 범위에서 책임을 지지 않습니다.</li>
+            </ul>
+            <h2>4. 광고와 제휴 링크</h2>
+            <p>사이트에는 Google AdSense 광고와 제휴 링크(쿠팡 파트너스 등)가 포함될 수 있습니다. 제휴 링크를 통해 구매하면 사이트가 일정액의 수수료를 받을 수 있으며, 이용자가 지불하는 가격에는 영향이 없습니다. 상품의 판매, 배송, 환불은 해당 판매처의 책임입니다.</p>
+            <p>{site.AFFILIATE_NOTICE.ko}</p>
+            <h2>5. 외부 링크</h2>
+            <p>사이트에 연결된 외부 사이트의 내용과 개인정보 처리에 대해서는 해당 사이트의 정책이 적용됩니다.</p>
+            <h2>6. 약관의 변경</h2>
+            <p>약관이 바뀌면 시행일과 함께 이 페이지에 공지합니다. 문의는 <a href={path(lang, 'contact')}>문의 페이지</a>로 보내주세요.</p>
+          </>
+        ) : (
+          <>
+            <h2>1. Content</h2>
+            <p>All text and images belong to Malkkeum. Personal reference and non-commercial sharing with a link are welcome. Republishing all or substantial parts requires permission.</p>
+            <h2>2. Using cleaning information</h2>
+            <ul>
+              <li>Guides are general information for typical homes.</li>
+              <li>Check your manufacturer's manual first and test on a hidden spot.</li>
+              <li>Follow product labels and never mix different cleaners.</li>
+              <li>To the extent permitted by law, we are not liable for damage arising from use of this information.</li>
+            </ul>
+            <h2>3. Ads and affiliate links</h2>
+            <p>This site may show Google AdSense ads and contain affiliate links. {site.AFFILIATE_NOTICE.en} Sellers are responsible for sales, shipping and refunds.</p>
+            <h2>4. Changes</h2>
+            <p>Changes will be posted here with a new effective date. Questions? Use the <a href={path(lang, 'contact')}>contact page</a>.</p>
+          </>
+        )
+      }
+    </div>
+  </section>
+</Base>

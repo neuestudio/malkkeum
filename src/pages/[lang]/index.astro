@@ -1,0 +1,331 @@
+---
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import GuideCard from '../../components/GuideCard.astro';
+import MagazineCard from '../../components/MagazineCard.astro';
+import PickCard from '../../components/PickCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import GuideFilter from '../../components/GuideFilter.astro';
+import { currentSeason, entries, langPaths, slugOf } from '../../lib/content';
+import { path, t, type Lang } from '../../lib/i18n';
+import { toneOf } from '../../lib/tone';
+import { imageOf } from '../../lib/images';
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+
+const guides = await entries('guides', lang);
+const magazine = await entries('magazine', lang);
+const picks = await entries('picks', lang);
+
+const hero = guides.find((g) => g.data.featured) ?? guides[0];
+const season = currentSeason();
+// 이번 계절로 지정한 글이 3개 이상이면 그것만, 적으면 연중 글로 채운다
+const explicit = guides.filter((g) => g.data.season.includes(season));
+const seasonal = (explicit.length >= 3 ? explicit : [...explicit, ...guides.filter((g) => g.data.season.includes('all'))]).slice(0, 10);
+const HOME_LIMIT = 6; // 모바일 2열·데스크톱 3열 모두 빈칸 없이 떨어지는 수
+const safety = magazine.find((m) => slugOf(m.id) === 'never-mix-cleaners');
+const [magLead, ...magRest] = magazine;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: s.siteName,
+    url: new URL(path(lang), Astro.site).toString(),
+    inLanguage: lang,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${new URL(path(lang, 'search'), Astro.site)}?q={query}`,
+      'query-input': 'required name=query',
+    },
+  },
+];
+---
+
+<Base lang={lang} overlayHeader jsonLd={jsonLd}>
+  {
+    hero && (
+      <section class="hero">
+        <div class="hero__media">
+          <Media
+            {...imageOf('guides', slugOf(hero.id), hero.data.heroImage)}
+            sizes="100vw"
+            alt={hero.data.heroAlt ?? hero.data.title}
+            tone={toneOf(hero.data.space)}
+            eager
+            width={2400}
+            height={1350}
+          />
+        </div>
+        <div class="hero__shade" />
+        <a class="hero__bar wrap" href={path(lang, `guides/${slugOf(hero.id)}`)}>
+          <span class="card__cap hero__tag">{s.featured}</span>
+          <span class="hero__title">{hero.data.title}</span>
+          <span class="hero__meta">
+            {s.difficulty[hero.data.difficulty]} · {s.minutes(hero.data.duration)}
+          </span>
+          <span class="hero__cta">{s.readMore} →</span>
+        </a>
+      </section>
+    )
+  }
+
+  <section class="wrap section split">
+    <p class="label">{s.siteName}</p>
+    <p class="lead">
+      {s.intro[0]} <span class="dim">{s.intro[1]}</span>
+    </p>
+  </section>
+
+  {
+    seasonal.length > 0 && (
+      <section class="section season" aria-labelledby="season-h">
+        <div class="wrap split">
+          <div />
+          <div class="section-head">
+            <h2 class="label" id="season-h">
+              {s.seasonNow} · {s.season[season]}
+            </h2>
+            <div class="rail-nav">
+              <button type="button" data-rail="-1" aria-label="prev">◀</button>
+              <button type="button" data-rail="1" aria-label="next">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="rail-outer">
+          <ul class="rail" data-rail-track>
+            {seasonal.map((g) => (
+              <li>
+                <GuideCard entry={g} lang={lang} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="wrap section" aria-labelledby="guides-h">
+    <div class="section-head">
+      <h2 class="label" id="guides-h">{s.nav.guides}</h2>
+      <a class="more-link" href={path(lang, 'guides')}>{s.viewAll}</a>
+    </div>
+    <GuideFilter lang={lang} guides={guides} axes={['space']} limit={HOME_LIMIT} adAfter={6} />
+  </section>
+
+  {
+    safety && (
+      <section class="section">
+        <a class="band" href={path(lang, `magazine/${slugOf(safety.id)}`)}>
+          <span class="label label--plain">{s.nav.magazine}</span>
+          <span class="band__title">{s.safetyBanner.title}</span>
+          <span class="btn">{s.safetyBanner.cta}</span>
+        </a>
+      </section>
+    )
+  }
+
+  {
+    magLead && (
+      <section class="wrap section" aria-labelledby="mag-h">
+        <div class="section-head">
+          <h2 class="label" id="mag-h">{s.nav.magazine}</h2>
+          <a class="more-link" href={path(lang, 'magazine')}>{s.more}</a>
+        </div>
+        <div class="mag">
+          <MagazineCard entry={magLead} lang={lang} size="lg" />
+          {magRest.length > 0 && (
+            <div class="mag__side">
+              {magRest.slice(0, 3).map((m) => (
+                <MagazineCard entry={m} lang={lang} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="wrap"><AdSlot lang={lang} /></div>
+
+  {
+    picks.length > 0 && (
+      <section class="wrap section" aria-labelledby="picks-h">
+        <div class="section-head">
+          <h2 class="label" id="picks-h">{s.nav.picks}</h2>
+          <a class="more-link" href={path(lang, 'picks')}>{s.more}</a>
+        </div>
+        <div class="picks">
+          {picks.slice(0, 4).map((p) => (
+            <PickCard entry={p} lang={lang} />
+          ))}
+        </div>
+        <div style="margin-top:24px">
+          <Disclosure lang={lang} />
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  /* 대배너 (레퍼런스1) */
+  .hero {
+    position: relative;
+    height: min(92svh, 860px);
+    min-height: 520px;
+    color: #fffdf7;
+    overflow: hidden;
+  }
+  .hero__media,
+  .hero__media :global(.media) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(30, 24, 18, 0.35) 0%, rgba(30, 24, 18, 0) 22%, rgba(30, 24, 18, 0) 60%, rgba(30, 24, 18, 0.55) 100%);
+    pointer-events: none;
+  }
+  .hero__bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: 4px 24px;
+    padding-bottom: 22px;
+    font-size: 14px;
+  }
+  @media (min-width: 900px) {
+    .hero__bar {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 0.8fr) auto;
+      align-items: baseline;
+    }
+  }
+  .hero__tag {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    font-size: 12px;
+  }
+  .hero__title {
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .hero__meta {
+    opacity: 0.85;
+  }
+  .hero__cta {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .hero__bar:hover .hero__cta {
+    text-decoration: underline;
+  }
+
+  /* 시즌 가로 슬라이드 */
+  .rail-outer {
+    padding-left: var(--gutter);
+  }
+  @media (min-width: 900px) {
+    .rail-outer {
+      /* 오른쪽 2/3 칸 시작점에 맞추고, 오른쪽은 화면 끝까지 흘러나가게 */
+      padding-left: calc((100vw - min(100vw, var(--max))) / 2 + var(--gutter) + (min(100vw, var(--max)) - 2 * var(--gutter) - 32px) / 3 + 32px);
+    }
+  }
+  .rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(72vw, 340px);
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-right: var(--gutter);
+  }
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+  .rail > li {
+    scroll-snap-align: start;
+  }
+  .rail-nav {
+    display: flex;
+    gap: 10px;
+    font-size: 11px;
+  }
+  .rail-nav button {
+    padding: 4px;
+    opacity: 0.8;
+  }
+  .rail-nav button:hover {
+    opacity: 1;
+  }
+
+  /* 세이지 블록 (레퍼런스3) */
+  .band {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+    text-align: center;
+    background: var(--accent);
+    padding: clamp(72px, 10vw, 140px) var(--gutter);
+  }
+  .band__title {
+    font-size: clamp(24px, 3.2vw, 42px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    max-width: 18em;
+  }
+
+  /* 매거진 */
+  .mag {
+    display: grid;
+    gap: 40px 16px;
+  }
+  @media (min-width: 900px) {
+    .mag {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+  .mag__side {
+    display: grid;
+    gap: 32px;
+    align-content: start;
+  }
+
+  .picks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 12px;
+  }
+  @media (min-width: 900px) {
+    .picks {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-rail]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const track = btn.closest('section')?.querySelector<HTMLElement>('[data-rail-track]');
+      if (!track) return;
+      const card = track.querySelector('li');
+      const step = card ? card.getBoundingClientRect().width + 12 : 300;
+      track.scrollBy({ left: step * Number(btn.dataset.rail), behavior: 'smooth' });
+    });
+  });
+</script>

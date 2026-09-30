@@ -1,0 +1,35 @@
+---
+// 애드센스 광고 칸. 게시자 ID가 없으면 운영 빌드에서는 아무것도 출력하지 않는다.
+// 로컬 개발(npm run dev)에서는 위치 확인용 점선 칸을 보여준다.
+import site from '../../site.config.mjs';
+import { t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  slot?: string; // 애드센스에서 만든 광고 단위 ID. 비어 있으면 자동 광고에 맡긴다.
+}
+const { lang, slot } = Astro.props;
+const pub = site.ADSENSE_PUB_ID;
+const dev = import.meta.env.DEV;
+---
+
+{
+  pub && slot ? (
+    <aside class="ad-slot" aria-label={t(lang).ad}>
+      <div style="width:100%">
+        <p class="ad-slot__label">{t(lang).ad}</p>
+        <ins
+          class="adsbygoogle"
+          style="display:block"
+          data-ad-client={`ca-${pub}`}
+          data-ad-slot={slot}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+        <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </aside>
+  ) : dev ? (
+    <div class="ad-slot ad-slot--dev" aria-hidden="true">AD</div>
+  ) : null
+}

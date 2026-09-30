@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Media from './Media.astro';
+import { slugOf } from '../lib/content';
+import { formatDate, path, t, type Lang } from '../lib/i18n';
+import { imageOf } from '../lib/images';
+
+interface Props {
+  entry: CollectionEntry<'magazine'>;
+  lang: Lang;
+  size?: 'lg' | 'sm';
+}
+const { entry, lang, size = 'sm' } = Astro.props;
+const d = entry.data;
+const s = t(lang);
+---
+
+<a class={`card mag-card mag-card--${size}`} href={path(lang, `magazine/${slugOf(entry.id)}`)}>
+  <div class="card__img mag-card__img">
+    <Media {...imageOf('magazine', slugOf(entry.id), d.heroImage)} sizes={size === 'lg' ? '(min-width: 900px) 60vw, 100vw' : '(min-width: 900px) 20vw, 100vw'} alt={d.heroAlt ?? d.title} label={s.kind[d.kind]} tone="sage" />
+  </div>
+  <div class="mag-card__body">
+    <p class="card__cap">{s.kind[d.kind]} · {formatDate(d.publishedAt, lang)}{d.sheet && <span class="pdf-tag">{s.sheet.badge}</span>}</p>
+    <h3 class="card__title">{d.title}</h3>
+    {size === 'lg' && <p class="mag-card__sum dim">{d.summary}</p>}
+  </div>
+</a>
+
+<style>
+  .pdf-tag {
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: var(--accent);
+    color: var(--text);
+  }
+  .mag-card__img {
+    aspect-ratio: 3 / 2;
+  }
+  .mag-card--lg .card__title {
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.35;
+  }
+  .mag-card__sum {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+  @media (min-width: 900px) {
+    .mag-card--sm {
+      display: grid;
+      grid-template-columns: 42% 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .mag-card--sm .card__img {
+      margin-bottom: 0;
+    }
+  }
+</style>
