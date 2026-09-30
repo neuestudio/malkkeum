@@ -13,8 +13,8 @@ const guides = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
   schema: z.object({
     title: z.string().min(5),
-    summary: z.string().min(20).max(120),
-    description: z.string().min(40).max(160),
+    summary: z.string().min(20).max(160),
+    description: z.string().min(40).max(170),
     space: z.enum(['kitchen', 'bathroom', 'living', 'bedroom', 'entrance', 'window']),
     target: z.enum(['appliance', 'furniture', 'screen', 'kitchenware', 'fixture', 'surface']),
     difficulty: z.enum(['easy', 'medium', 'hard']),
@@ -42,8 +42,8 @@ const magazine = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/magazine' }),
   schema: z.object({
     title: z.string().min(5),
-    summary: z.string().min(20).max(140),
-    description: z.string().min(40).max(160),
+    summary: z.string().min(20).max(160),
+    description: z.string().min(40).max(170),
     kind: z.enum(['season', 'guide', 'column']),
     // A4 인쇄용 시트. 있으면 PDF가 만들어지고 글에 "PDF로 받기" 버튼이 생긴다
     sheet: z
@@ -76,8 +76,8 @@ const picks = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/picks' }),
   schema: z.object({
     title: z.string().min(5),
-    summary: z.string().min(20).max(140),
-    description: z.string().min(40).max(160),
+    summary: z.string().min(20).max(160),
+    description: z.string().min(40).max(170),
     // products 컬렉션의 slug + 이 글에서의 추천 이유
     products: z
       .array(z.object({ id: z.string(), point: z.string() }))

@@ -1,3 +1,6 @@
+// 번역 중인 언어까지 포함한 목록 (PREVIEW_ALL_LANGS=1 일 때만 쓰인다)
+const PREVIEW_LANGS = ['ko', 'en'];
+
 // 사이트 전역 설정. 도메인을 구매하면 SITE_URL만 바꾸고 다시 빌드한다.
 export default {
   // 정식 주소 (끝에 / 없이). canonical, hreflang, 사이트맵, og:url 모두 이 값을 기준으로 만든다.
@@ -12,7 +15,8 @@ export default {
 
   // 콘텐츠를 공개하는 언어. 첫 번째가 기본 언어이자 x-default.
   // 영어 번역이 충분히 쌓이면 'en'을 추가한다. (빈 페이지가 공개되지 않도록)
-  PUBLIC_LANGS: ['ko'],
+  // 새 언어를 준비할 때는 이 목록에서 빼 두고 PREVIEW_LANGS에만 넣은 뒤, PREVIEW_ALL_LANGS=1 npm run dev 로 미리 본다
+  PUBLIC_LANGS: process.env.PREVIEW_ALL_LANGS ? PREVIEW_LANGS : ['ko', 'en'],
 
   // 개인정보처리방침·이용약관 시행일
   POLICY_DATE: '2026-10-01',

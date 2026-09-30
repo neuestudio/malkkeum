@@ -25,8 +25,16 @@ export default {
     // 네이버 소유 확인 로봇(Yeti)은 리다이렉트 없이 루트 페이지(확인 태그 포함)를 받는다
     const naverBot = /Yeti/i.test(request.headers.get('User-Agent') || '');
     if (url.pathname === '/' && !naverBot) {
-      url.pathname = `/${DEFAULT_LANG}/`;
-      return Response.redirect(url.toString(), 301);
+      // 브라우저 언어가 한국어가 아니고 영어판이 공개돼 있으면 /en/, 아니면 /ko/
+      // (언어에 따라 목적지가 달라지므로 영구 이동(301)이 아닌 302)
+      const prefersKo = /^\s*ko\b/i.test(request.headers.get('Accept-Language') || 'ko');
+      let lang = DEFAULT_LANG;
+      if (!prefersKo) {
+        const en = await env.ASSETS.fetch(new Request(new URL('/en/', url), { method: 'HEAD' }));
+        if (en.ok) lang = 'en';
+      }
+      url.pathname = `/${lang}/`;
+      return Response.redirect(url.toString(), 302);
     }
 
     if (url.pathname.endsWith('/index.html')) {

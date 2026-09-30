@@ -32,9 +32,13 @@ npm run deploy    # 빌드 + Cloudflare 배포
 2. 앞부분(frontmatter)의 항목을 채우고 본문 작성
 3. `npm run dev`로 확인 → 커밋
 
-## 영어 공개
-1. `src/content/*/en/<같은 slug>.md` 로 번역본 추가 (번역본이 있는 글만 /en 에 공개됨)
-2. 충분히 쌓이면 `site.config.mjs` → `PUBLIC_LANGS: ['ko', 'en']`
+## 영어 버전
+- 공개 (2026-09-30): 청소법 34, 매거진 12(김장 글 제외), 추천 4, 상품 15, 체크리스트 PDF 8
+- 미리보기: `PREVIEW_ALL_LANGS=1 npm run dev` (또는 `PREVIEW_ALL_LANGS=1 npm run build` 후 `npx wrangler dev --var CANONICAL_HOST:`)
+- 공개: `site.config.mjs`의 `PUBLIC_LANGS`를 `['ko', 'en']`로 바꾸고 `npm run deploy`
+  - 공개하면 루트(/)로 들어온 방문자는 브라우저 언어에 따라 /ko/ 또는 /en/으로 이동, 모든 페이지에 hreflang·언어 전환 버튼이 생김
+  - 공개 후 Search Console에서 사이트맵 다시 제출
+- 새 글을 번역할 때는 `src/content/<종류>/en/<같은 slug>.md`. 영어는 요약 160자·설명 170자 이하, YAML 값 안에 `: `(콜론+공백)를 쓰지 않기
 
 ## 도메인
 - 연결됨: **https://malkkeumi.com** (`wrangler.jsonc`의 `routes`, `CANONICAL_HOST`). www·http·workers.dev는 모두 https://malkkeumi.com 같은 경로로 301

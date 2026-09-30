@@ -104,6 +104,29 @@ const otherLangs = PUBLIC_LANGS.filter((l) => l !== lang);
       margin-left: auto;
     }
   }
+  /* 좁은 화면: 1줄 로고·도구, 2줄 메뉴 (영어 메뉴와 언어 버튼이 한 줄에 안 들어감) */
+  @media (max-width: 560px) {
+    .hd {
+      height: auto;
+    }
+    .hd__in {
+      flex-wrap: wrap;
+      row-gap: 2px;
+      padding-top: 12px;
+      padding-bottom: 8px;
+    }
+    .tools {
+      margin-left: auto;
+    }
+    nav {
+      order: 3;
+      flex: 1 0 100%;
+    }
+    .nav {
+      margin-left: 0;
+      gap: 18px;
+    }
+  }
   .nav {
     display: flex;
     gap: clamp(14px, 2.4vw, 32px);
