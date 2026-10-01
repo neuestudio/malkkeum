@@ -61,7 +61,7 @@ export const ui = {
     magazineIntro: ['지금 이 계절에 필요한 청소,', '살림을 가볍게 만드는 이야기.'],
     picksIntro: ['무엇을 사야 할지 고민될 때,', '고르는 기준부터 알려드려요.'],
     storeIntro: ['말끔이 고른 청소 아이템.', '어디에 어떻게 쓰는지까지 함께 알려드려요.'],
-    productCategory: { cleaner: '세제·클리너', laundry: '세탁', bathroom: '욕실', tool: '청소 도구' },
+    productCategory: { cleaner: '세제·클리너', laundry: '세탁', bathroom: '욕실', tool: '청소 도구', appliance: '가전', home: '생활용품', pet: '반려동물' },
     howToUse: '이럴 때 써요',
     readPick: '관련 추천 글',
     kit: {
@@ -143,7 +143,7 @@ export const ui = {
     magazineIntro: ['The cleaning this season calls for,', 'and stories that make housework lighter.'],
     picksIntro: ['Not sure what to buy?', 'Start with how to choose.'],
     storeIntro: ['Cleaning items we picked,', 'with where and how to use them.'],
-    productCategory: { cleaner: 'Cleaners', laundry: 'Laundry', bathroom: 'Bathroom', tool: 'Tools' },
+    productCategory: { cleaner: 'Cleaners', laundry: 'Laundry', bathroom: 'Bathroom', tool: 'Tools', appliance: 'Appliances', home: 'Home', pet: 'Pets' },
     howToUse: 'Use it for',
     readPick: 'Related picks',
     kit: {

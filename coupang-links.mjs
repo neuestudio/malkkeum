@@ -37,4 +37,32 @@ export default {
   'paper-towel': '', // 두꺼운 키친타월
   'cooktop-scraper': '', // 상판 전용 스크래퍼
   'cotton-gloves': '', // 면장갑
+
+  // 가전
+  'ultrasonic-humidifier': '', // 초음파 가습기
+  'warm-mist-humidifier': '', // 가열식 가습기
+  'evaporative-humidifier': '', // 자연기화식 가습기
+  'dehumidifier': '', // 가정용 제습기
+  'bedding-vacuum': '', // 침구 청소기
+  'cordless-vacuum': '', // 무선 스틱 청소기
+  'handheld-vacuum': '', // 핸디 청소기
+
+  // 생활용품
+  'hygrometer': '', // 디지털 온습도계
+  'window-bubble-wrap': '', // 창문 단열 에어캡(뽁뽁이)
+  'condensation-tape': '', // 결로 방지 흡수 테이프
+  'draft-stopper': '', // 문풍지
+  'moisture-absorber': '', // 옷장·신발장 제습제
+  'hanging-dehumidifier': '', // 옷장 걸이형 제습제
+  'mattress-protector': '', // 방수 매트리스 커버
+
+  // 세탁세제
+  'liquid-detergent': '', // 액체 세탁세제(드럼 겸용)
+  'powder-detergent': '', // 가루 세탁세제
+  'capsule-detergent': '', // 캡슐 세탁세제
+
+  // 반려동물
+  'pet-hair-remover': '', // 반려동물 털 제거 브러시
+  'enzyme-cleaner': '', // 반려동물 효소 탈취제
+  'lint-roller': '', // 먼지 제거 테이프 롤러
 };

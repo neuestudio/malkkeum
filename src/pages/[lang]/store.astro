@@ -15,7 +15,8 @@ const s = t(lang);
 const guides = await entries('guides', lang);
 const picks = await entries('picks', lang);
 const products = (await entries('products', lang)).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
-const items = products.map((p) => ({
+// 이미지가 준비된 상품만 진열한다 (자리표시 색면이 스토어에 늘어서지 않게)
+const items = products.filter((p) => imageOf('products', slugOf(p.id), p.data.image).src).map((p) => ({
   ...p.data,
   id: slugOf(p.id),
   img: imageOf('products', slugOf(p.id), p.data.image),
@@ -26,7 +27,7 @@ const items = products.map((p) => ({
 const cats = (Object.keys(s.productCategory) as (keyof typeof s.productCategory)[])
   .map((c) => ({ c, n: items.filter((i) => i.category === c).length }))
   .filter((o) => o.n > 0);
-const tones = { cleaner: 'sand', laundry: 'sage', bathroom: 'stone', tool: 'clay' } as const;
+const tones = { cleaner: 'sand', laundry: 'sage', bathroom: 'stone', tool: 'clay', appliance: 'stone', home: 'sand', pet: 'clay' } as const;
 ---
 
 <Base lang={lang} title={s.nav.store} description={s.storeIntro.join(' ')}>

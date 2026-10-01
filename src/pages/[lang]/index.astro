@@ -19,7 +19,9 @@ const s = t(lang);
 
 const guides = await entries('guides', lang);
 const magazine = await entries('magazine', lang);
-const picks = await entries('picks', lang);
+const picks = (await entries('picks', lang)).sort(
+  (a, b) => Number(!!imageOf('picks', slugOf(b.id), b.data.heroImage).src) - Number(!!imageOf('picks', slugOf(a.id), a.data.heroImage).src),
+); // 대표 이미지가 있는 글을 먼저
 
 const hero = guides.find((g) => g.data.featured) ?? guides[0];
 const season = currentSeason();

@@ -105,7 +105,7 @@ const products = defineCollection({
   schema: z.object({
     name: z.string(),
     short: z.string().optional(), // 버튼용 짧은 이름 (예: 분무기 → "분무기 보러 가기")
-    category: z.enum(['cleaner', 'laundry', 'bathroom', 'tool']),
+    category: z.enum(['cleaner', 'laundry', 'bathroom', 'tool', 'appliance', 'home', 'pet']),
     type: z.string(), // 예: 산소계 · 가루
     point: z.string().min(15), // 스토어 카드에 나오는 한 줄 설명
     url: z.string().url().optional(), // 제휴 링크. 비어 있으면 구매 버튼이 나오지 않는다

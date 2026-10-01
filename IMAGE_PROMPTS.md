@@ -1,6 +1,6 @@
 # 말끔 AI 이미지 프롬프트
 
-총 **79장** (청소법 34 · 매거진 13 · 추천 4 · 스토어 상품 28)
+총 **107장** (청소법 35 · 매거진 13 · 추천 11 · 스토어 상품 48)
 
 ## 작업 순서
 
@@ -101,6 +101,13 @@ Minimal product still life photograph on a warm cream linen surface against an o
 | `basic-cleaners` | 기본 세제 3종 | Three clear airtight canisters of white powder lined up on a kitchen shelf, simple blank paper tags, warm daylight |
 | `starter-kit` | 청소 도구 키트 | A flat lay of basic cleaning tools on a cream surface: microfiber cloths in muted colors, a spray bottle, small brushes, a squeegee and rubber gloves, neatly arranged |
 | `mold-remover` | 곰팡이 제거제 | A plain unlabeled gel tube and a spray bottle on a bathroom shelf beside white tiles, rubber gloves draped over the edge |
+| `humidifier-buying-guide` | 가습기 고르는 법 🆕 | A minimal white humidifier releasing a soft mist on a bedside table in a calm bedroom at dusk, warm lamp light, a small hygrometer beside it |
+| `condensation-products` | 결로 방지 용품 🆕 | A window pane with clear insulating bubble wrap film applied to the lower half, a roll of absorbent tape on the sill, cold blue morning light outside and warm interior |
+| `laundry-detergent-guide` | 세탁세제 고르는 법 🆕 | Three unlabeled detergent containers, a liquid bottle, a powder box with a scoop and a small jar of capsules, arranged on top of a front-loading washer |
+| `bedding-vacuum-guide` | 침구청소기 🆕 | A neatly made bed with a white duvet in soft morning light, a compact handheld bedding vacuum resting on the mattress edge |
+| `dehumidifier-vs-absorber` | 제습기 vs 제습제 🆕 | A compact white dehumidifier in the corner of a bright room next to an open wardrobe with a moisture absorber container on the floor |
+| `pet-cleaning-supplies` | 반려동물 청소용품 🆕 | A calm cat lying on a beige sofa, a rubber pet hair brush and a lint roller on the cushion beside it, no human faces |
+| `cordless-vacuum-guide` | 무선청소기 고르는 법 🆕 | A slim cordless stick vacuum leaning against a light wall on a wooden floor in a minimal living room, a small rug in the foreground |
 
 ## 스토어 상품 (`images-src/products/`) — 스타일 B
 
@@ -136,4 +143,24 @@ Minimal product still life photograph on a warm cream linen surface against an o
 | `wool-detergent` 🆕 | A plain soft-white bottle of gentle liquid detergent next to folded knitwear |
 | `laundry-net` 🆕 | A large folded white mesh laundry bag with a zipper |
 | `cotton-gloves` 🆕 | A pair of plain white cotton work gloves laid flat |
+| `ultrasonic-humidifier` 🆕 | A small round white ultrasonic humidifier with a gentle mist |
+| `warm-mist-humidifier` 🆕 | A compact white warm-mist humidifier with a visible steam outlet |
+| `evaporative-humidifier` 🆕 | A tall white evaporative humidifier with a front grille |
+| `hygrometer` 🆕 | A small square digital thermo-hygrometer with a blank display |
+| `window-bubble-wrap` 🆕 | A neatly rolled sheet of clear window insulation bubble wrap |
+| `condensation-tape` 🆕 | A roll of white absorbent window condensation tape |
+| `draft-stopper` 🆕 | A roll of gray foam weather-stripping tape |
+| `moisture-absorber` 🆕 | A plain white plastic moisture absorber container with clear lid |
+| `hanging-dehumidifier` 🆕 | A plain white hanging moisture absorber pouch on a wooden hanger |
+| `dehumidifier` 🆕 | A compact white home dehumidifier with a front water tank |
+| `liquid-detergent` 🆕 | A plain white liquid laundry detergent bottle with a measuring cap |
+| `powder-detergent` 🆕 | A plain kraft box of powder laundry detergent with a scoop |
+| `capsule-detergent` 🆕 | A clear jar of laundry detergent capsules with a lid |
+| `bedding-vacuum` 🆕 | A compact white bedding vacuum cleaner with a flat head |
+| `mattress-protector` 🆕 | A folded white quilted waterproof mattress protector |
+| `pet-hair-remover` 🆕 | A sage green rubber pet hair removal brush |
+| `enzyme-cleaner` 🆕 | A plain white trigger spray bottle with a small paw-shaped blank tag |
+| `lint-roller` 🆕 | A lint roller with a wooden handle and a white sticky roll |
+| `cordless-vacuum` 🆕 | A slim white cordless stick vacuum standing upright |
+| `handheld-vacuum` 🆕 | A small white handheld vacuum lying on its side |
 

@@ -116,6 +116,10 @@ ol {
   gap: 20px;
   align-items: start;
 }
+/* 넓은 표가 칸 너비를 밀어내지 않게 (표는 안에서 가로 스크롤) */
+.split > * {
+  min-width: 0;
+}
 @media (min-width: 900px) {
   .split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
