@@ -29,6 +29,25 @@ tips:
   - 2주에 한 번 날개를 닫고 청소기로 빨아들이기만 해도 대청소 주기가 훨씬 길어져요.
   - 주방 가까운 블라인드는 기름 먼지가 붙어 끈적해요. 세제 물을 조금 진하게 쓰세요.
   - 롤 블라인드는 끝까지 내린 상태에서 청소기 브러시로 위에서 아래로 빨아들이고, 얼룩만 중성세제로 톡톡 두드려 닦아요.
+kit:
+  name: "블라인드 청소"
+  intro: "날개를 한 번에 훑는 장갑과 먼지를 빼는 도구를 골랐어요."
+  core:
+    - id: cotton-gloves
+      use: "고무장갑 위에 끼고 날개를 손가락으로 훑어 닦아요."
+    - id: handheld-vacuum-brush
+      use: "날개를 닫고 위에서 아래로 먼지를 빨아들여요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "훑어 닦기"
+      id: cotton-gloves
+    - role: "안쪽 장갑"
+      id: rubber-gloves
+    - role: "세제"
+      id: wool-detergent
+    - role: "마무리"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [curtain, window-rail, window-screen]
 publishedAt: 2026-09-30

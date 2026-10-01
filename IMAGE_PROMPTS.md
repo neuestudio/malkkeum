@@ -1,6 +1,6 @@
 # 말끔 AI 이미지 프롬프트
 
-총 **66장** (청소법 34 · 매거진 13 · 추천 4 · 스토어 상품 15)
+총 **79장** (청소법 34 · 매거진 13 · 추천 4 · 스토어 상품 28)
 
 ## 작업 순서
 
@@ -73,6 +73,7 @@ Minimal product still life photograph on a warm cream linen surface against an o
 | `kitchen-wall-grease` | 주방 벽 타일 🆕 | Clean glossy white subway tiles behind a stove, a spray bottle and a sponge on the counter, warm light reflecting on the tiles |
 | `blinds` | 블라인드 🆕 | Light wooden-tone horizontal window blinds half open with sunlight streaming through, a white cotton glove resting on the window sill |
 | `rug` | 러그 🆕 | A textured cream wool rug in a sunlit living room, a vacuum cleaner brush head resting at the edge, calm and minimal |
+| `laundry-smell` | 빨래 쉰내 해결 🆕 | Freshly washed white towels hanging to dry on a rack by a sunny balcony window, a front-loading washer with its door open in the background, calm and airy |
 
 ## 매거진 (`images-src/magazine/`) — 스타일 A
 
@@ -122,3 +123,17 @@ Minimal product still life photograph on a warm cream linen surface against an o
 | `grout-brush` | A narrow angled grout brush with stiff bristles and a wooden handle |
 | `rubber-gloves` | A pair of long sage green rubber gloves folded neatly |
 | `handheld-vacuum-brush` | Two vacuum cleaner attachments, a crevice nozzle and a soft brush head, side by side |
+| `soft-sponge` 🆕 | A pair of soft cream-colored cleaning sponges stacked neatly |
+| `dish-soap` 🆕 | A plain clear glass pump bottle of pale dish soap, no label |
+| `paper-towel` 🆕 | A thick roll of plain white paper towels standing upright |
+| `toilet-brush` 🆕 | A minimal white toilet brush in a simple cylindrical holder |
+| `drain-hair-remover` 🆕 | Two slim flexible plastic drain cleaning sticks with small barbs, lying side by side |
+| `cooktop-scraper` 🆕 | A small flat cooktop scraper with a wooden handle and metal blade |
+| `leather-conditioner` 🆕 | A small plain amber glass jar of cream leather conditioner with a folded cloth |
+| `dishwasher-cleaner` 🆕 | A plain white pouch of dishwasher cleaning tablets with a few tablets beside it, no text |
+| `mesh-skimmer` 🆕 | A fine mesh skimmer with a long wooden handle |
+| `ethanol` 🆕 | A plain white spray bottle with a small blank label area, clean and clinical |
+| `wool-detergent` 🆕 | A plain soft-white bottle of gentle liquid detergent next to folded knitwear |
+| `laundry-net` 🆕 | A large folded white mesh laundry bag with a zipper |
+| `cotton-gloves` 🆕 | A pair of plain white cotton work gloves laid flat |
+

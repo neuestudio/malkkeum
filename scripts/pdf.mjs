@@ -35,7 +35,16 @@ const browser = await chromium.launch({ executablePath: CHROME });
 mkdirSync(join(DIST, 'pdf'), { recursive: true });
 for (const { lang, slug } of sheets) {
   const page = await browser.newPage();
-  await page.goto(`${base}/${lang}/sheets/${slug}/`, { waitUntil: 'networkidle' });
+  // 웹폰트(CDN)를 불러오는 동안 네트워크가 느리면 시간 초과가 날 수 있어 한 번 더 시도한다
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await page.goto(`${base}/${lang}/sheets/${slug}/`, { waitUntil: 'networkidle', timeout: 60000 });
+      break;
+    } catch (e) {
+      if (attempt >= 2) throw e;
+      console.warn(`  PDF ${lang}/${slug} 페이지 로딩 재시도`);
+    }
+  }
   await page.evaluate(() => document.fonts.ready);
   const scale = await page.evaluate(() => window.fitSheet());
   const out = join(DIST, 'pdf', `${lang}-${slug}.pdf`);

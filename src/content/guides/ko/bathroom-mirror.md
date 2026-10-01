@@ -27,6 +27,29 @@ tips:
   - 샤워 후 스퀴지로 거울 물기를 한 번만 밀어도 물때가 거의 생기지 않아요.
   - 주방세제를 아주 조금 묻힌 마른 행주로 거울을 닦아 두면 김 서림이 줄어요.
   - 수도꼭지 물때도 같은 구연산수로 함께 닦으면 한 번에 끝나요.
+kit:
+  name: "욕실 거울 청소"
+  intro: "물때를 녹이는 구연산과 얼룩 없이 마무리하는 도구를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "하얀 물때 반점을 녹여요."
+    - id: spray-bottle
+      use: "구연산수를 거울 가운데에 고르게 뿌려요."
+    - id: microfiber-cloth
+      use: "마지막에 한 방향으로 닦아 얼룩 없이 광을 내요."
+  all:
+    - role: "물때 제거"
+      id: citric-acid
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "팩"
+      id: paper-towel
+    - role: "닦기"
+      id: soft-sponge
+    - role: "광내기"
+      id: microfiber-cloth
+    - role: "예방"
+      id: squeegee
 picks: [basic-cleaners]
 related: [faucet, shower-head, silicone-mold]
 publishedAt: 2026-09-30

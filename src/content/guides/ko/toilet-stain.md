@@ -27,6 +27,27 @@ tips:
   - 일주일에 한 번 구연산수를 뿌리고 솔질만 해도 요석이 두껍게 쌓이지 않아요.
   - 남성이 서서 볼일을 보면 변기 테두리와 바닥에 튄 소변이 냄새의 원인이 돼요. 앉아서 보면 청소가 훨씬 쉬워져요.
   - 물탱크 뚜껑 안쪽도 1년에 한 번 확인해 보세요. 물때와 녹이 쌓여 있는 경우가 많아요.
+kit:
+  name: "변기 요석 청소"
+  intro: "누런 요석을 불리는 구연산과 테두리 안쪽까지 닿는 도구를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "알칼리성 요석을 녹여요."
+    - id: toilet-brush
+      use: "휘어진 솔로 테두리 안쪽까지 문질러요."
+    - id: paper-towel
+      use: "구연산수를 적셔 붙여 두고 1시간 불려요."
+  all:
+    - role: "요석 제거"
+      id: citric-acid
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "팩"
+      id: paper-towel
+    - role: "문지르기"
+      id: toilet-brush
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [basic-cleaners]
 related: [bathroom-mirror, tile-grout, silicone-mold]
 publishedAt: 2026-09-30

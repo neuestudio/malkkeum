@@ -29,6 +29,25 @@ tips:
   - 기름이 많은 음식을 조리한 뒤에는 바스켓 아래 트레이에 고인 기름을 바로 버리세요. 굳으면 냄새와 연기가 나요.
   - 요리 전 바스켓에 전용 종이호일이나 실리콘 용기를 깔면 청소가 훨씬 쉬워요.
   - 조리할 때 흰 연기가 난다면 열선에 붙은 기름이 타는 거예요. 내부 청소를 할 때예요.
+kit:
+  name: "에어프라이어 청소"
+  intro: "기름때를 불리는 세제와 코팅을 지키는 스펀지를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "뜨거운 물에 풀어 바스켓 기름때를 불려요."
+    - id: soft-sponge
+      use: "코팅이 벗겨지지 않게 부드럽게 닦아요."
+    - id: detail-brush
+      use: "트레이 구멍과 열선 주변을 가볍게 닦아요."
+  all:
+    - role: "불림"
+      id: baking-soda
+    - role: "세척"
+      id: dish-soap
+    - role: "닦기"
+      id: soft-sponge
+    - role: "열선"
+      id: detail-brush
 picks: [basic-cleaners]
 related: [microwave, range-hood, burnt-pot]
 publishedAt: 2026-09-30

@@ -29,6 +29,23 @@ tips:
   - 칼자국이 깊게 패여 거뭇한 색이 빠지지 않으면 세균이 숨기 쉬우니 교체할 때예요.
   - 생선을 썬 도마에 밴 비린내는 쌀뜨물이나 식초 희석물로 닦으면 잘 빠져요.
   - 도마를 쓰기 전에 찬물로 한 번 적셔 두면 재료의 색과 냄새가 덜 배요.
+kit:
+  name: "도마 살균"
+  intro: "얼룩과 냄새를 빼는 산소계 표백제와 칼자국 사이를 닦는 스펀지를 골랐어요."
+  core:
+    - id: percarbonate
+      use: "따뜻한 물에 녹여 플라스틱 도마의 붉은 얼룩을 빼고 살균해요."
+    - id: soft-sponge
+      use: "칼자국 결을 따라 찌꺼기를 닦아내요."
+  all:
+    - role: "살균·얼룩"
+      id: percarbonate
+    - role: "세척"
+      id: dish-soap
+    - role: "닦기"
+      id: soft-sponge
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [basic-cleaners]
 related: [sink-drain, burnt-pot, microwave]
 publishedAt: 2026-09-30

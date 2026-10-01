@@ -29,6 +29,27 @@ tips:
   - 샤워를 마치고 스퀴지로 유리를 한 번만 밀어도 물때가 거의 생기지 않아요. 스퀴지를 유리문 옆에 걸어 두세요.
   - 깨끗하게 닦은 뒤 유리용 발수 코팅제를 바르면 물방울이 굴러떨어져 청소 주기가 길어져요.
   - 몇 번을 닦아도 남는 뿌연 자국은 유리 표면이 미네랄에 부식된 것일 수 있어요. 이 경우 세제로는 지워지지 않아요.
+kit:
+  name: "샤워부스 청소"
+  intro: "물때를 녹이는 구연산과 청소 후 물때 재발을 줄이는 도구를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "샤워부스의 하얀 미네랄 물때를 녹일 때 사용해요."
+    - id: spray-bottle
+      use: "구연산수를 유리에 고르게 뿌릴 수 있어요."
+    - id: squeegee
+      use: "샤워 후 30초 관리용. 물때가 다시 생기는 것을 줄여줘요."
+  all:
+    - role: "물때 제거"
+      id: citric-acid
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "닦기"
+      id: soft-sponge
+    - role: "마무리"
+      id: squeegee
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: [basic-cleaners, starter-kit]
 related: [bathroom-mirror, bathtub, silicone-mold]
 publishedAt: 2026-09-30

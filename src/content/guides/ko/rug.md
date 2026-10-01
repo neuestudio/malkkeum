@@ -29,6 +29,25 @@ tips:
   - 계절마다 러그를 뒤집어 햇볕 좋은 날 베란다에 널어 두면 습기와 냄새가 빠져요.
   - 러그 아래에 미끄럼 방지 패드를 깔면 바닥과 러그 사이에 공기가 통해 곰팡이가 덜 생겨요.
   - 세탁 가능한 러그는 라벨을 확인하고, 세탁기 용량을 넘는다면 대형 세탁 코인 빨래방을 이용하세요.
+kit:
+  name: "러그 청소"
+  intro: "먼지와 털을 빼고, 얼룩과 냄새를 잡는 준비물을 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "결 사이에 박힌 먼지를 빨아들여요."
+    - id: fabric-stain-remover
+      use: "음료 얼룩을 두드려 빼요."
+    - id: baking-soda
+      use: "뿌려 두었다가 빨아들이면 냄새가 빠져요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "털 모으기"
+      id: rubber-gloves
+    - role: "얼룩 제거"
+      id: fabric-stain-remover
+    - role: "탈취"
+      id: baking-soda
 picks: []
 related: [fabric-sofa, mattress, curtain]
 publishedAt: 2026-09-30

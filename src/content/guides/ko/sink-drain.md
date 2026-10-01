@@ -29,6 +29,27 @@ tips:
   - 설거지를 마칠 때마다 뜨거운 물을 30초 흘려보내면 기름이 배관에 굳지 않아요.
   - 기름이 많은 프라이팬은 키친타월로 먼저 닦아낸 뒤 설거지하세요. 배수구 냄새가 확 줄어요.
   - 싱크대 아래 배관이 U자로 휘어 있는지 확인하세요. 여기 고인 물이 하수구 냄새를 막아 줘요.
+kit:
+  name: "싱크대 배수구 청소"
+  intro: "기름때와 냄새를 잡는 세제와 거름망 틈을 닦는 도구를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "배수구 벽의 기름때를 불리고 냄새를 흡수해요."
+    - id: detail-brush
+      use: "거름망 구멍 사이 미끈한 막을 문질러요."
+    - id: rubber-gloves
+      use: "음식물 찌꺼기를 만질 때 손을 보호해요."
+  all:
+    - role: "냄새·기름때"
+      id: baking-soda
+    - role: "거품 세척"
+      id: citric-acid
+    - role: "거름망 닦기"
+      id: detail-brush
+    - role: "세척"
+      id: dish-soap
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [basic-cleaners]
 related: [cutting-board, range-hood, burnt-pot]
 publishedAt: 2026-09-30

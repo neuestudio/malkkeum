@@ -29,6 +29,25 @@ tips:
   - 머리카락이 가장 큰 원인이에요. 세수하거나 머리를 감은 뒤 거름망에 걸린 머리카락을 바로 버리는 습관이 가장 좋아요.
   - 마개를 뺀 김에 마개 고무의 물때도 칫솔로 닦아 주세요. 냄새의 원인이 되기도 해요.
   - 이 방법으로 물이 잘 빠지지 않는다면 배관 깊은 곳이 막힌 거예요. 관통기나 전문 업체를 이용하세요.
+kit:
+  name: "세면대 배수구 청소"
+  intro: "엉킨 머리카락을 꺼내는 도구와 냄새를 잡는 세제를 골랐어요."
+  core:
+    - id: drain-hair-remover
+      use: "배수구 속 엉킨 머리카락을 걸어서 끌어올려요."
+    - id: baking-soda
+      use: "배수관 벽의 비누 찌꺼기를 불리고 냄새를 잡아요."
+  all:
+    - role: "머리카락"
+      id: drain-hair-remover
+    - role: "냄새"
+      id: baking-soda
+    - role: "거품 세척"
+      id: citric-acid
+    - role: "넘침 방지 구멍"
+      id: detail-brush
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [basic-cleaners, starter-kit]
 related: [sink-drain, faucet, bathtub]
 publishedAt: 2026-09-30

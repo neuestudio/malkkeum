@@ -29,6 +29,27 @@ tips:
   - 샤워 후 스퀴지로 실리콘 줄의 물기를 밀어내고 문을 열어 두기만 해도 재발이 확 줄어요.
   - 방치 시간은 늘릴수록 좋은 게 아니에요. 제품 표기 시간을 지키고 여러 번 반복하는 게 실리콘에 덜 무리가 가요.
   - 곰팡이 제거 후 실리콘이 완전히 마른 다음 날, 욕실용 곰팡이 방지 코팅제를 바르면 효과가 오래가요.
+kit:
+  name: "실리콘 곰팡이 제거"
+  intro: "흘러내리지 않는 제거제와 안전 장비를 골랐어요."
+  core:
+    - id: mold-gel
+      use: "실리콘 줄에 붙어 곰팡이 속까지 스며들어요."
+    - id: rubber-gloves
+      use: "염소계 제거제로부터 손과 팔을 보호해요."
+    - id: squeegee
+      use: "청소 후 매일 물기를 밀어 재발을 막아요."
+  all:
+    - role: "곰팡이 제거"
+      id: mold-gel
+    - role: "넓은 면"
+      id: mold-spray
+    - role: "덮기"
+      id: paper-towel
+    - role: "손 보호"
+      id: rubber-gloves
+    - role: "예방"
+      id: squeegee
 picks: [mold-remover, starter-kit]
 related: [tile-grout, bathroom-mirror, toilet-stain]
 publishedAt: 2026-09-30

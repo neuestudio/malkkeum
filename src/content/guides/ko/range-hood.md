@@ -31,6 +31,27 @@ tips:
   - 요리 직후 후드 필터가 아직 따뜻할 때 주방세제를 묻힌 행주로 겉면을 닦아 두면 한 달 청소가 반으로 줄어요.
   - 후드는 요리 시작 전에 켜고, 요리가 끝나고도 5분 더 켜 두면 기름 연기가 주방에 덜 퍼져요.
   - 교체형 부직포 필터를 덧대 쓰는 후드라면 두세 달마다 부직포만 바꿔도 돼요.
+kit:
+  name: "후드 필터 기름때 청소"
+  intro: "뜨거운 물에 불리는 세제와 필터 망을 문지르는 도구를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "뜨거운 물에 풀어 스테인리스 필터의 기름때를 불려요."
+    - id: detail-brush
+      use: "필터 망과 삼발이의 기름때를 문질러요."
+    - id: rubber-gloves
+      use: "뜨거운 물과 기름때에서 손을 보호해요."
+  all:
+    - role: "불림"
+      id: baking-soda
+    - role: "세척"
+      id: dish-soap
+    - role: "문지르기"
+      id: detail-brush
+    - role: "손 보호"
+      id: rubber-gloves
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: [basic-cleaners]
 related: [burnt-pot, sink-drain, microwave]
 publishedAt: 2026-09-30

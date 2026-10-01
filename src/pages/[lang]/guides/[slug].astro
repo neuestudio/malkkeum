@@ -11,6 +11,9 @@ import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../..
 import { formatDate, path, t, type Lang } from '../../../lib/i18n';
 import { toneOf } from '../../../lib/tone';
 import { imageOf } from '../../../lib/images';
+import { productUrl } from '../../../lib/links';
+import KitCore, { type KitItem } from '../../../components/KitCore.astro';
+import KitList from '../../../components/KitList.astro';
 
 export const getStaticPaths = () => detailPaths('guides');
 
@@ -25,6 +28,17 @@ const hero = imageOf('guides', slug, d.heroImage);
 const allGuides = await entries('guides', lang);
 const related = pickBySlugs(allGuides, d.related, entry.id).slice(0, 3);
 const usedPicks = pickBySlugs(await entries('picks', lang), d.picks, entry.id).slice(0, 3);
+
+// 쿠팡 준비물 블록은 한국어 글에만 (영어는 기존 "이 청소에 쓴 아이템")
+const kit = lang === 'ko' ? d.kit : undefined;
+const products = await entries('products', lang);
+const toItem = (id: string): KitItem => {
+  const p = pickBySlugs(products, [id], entry.id)[0];
+  return { id, name: p.data.name, short: p.data.short ?? p.data.name, url: productUrl(lang, id, p.data.url), img: imageOf('products', id, p.data.image) };
+};
+const kitCore = kit ? kit.core.map((c) => ({ ...toItem(c.id), use: c.use })) : [];
+const kitAll = kit ? kit.all.map((a) => ({ ...toItem(a.id), role: a.role })) : [];
+const hasAffiliate = [...kitCore, ...kitAll].some((i) => i.url);
 const alternates = Object.fromEntries((await translationsOf('guides', slug)).map((l) => [l, path(l, `guides/${slug}`)]));
 
 const url = new URL(path(lang, `guides/${slug}`), Astro.site).toString();
@@ -52,7 +66,8 @@ const jsonLd = [
     ],
   },
 ];
-const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 한 칸
+// 광고는 단계 설명 중간(3단계 뒤)에. 준비물의 구매 버튼과 붙어 있지 않게 한다
+const midAd = d.steps.length >= 5 ? 3 : 0;
 ---
 
 <Base lang={lang} title={d.title} description={d.description} image={hero.src} type="article" alternates={alternates} jsonLd={jsonLd}>
@@ -64,6 +79,7 @@ const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 
       <div>
         <h1 class="title-xl">{d.title}</h1>
         <p class="g-sum dim">{d.summary}</p>
+        {hasAffiliate && <div style="margin-top:14px"><Disclosure lang={lang} /></div>}
       </div>
     </header>
 
@@ -84,8 +100,14 @@ const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 
         <div><h3 class="prep__h">{s.sections.tools}</h3><ul>{d.tools.map((m) => <li>{m}</li>)}</ul></div>
       </div>
     </section>
-
-    <AdSlot lang={lang} />
+    {
+      kit && (
+        <div class="split">
+          <div />
+          <KitCore lang={lang} intro={kit.intro} items={kitCore} />
+        </div>
+      )
+    }
 
     <section class="g-sec split">
       <h2 class="label">{s.sections.steps}</h2>
@@ -115,6 +137,7 @@ const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 
         }
       </ol>
     </section>
+    {midAd === 0 && <AdSlot lang={lang} />}
 
     <section class="g-sec split">
       <h2 class="label">{s.sections.cautions}</h2>
@@ -134,8 +157,10 @@ const midAd = d.steps.length >= 6 ? 3 : 0; // 단계가 길면 중간에 광고 
     <p class="g-date split"><span></span><span class="meta">{s.published} {formatDate(d.publishedAt, lang)}{d.updatedAt && ` · ${s.updated} ${formatDate(d.updatedAt, lang)}`}</span></p>
   </article>
 
+  {kit && <KitList lang={lang} name={kit.name} items={kitAll} picks={usedPicks} />}
+
   {
-    usedPicks.length > 0 && (
+    !kit && usedPicks.length > 0 && (
       <section class="wrap section split">
         <h2 class="label">{s.sections.usedPicks}</h2>
         <div>

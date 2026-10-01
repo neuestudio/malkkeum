@@ -29,6 +29,25 @@ tips:
   - 베이킹소다나 말린 원두를 뚜껑 연 통에 담아 두면 냄새를 흡수해요. 한두 달마다 바꿔 주세요.
   - 냉장고는 60~70%만 채워야 찬 공기가 잘 돌아 음식이 덜 상하고 냄새도 덜 나요.
   - 일주일에 한 번, 장 보기 전날 유통기한만 정리해도 대청소 횟수가 줄어요.
+kit:
+  name: "냉장고 청소"
+  intro: "냄새를 잡고 살균하는 준비물과 마른 마무리용 행주를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "따뜻한 물에 풀어 내부 벽을 닦고 냄새도 흡수해요."
+    - id: ethanol
+      use: "마지막에 살균하고 물기를 빨리 날려요."
+    - id: microfiber-cloth
+      use: "유리 선반과 벽을 얼룩 없이 닦아요."
+  all:
+    - role: "닦기"
+      id: baking-soda
+    - role: "살균"
+      id: ethanol
+    - role: "패킹"
+      id: detail-brush
+    - role: "마무리"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [microwave, cutting-board, sink-drain]
 publishedAt: 2026-09-30

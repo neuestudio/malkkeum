@@ -32,8 +32,29 @@ tips:
   - 세제를 권장량보다 많이 넣으면 녹지 않은 세제가 찌꺼기와 곰팡이의 먹이가 돼요. 세제는 오히려 적게 넣으세요.
   - 세탁이 끝나면 바로 빨래를 꺼내고 문을 열어 두는 습관이 가장 좋은 통세척이에요.
   - 휴대폰 달력에 매달 1일 '통세척' 알림을 걸어 두면 잊지 않아요.
+kit:
+  name: "드럼세탁기 통세척"
+  intro: "통세척 클리너와 패킹·세제함 구석을 닦는 도구를 골랐어요."
+  core:
+    - id: oxygen-tub-cleaner
+      use: "곰팡이와 세제 찌꺼기를 불려서 떼어내요. 처음이라면 이것부터."
+    - id: detail-brush
+      use: "고무 패킹 틈과 세제함 구석의 물때를 문질러요."
+    - id: rubber-gloves
+      use: "세제와 곰팡이를 만질 때 손을 보호해요."
+  all:
+    - role: "통세척"
+      id: oxygen-tub-cleaner
+    - role: "패킹·세제함"
+      id: detail-brush
+    - role: "패킹 닦기"
+      id: paper-towel
+    - role: "손 보호"
+      id: rubber-gloves
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: [washer-tub-cleaner]
-related: [window-screen, microwave]
+related: [laundry-smell, top-loader, microwave]
 publishedAt: 2026-09-28
 ---
 

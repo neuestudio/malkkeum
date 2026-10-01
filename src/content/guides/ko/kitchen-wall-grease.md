@@ -29,6 +29,27 @@ tips:
   - 요리가 끝나고 벽이 아직 따뜻할 때 젖은 행주로 한 번 닦아 주면 기름이 굳지 않아요.
   - 후드를 요리 시작 전부터 켜 두면 벽에 튀는 기름이 줄어요.
   - 가스레인지 옆 벽에 투명한 기름 방지 시트를 붙여 두면 시트만 닦거나 갈면 돼요.
+kit:
+  name: "주방 벽 기름때 청소"
+  intro: "기름때를 불리는 세정액 재료와 팩·닦기 도구를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "따뜻한 물에 풀어 끈적한 기름때를 녹여요."
+    - id: spray-bottle
+      use: "세정액을 벽 타일에 고르게 뿌려요."
+    - id: paper-towel
+      use: "세정액을 적셔 붙여 두고 10분 불려요."
+  all:
+    - role: "기름때"
+      id: baking-soda
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "팩"
+      id: paper-towel
+    - role: "닦기"
+      id: soft-sponge
+    - role: "줄눈"
+      id: detail-brush
 picks: [basic-cleaners]
 related: [range-hood, induction, tile-grout]
 publishedAt: 2026-09-30

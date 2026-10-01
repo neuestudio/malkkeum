@@ -29,6 +29,23 @@ tips:
   - 요리가 끝나고 상판이 미지근할 때 젖은 행주로 한 번 닦으면 눌어붙기 전에 대부분 지워져요.
   - 냄비 바닥이 젖은 채로 올리면 하얀 물 얼룩이 생겨요. 바닥 물기를 닦고 올리세요.
   - 스크래퍼는 상판 전용 제품을 쓰세요. 일반 커터 칼은 각도가 맞지 않아 위험해요.
+kit:
+  name: "인덕션 상판 청소"
+  intro: "눌어붙은 자국을 긁힘 없이 걷어내는 도구와 마무리 행주를 골랐어요."
+  core:
+    - id: cooktop-scraper
+      use: "30도로 눕혀 밀면 눌어붙은 자국이 걷혀요."
+    - id: microfiber-cloth
+      use: "물 얼룩 없이 광을 내요."
+  all:
+    - role: "눌어붙은 자국"
+      id: cooktop-scraper
+    - role: "세척"
+      id: dish-soap
+    - role: "닦기"
+      id: soft-sponge
+    - role: "광내기"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [range-hood, kitchen-wall-grease, burnt-pot]
 publishedAt: 2026-09-30

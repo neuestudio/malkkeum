@@ -31,6 +31,27 @@ tips:
   - 방충망 청소와 같은 날 하면 방충망에서 떨어진 먼지까지 한 번에 치울 수 있어요.
   - 레일 청소 후 마스킹 테이프를 레일 바닥에 붙여 두면 다음 청소 때 테이프만 떼면 돼요.
   - 우유갑을 잘라 레일 폭에 맞춰 넣고 긁어내면 굳은 흙도 쉽게 모여요.
+kit:
+  name: "창틀 레일 청소"
+  intro: "먼지를 먼저 빼는 도구와 구석까지 닿는 브러시를 골랐어요."
+  core:
+    - id: detail-brush
+      use: "레일 구석의 먼지와 모래를 한쪽으로 쓸어 모아요."
+    - id: handheld-vacuum-brush
+      use: "모은 먼지를 틈새 노즐로 빨아들여요."
+    - id: spray-bottle
+      use: "세정액을 레일에 뿌려 불려요."
+  all:
+    - role: "먼지 쓸기"
+      id: detail-brush
+    - role: "흡입"
+      id: handheld-vacuum-brush
+    - role: "세정액"
+      id: dish-soap
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [window-screen, curtain, shoe-cabinet]
 publishedAt: 2026-09-30

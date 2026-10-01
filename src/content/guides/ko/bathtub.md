@@ -27,6 +27,25 @@ tips:
   - 목욕 후 물을 뺄 때 샤워기로 욕조 벽을 한 번 헹구면 때 띠가 거의 생기지 않아요.
   - 입욕제나 오일을 쓴 날은 바로 세제로 한 번 닦아 주세요. 기름막이 남으면 미끄럽고 때가 잘 붙어요.
   - 욕조 옆 실리콘의 검은 점은 곰팡이예요. 따로 제거해 주세요.
+kit:
+  name: "욕조 청소"
+  intro: "때 띠와 물때를 순서대로 지우는 준비물을 골랐어요."
+  core:
+    - id: soft-sponge
+      use: "아크릴 욕조를 흠집 없이 닦아요."
+    - id: citric-acid
+      use: "세제로 안 지워지는 하얀 물때를 녹여요."
+  all:
+    - role: "때 띠"
+      id: dish-soap
+    - role: "물때"
+      id: citric-acid
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "닦기"
+      id: soft-sponge
+    - role: "물기 제거"
+      id: squeegee
 picks: [basic-cleaners]
 related: [shower-glass, silicone-mold, washbasin-drain]
 publishedAt: 2026-09-30

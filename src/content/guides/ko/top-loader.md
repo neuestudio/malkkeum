@@ -32,8 +32,29 @@ tips:
   - 처음 통세척하는 세탁기라면 찌꺼기가 엄청 나와요. 한 번에 끝내려 하지 말고 일주일 간격으로 두 번 해 주세요.
   - 빨래가 끝나면 바로 꺼내고 뚜껑을 열어 두세요. 통세척 주기를 두 배로 늘릴 수 있어요.
   - 세제와 섬유유연제를 권장량보다 많이 넣으면 녹지 않은 찌꺼기가 곰팡이의 먹이가 돼요.
+kit:
+  name: "통돌이 세탁기 통세척"
+  intro: "따뜻한 물에 불리는 산소계 클리너와 떠오른 찌꺼기를 건지는 도구를 골랐어요."
+  core:
+    - id: oxygen-tub-cleaner
+      use: "1봉이 1회분이라 계량 없이 따뜻한 물에 녹여 세탁조를 불려요."
+    - id: mesh-skimmer
+      use: "떠오른 찌꺼기를 건져 배수구 막힘을 막아요."
+    - id: rubber-gloves
+      use: "과탄산소다를 다룰 때 손을 보호해요."
+  all:
+    - role: "통세척"
+      id: oxygen-tub-cleaner
+    - role: "대용량 대안"
+      id: percarbonate
+    - role: "찌꺼기 건지기"
+      id: mesh-skimmer
+    - role: "거름망 세척"
+      id: detail-brush
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [washer-tub-cleaner]
-related: [drum-washer, window-screen, mattress]
+related: [laundry-smell, drum-washer, mattress]
 publishedAt: 2026-09-30
 ---
 

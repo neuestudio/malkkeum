@@ -29,6 +29,19 @@ tips:
   - 쓰고 남은 물을 포트에 두지 말고 매번 비워 두면 석회가 훨씬 덜 쌓여요.
   - 정수기 물이나 끓여서 식힌 물로 차를 우리는 집은 석회가 덜 생겨요.
   - 뚜껑 안쪽과 주둥이 거름망도 구연산 물에 적신 키친타월로 닦아 주세요.
+kit:
+  name: "전기포트 석회 제거"
+  intro: "석회를 녹이는 구연산과 내부를 흠집 없이 닦는 스펀지를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "물과 함께 끓여 바닥의 하얀 석회를 녹여요."
+    - id: soft-sponge
+      use: "스테인리스 내부를 흠집 없이 닦아요."
+  all:
+    - role: "석회 제거"
+      id: citric-acid
+    - role: "닦기"
+      id: soft-sponge
 picks: [basic-cleaners]
 related: [shower-head, faucet, burnt-pot]
 publishedAt: 2026-09-30

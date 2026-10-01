@@ -29,6 +29,23 @@ tips:
   - 방수 매트리스 커버 하나가 얼룩 청소 수십 번을 대신해요.
   - 3개월마다 매트리스를 위아래로 돌려 주면 한쪽만 꺼지는 걸 막을 수 있어요. 양면 매트리스라면 뒤집어 주세요.
   - 아침에 일어나자마자 이불을 개지 말고 30분 걷어 두면 밤새 흘린 땀의 습기가 빠져요.
+kit:
+  name: "매트리스 청소"
+  intro: "먼지를 빼고, 얼룩을 빼고, 냄새를 잡는 준비물을 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "매트리스 솔기와 표면 먼지를 천천히 빨아들여요."
+    - id: fabric-stain-remover
+      use: "땀 얼룩과 누런 얼룩을 두드려 빼요."
+    - id: baking-soda
+      use: "전체에 뿌려 두면 땀 냄새와 습기를 흡수해요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "얼룩 제거"
+      id: fabric-stain-remover
+    - role: "탈취"
+      id: baking-soda
 picks: []
 related: [fabric-sofa, curtain, shoe-cabinet]
 publishedAt: 2026-09-30

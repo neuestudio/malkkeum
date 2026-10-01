@@ -1,0 +1,104 @@
+---
+// 청소법 하단 "준비물 한 번에 보기" 목록 (쿠팡 파트너스 링크)
+import type { CollectionEntry } from 'astro:content';
+import { path, t, type Lang } from '../lib/i18n';
+import { slugOf } from '../lib/content';
+import type { KitItem } from './KitCore.astro';
+
+interface Props {
+  lang: Lang;
+  name: string;
+  items: KitItem[];
+  picks: CollectionEntry<'picks'>[];
+}
+const { lang, name, items, picks } = Astro.props;
+const s = t(lang).kit;
+---
+
+<section class="wrap section split">
+  <h2 class="label">{s.all(name)}</h2>
+  <div>
+    <ul class="kl">
+      {
+        items.map((it) => (
+          <li class="kl__row">
+            <span class="kl__role">{it.role}</span>
+            <span class="kl__name">{it.name}</span>
+            {it.url ? (
+              <a class="kl__go" href={it.url} target="_blank" rel="sponsored nofollow noopener" aria-label={`${it.name} – ${s.go}`}>
+                {s.go} ↗
+              </a>
+            ) : (
+              <span />
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    {
+      picks.length > 0 && (
+        <p class="kl__picks">
+          {s.morePicks}:{' '}
+          {picks.map((p, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={path(lang, `picks/${slugOf(p.id)}`)}>{p.data.title.split(' — ')[0]}</a>
+            </>
+          ))}
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .kl {
+    border-top: 1px solid var(--text);
+  }
+  /* 모바일: 역할 | 상품명, 버튼은 상품명 아래 줄 */
+  .kl__row {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 6px 12px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .kl__go {
+    grid-column: 2;
+    justify-self: start;
+  }
+  @media (min-width: 640px) {
+    .kl__row {
+      grid-template-columns: 120px 1fr auto;
+    }
+    .kl__go {
+      grid-column: auto;
+    }
+  }
+  .kl__role {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .kl__name {
+    font-weight: 600;
+  }
+  .kl__go {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .kl__picks {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .kl__picks a {
+    color: var(--text);
+    border-bottom: 1px solid var(--accent);
+  }
+</style>

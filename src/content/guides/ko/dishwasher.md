@@ -32,6 +32,23 @@ tips:
   - 그릇을 넣기 전에 큰 음식물만 털어내면 필터 청소가 훨씬 쉬워져요. 애벌 설거지까지 할 필요는 없어요.
   - 그릇에 하얀 얼룩이 남는다면 린스(헹굼 보조제)가 떨어진 건 아닌지 확인하세요.
   - 며칠 모아서 돌린다면 문을 살짝 열어 두어야 냄새가 덜 나요.
+kit:
+  name: "식기세척기 청소"
+  intro: "빈 통 세척용 세정제와 필터·분사 날개를 닦는 도구를 골랐어요."
+  core:
+    - id: dishwasher-cleaner
+      use: "가장 뜨거운 코스로 빈 통을 세척해요."
+    - id: detail-brush
+      use: "원통형 필터 망과 도어 패킹을 문질러요."
+  all:
+    - role: "통세척"
+      id: dishwasher-cleaner
+    - role: "필터 세척"
+      id: dish-soap
+    - role: "필터·패킹"
+      id: detail-brush
+    - role: "손 보호"
+      id: rubber-gloves
 picks: [basic-cleaners]
 related: [sink-drain, microwave, range-hood]
 publishedAt: 2026-09-30

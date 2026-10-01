@@ -32,6 +32,27 @@ tips:
   - 비 온 다음 날이나 흐린 날에 하면 먼지가 습기를 머금고 있어 더 잘 떨어져요.
   - 신문지 대신 키친타월을 써도 되지만, 신문지가 더 크고 흡착력이 좋아 한 번에 끝나요.
   - 봄 황사 뒤와 가을 창문 닫기 전, 1년에 두 번만 해도 방 안 먼지가 눈에 띄게 줄어요.
+kit:
+  name: "방충망 청소"
+  intro: "망을 상하게 하지 않고 먼지만 걷어내는 도구를 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "물을 쓰기 전에 망 사이 마른 먼지를 빨아들여요."
+    - id: spray-bottle
+      use: "세정액을 방충망 전체에 고르게 뿌릴 수 있어요."
+    - id: soft-sponge
+      use: "망 양쪽에서 맞대고 늘어나지 않게 가볍게 닦아요."
+  all:
+    - role: "먼지 제거"
+      id: handheld-vacuum-brush
+    - role: "세정액"
+      id: dish-soap
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "닦기"
+      id: soft-sponge
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: []
 related: [drum-washer, microwave]
 featured: true

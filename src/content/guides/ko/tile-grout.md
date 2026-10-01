@@ -30,6 +30,27 @@ tips:
   - 샤워 후 찬물로 벽을 한 번 헹구고 스퀴지로 밀어내면 비누 때와 곰팡이가 거의 생기지 않아요.
   - 줄눈이 이미 까맣게 착색되어 안 빠진다면 줄눈 마커로 덧칠하거나 줄눈 시공을 새로 하는 게 빨라요.
   - 청소 후 줄눈 코팅제를 바르면 때가 스며들지 않아 다음 청소가 쉬워져요.
+kit:
+  name: "욕실 줄눈 청소"
+  intro: "비누 때를 푸는 세제, 줄눈 전용 브러시, 곰팡이 제거제를 골랐어요."
+  core:
+    - id: grout-brush
+      use: "좁고 뻣뻣한 솔이 줄눈 홈에 딱 맞아요."
+    - id: mold-gel
+      use: "남은 검은 곰팡이에 발라 두면 속까지 스며들어요."
+    - id: baking-soda
+      use: "반죽으로 발라 회색 비누 때를 불려요."
+  all:
+    - role: "비누 때"
+      id: baking-soda
+    - role: "문지르기"
+      id: grout-brush
+    - role: "곰팡이"
+      id: mold-gel
+    - role: "손 보호"
+      id: rubber-gloves
+    - role: "물기 제거"
+      id: squeegee
 picks: [mold-remover]
 related: [silicone-mold, bathroom-mirror, toilet-stain]
 publishedAt: 2026-09-30

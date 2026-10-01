@@ -28,6 +28,19 @@ cautions:
 tips:
   - 분사구가 실리콘으로 된 헤드는 평소 샤워 후 손바닥으로 한 번 쓸어 주면 석회가 덜 쌓여요.
   - 같은 구연산수를 버리기 전에 수도꼭지에도 붓고 문질러 주면 한 번에 두 곳을 청소해요.
+kit:
+  name: "샤워기 헤드 석회 제거"
+  intro: "석회를 녹이는 구연산과 막힌 분사구를 닦는 도구를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "따뜻한 물에 녹여 헤드를 담가 석회를 녹여요."
+    - id: detail-brush
+      use: "분사면을 문질러 녹은 석회를 떼어내요."
+  all:
+    - role: "석회 제거"
+      id: citric-acid
+    - role: "분사구 닦기"
+      id: detail-brush
 picks: [basic-cleaners]
 related: [faucet, bathroom-mirror, tile-grout]
 publishedAt: 2026-09-30

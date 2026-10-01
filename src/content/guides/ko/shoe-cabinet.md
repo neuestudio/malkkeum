@@ -29,6 +29,27 @@ tips:
   - 같은 신발을 이틀 연속 신지 않으면 안쪽 땀이 마를 시간이 생겨 냄새가 확 줄어요.
   - 신발장 문을 하루 10분만 열어 두어도 습기가 빠져요.
   - 원두 찌꺼기를 바싹 말려 넣어도 베이킹소다처럼 냄새를 흡수해요.
+kit:
+  name: "신발장 냄새 제거"
+  intro: "먼지를 빼고, 살균하고, 냄새를 흡수하는 준비물을 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "선반 구석의 흙과 모래를 빨아들여요."
+    - id: ethanol
+      use: "선반을 살균하고 빨리 말라요."
+    - id: baking-soda
+      use: "칸마다 두어 냄새를 흡수해요."
+  all:
+    - role: "먼지 제거"
+      id: handheld-vacuum-brush
+    - role: "살균"
+      id: ethanol
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "탈취"
+      id: baking-soda
+    - role: "닦기"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [window-rail, fridge, mattress]
 publishedAt: 2026-09-30

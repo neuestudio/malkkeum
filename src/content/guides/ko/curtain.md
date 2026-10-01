@@ -29,6 +29,21 @@ tips:
   - 한 달에 한 번 청소기 브러시로 커튼 위쪽 주름을 빨아들이면 세탁 주기를 1년까지 늘릴 수 있어요.
   - 커튼을 뗀 김에 커튼 레일과 창틀 위쪽 먼지도 닦아 주세요. 여기가 먼지가 가장 많이 쌓이는 곳이에요.
   - 섬유 탈취제보다 햇빛 좋은 날 창문을 열어 커튼을 바람에 흔들리게 두는 게 냄새 제거에 더 좋아요.
+kit:
+  name: "커튼 세탁"
+  intro: "줄어들지 않게 빠는 세제와 엉킴을 막는 세탁망을 골랐어요."
+  core:
+    - id: wool-detergent
+      use: "찬물 울 코스로 커튼을 줄어들지 않게 빨아요."
+    - id: laundry-net
+      use: "커튼이 엉키고 주름지는 걸 막아요."
+  all:
+    - role: "세탁"
+      id: wool-detergent
+    - role: "보호"
+      id: laundry-net
+    - role: "평소 먼지"
+      id: handheld-vacuum-brush
 picks: [starter-kit]
 related: [window-rail, window-screen, mattress]
 publishedAt: 2026-09-30

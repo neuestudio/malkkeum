@@ -29,6 +29,23 @@ tips:
   - 샤워 후 환풍기를 30분 이상 켜 두면 욕실 곰팡이가 눈에 띄게 줄어요.
   - 청소 후에도 소리가 크거나 바람이 약하면 모터가 노후한 거예요. 관리사무소나 설비 업체에 교체를 문의하세요.
   - 환풍기 커버 안쪽에 부직포 필터를 붙여 두면 다음 청소 때 필터만 바꾸면 돼요.
+kit:
+  name: "욕실 환풍기 청소"
+  intro: "본체에 물을 쓰지 않고 먼지를 빼는 도구를 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "팬 날개와 본체 안쪽 먼지를 빨아들여요."
+    - id: detail-brush
+      use: "커버 격자 사이 먼지를 세제 물로 닦아요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "커버 세척"
+      id: dish-soap
+    - role: "솔질"
+      id: detail-brush
+    - role: "마무리"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [silicone-mold, tile-grout, shower-glass]
 publishedAt: 2026-09-30

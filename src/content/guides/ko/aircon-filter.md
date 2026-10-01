@@ -31,6 +31,23 @@ tips:
   - 냉방을 끄기 전 10분은 송풍으로 바꿔 두는 습관만으로 내부 곰팡이가 크게 줄어요.
   - 요즘 에어컨은 대부분 자동 건조 기능이 있어요. 설정에서 켜 두세요.
   - 필터 청소를 한 날 실외기 주변에 물건이나 낙엽이 쌓여 있지 않은지도 함께 확인하세요.
+kit:
+  name: "에어컨 필터 청소"
+  intro: "마른 먼지를 먼저 빼는 도구와 필터를 씻는 준비물을 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "물로 씻기 전에 필터의 마른 먼지를 빨아들여요."
+    - id: detail-brush
+      use: "기름때가 낀 필터를 부드럽게 쓸어내요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "세척"
+      id: dish-soap
+    - role: "솔질"
+      id: detail-brush
+    - role: "물기 제거"
+      id: microfiber-cloth
 picks: [starter-kit]
 related: [curtain, window-rail, fridge]
 publishedAt: 2026-09-30

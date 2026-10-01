@@ -29,6 +29,21 @@ tips:
   - 소파를 창가나 난방기 바로 옆에 두면 가죽이 빨리 마르고 갈라져요. 50cm 이상 떨어뜨려 주세요.
   - 겨울 난방철에는 보습 주기를 2개월로 줄이면 갈라짐을 막을 수 있어요.
   - 볼펜 자국은 문지르면 번져요. 바로 가죽 전용 클리너나 가구 수리점에 문의하세요.
+kit:
+  name: "가죽 소파 관리"
+  intro: "가볍게 닦는 행주와 가죽이 갈라지지 않게 채우는 로션을 골랐어요."
+  core:
+    - id: leather-conditioner
+      use: "세척 후 얇게 발라 가죽에 유분을 채워요."
+    - id: microfiber-cloth
+      use: "먼지를 털고 로션을 펴 바르고 광을 내요."
+  all:
+    - role: "먼지·닦기"
+      id: microfiber-cloth
+    - role: "세척"
+      id: dish-soap
+    - role: "보습"
+      id: leather-conditioner
 picks: []
 related: [fabric-sofa, curtain, mattress]
 publishedAt: 2026-09-30

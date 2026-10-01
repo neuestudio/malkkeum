@@ -28,6 +28,27 @@ cautions:
 tips:
   - 쓰고 난 뒤 마른 수건으로 수도꼭지만 한 번 닦는 습관이면 물때가 거의 생기지 않아요.
   - 반짝임을 오래 유지하고 싶다면 광낸 뒤 물기 없는 상태에서 극세사로 한 번 더 문질러 주세요.
+kit:
+  name: "수도꼭지 물때 청소"
+  intro: "물때를 녹이는 구연산과 이음새·광내기 도구를 골랐어요."
+  core:
+    - id: citric-acid
+      use: "하얀 물때를 녹여요."
+    - id: detail-brush
+      use: "수도꼭지 이음새와 레버 틈의 검은 때를 문질러요."
+    - id: microfiber-cloth
+      use: "마지막 마른 행주질로 광을 내요."
+  all:
+    - role: "물때 제거"
+      id: citric-acid
+    - role: "뿌리기"
+      id: spray-bottle
+    - role: "팩"
+      id: paper-towel
+    - role: "이음새"
+      id: detail-brush
+    - role: "광내기"
+      id: microfiber-cloth
 picks: [basic-cleaners, starter-kit]
 related: [shower-head, bathroom-mirror, sink-drain]
 publishedAt: 2026-09-30

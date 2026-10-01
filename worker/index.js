@@ -7,6 +7,11 @@ import { EmailMessage } from 'cloudflare:email';
 
 const DEFAULT_LANG = 'ko';
 
+// 옮기거나 합친 글의 옛 주소 → 새 주소 (301)
+const MOVED = {
+  '/ko/guides/saenghwal-tub-cleaner/': '/ko/guides/laundry-smell/',
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -35,6 +40,11 @@ export default {
       }
       url.pathname = `/${lang}/`;
       return Response.redirect(url.toString(), 302);
+    }
+
+    if (MOVED[url.pathname]) {
+      url.pathname = MOVED[url.pathname];
+      return Response.redirect(url.toString(), 301);
     }
 
     if (url.pathname.endsWith('/index.html')) {

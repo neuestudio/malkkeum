@@ -30,6 +30,21 @@ tips:
   - 레몬이 없다면 식초 1큰술로 대신해도 돼요. 냄새 제거에는 레몬이, 기름때에는 식초가 조금 더 잘 들어요.
   - 음식을 데울 때 전자레인지용 덮개를 쓰면 청소 횟수가 절반으로 줄어요.
   - 생선이나 카레를 데운 뒤 냄새가 남으면 레몬 껍질만 넣고 1분 돌려 두세요.
+kit:
+  name: "전자레인지 청소"
+  intro: "불린 때를 닦아내는 행주와 한 번 더 할 때 쓰는 세제를 골랐어요."
+  core:
+    - id: microfiber-cloth
+      use: "레몬 물에 적셔 불린 때를 천장부터 닦아요."
+    - id: baking-soda
+      use: "얼룩이 남으면 레몬 물에 조금 섞어 한 번 더 스팀해요."
+  all:
+    - role: "닦기"
+      id: microfiber-cloth
+    - role: "남은 기름때"
+      id: baking-soda
+    - role: "회전판 세척"
+      id: dish-soap
 picks: []
 related: [drum-washer, window-screen]
 publishedAt: 2026-09-27

@@ -31,6 +31,27 @@ tips:
   - 팔걸이와 머리받이에 소파 패드나 천을 덮어 두면 묵은때가 거의 생기지 않아요.
   - 말린 뒤 원단 결이 눌려 있다면 마른 칫솔로 결 반대 방향으로 가볍게 빗어 주세요.
   - 새로 흘린 음료는 문지르지 말고 마른 수건으로 바로 눌러 흡수시키면 얼룩으로 남지 않아요.
+kit:
+  name: "패브릭 소파 묵은때 제거"
+  intro: "먼지와 냄새를 먼저 빼고, 거품으로 묵은때를 두드려 빼는 준비물을 골랐어요."
+  core:
+    - id: handheld-vacuum-brush
+      use: "소파 틈의 부스러기와 표면 먼지를 빨아들여요."
+    - id: wool-detergent
+      use: "거품을 내서 묵은때를 두드려 빼요."
+    - id: fabric-stain-remover
+      use: "한 번에 안 빠지는 부분 얼룩에 써요."
+  all:
+    - role: "먼지 흡입"
+      id: handheld-vacuum-brush
+    - role: "탈취"
+      id: baking-soda
+    - role: "거품 세척"
+      id: wool-detergent
+    - role: "부분 얼룩"
+      id: fabric-stain-remover
+    - role: "닦기"
+      id: microfiber-cloth
 picks: []
 related: [leather-sofa, mattress, curtain]
 publishedAt: 2026-09-30

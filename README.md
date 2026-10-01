@@ -20,6 +20,12 @@ npm run deploy    # 빌드 + Cloudflare 배포
 - `images-src/<guides|magazine|picks|products>/<slug>.png` — AI 이미지 원본 (git 제외). 프롬프트는 [IMAGE_PROMPTS.md](IMAGE_PROMPTS.md)
 - `public/images/` — `npm run images`가 만든 webp (1600px + 800px). 파일명이 글 slug와 같으면 자동 연결, 없으면 자리표시 색면
 
+## 쿠팡 파트너스 링크
+- `coupang-links.mjs`에 상품 id별로 링크 하나씩 넣는다. 한국어 페이지의 청소법 준비물, 하단 목록, 추천 글, 스토어가 모두 이 링크를 쓴다
+- 비어 있는 상품은 버튼이 숨겨지고 이름만 보인다. 링크가 하나라도 있는 청소법은 제목 아래에 제휴 고지가 자동으로 나온다
+- 청소법별 준비물 구성은 각 글 frontmatter의 `kit:` (core = 핵심 준비물 최대 3개, all = 한 번에 보기 목록)
+- 영어 페이지에는 쿠팡 블록이 나오지 않는다 (기존 "Used in this guide")
+
 ## A4 체크리스트 PDF
 - 매거진 글 frontmatter에 `sheet:`(제목, 섹션, 항목)를 적으면 빌드 때 `dist/pdf/ko-<slug>.pdf`가 만들어지고 글 위아래에 "PDF로 받기 / 인쇄하기" 버튼이 생김
 - 섹션에 `columns: [월, 화, …]`를 주면 요일·주·월별 체크 칸, `check: false`면 체크 칸 없는 요약 목록

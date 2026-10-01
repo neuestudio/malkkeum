@@ -9,6 +9,7 @@ import Disclosure from '../../../components/Disclosure.astro';
 import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../../../lib/content';
 import { formatDate, path, t, type Lang } from '../../../lib/i18n';
 import { imageOf } from '../../../lib/images';
+import { productUrl } from '../../../lib/links';
 
 export const getStaticPaths = () => detailPaths('picks');
 
@@ -20,7 +21,7 @@ const d = entry.data;
 const { Content } = await render(entry);
 const related = pickBySlugs(await entries('guides', lang), d.related, entry.id).slice(0, 3);
 const catalog = await entries('products', lang);
-const products = pickBySlugs(catalog, d.products.map((p) => p.id), entry.id).map((p, i) => ({ ...p.data, img: imageOf('products', slugOf(p.id), p.data.image), point: d.products[i].point }));
+const products = pickBySlugs(catalog, d.products.map((p) => p.id), entry.id).map((p, i) => ({ ...p.data, url: productUrl(lang, slugOf(p.id), p.data.url), img: imageOf('products', slugOf(p.id), p.data.image), point: d.products[i].point }));
 const hero = imageOf('picks', slug, d.heroImage);
 const alternates = Object.fromEntries((await translationsOf('picks', slug)).map((l) => [l, path(l, `picks/${slug}`)]));
 const url = new URL(path(lang, `picks/${slug}`), Astro.site).toString();

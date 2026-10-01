@@ -29,6 +29,21 @@ tips:
   - 냄비가 탄 직후에 바로 물을 부어 두면 자국이 굳지 않아 훨씬 쉽게 지워져요.
   - 스테인리스 냄비는 충분히 예열한 뒤 기름을 두르면 음식이 덜 눌어붙어요.
   - 바깥 바닥의 누런 기름때도 같은 방법으로, 더 큰 냄비에 넣고 끓이면 함께 벗겨져요.
+kit:
+  name: "냄비 탄 자국 제거"
+  intro: "끓여서 불리는 베이킹소다와 흠집 없이 닦는 스펀지를 골랐어요."
+  core:
+    - id: baking-soda
+      use: "물과 함께 끓여 탄 자국을 들뜨게 해요."
+    - id: soft-sponge
+      use: "스테인리스에 흠집 없이 남은 자국을 닦아요."
+  all:
+    - role: "탄 자국"
+      id: baking-soda
+    - role: "두꺼운 탄 자국"
+      id: percarbonate
+    - role: "마무리"
+      id: soft-sponge
 picks: [basic-cleaners]
 related: [range-hood, cutting-board, electric-kettle]
 publishedAt: 2026-09-30

@@ -31,6 +31,21 @@ tips:
   - 보온을 오래 하면 밥 냄새가 뚜껑에 배요. 남은 밥은 소분해 냉동하고 보온 시간을 줄이세요.
   - 세척 후 뚜껑을 열어 두고 말리면 패킹에서 냄새가 덜 나요.
   - 증기 배출구는 밥을 지을 때마다 가볍게 헹궈만 줘도 말라붙지 않아요.
+kit:
+  name: "전기밥솥 청소"
+  intro: "증기 배출구와 패킹 틈을 닦는 도구와 내솥용 스펀지를 골랐어요."
+  core:
+    - id: detail-brush
+      use: "증기 배출구와 고무 패킹에 낀 밥물 자국을 닦아요."
+    - id: soft-sponge
+      use: "내솥 코팅을 지키며 닦아요."
+  all:
+    - role: "배출구·패킹"
+      id: detail-brush
+    - role: "내솥"
+      id: soft-sponge
+    - role: "세척"
+      id: dish-soap
 picks: []
 related: [microwave, electric-kettle, airfryer]
 publishedAt: 2026-09-30

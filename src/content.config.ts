@@ -28,6 +28,15 @@ const guides = defineCollection({
       .min(4),
     cautions: z.array(z.string()).min(1),
     tips: z.array(z.string()).min(1),
+    // 쿠팡 준비물 블록 (한국어 글만). 상품 id는 products 컬렉션, 링크는 coupang-links.mjs
+    kit: z
+      .object({
+        name: z.string(), // 예: 샤워부스 청소 → "샤워부스 청소 준비물 한 번에 보기"
+        intro: z.string(), // 핵심 준비물 아래 한 줄 설명
+        core: z.array(z.object({ id: z.string(), use: z.string() })).min(1).max(3),
+        all: z.array(z.object({ role: z.string(), id: z.string() })).min(2),
+      })
+      .optional(),
     picks: z.array(z.string()).default([]), // picks 컬렉션 slug
     related: z.array(z.string()).default([]), // guides 컬렉션 slug
     heroImage: image,
@@ -95,6 +104,7 @@ const products = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/products' }),
   schema: z.object({
     name: z.string(),
+    short: z.string().optional(), // 버튼용 짧은 이름 (예: 분무기 → "분무기 보러 가기")
     category: z.enum(['cleaner', 'laundry', 'bathroom', 'tool']),
     type: z.string(), // 예: 산소계 · 가루
     point: z.string().min(15), // 스토어 카드에 나오는 한 줄 설명
