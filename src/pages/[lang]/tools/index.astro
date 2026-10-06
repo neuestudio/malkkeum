@@ -1,0 +1,79 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { toolLangPaths } from '../../../lib/content';
+import { path, t, type Lang } from '../../../lib/i18n';
+
+export const getStaticPaths = toolLangPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+
+const tools = [
+  {
+    href: path(lang, 'tools/trash-day'),
+    name: '쓰레기 배출일 알림',
+    desc: '일반쓰레기·음식물·재활용 버리는 요일을 고르면 휴대폰 캘린더에 매주 알림으로 넣어 드려요.',
+    tag: '캘린더 알림',
+  },
+];
+---
+
+<Base lang={lang} title={s.nav.tools} description="쓰레기 배출일 알림처럼 매주 반복되는 살림을 덜어 주는 말끔의 생활 도구 모음이에요.">
+  <section class="wrap page-top split">
+    <h1 class="label">{s.nav.tools}</h1>
+    <p class="lead">매주 돌아오는 살림은 기억 대신 알림에 맡기세요. <span class="dim">말끔이 만든 생활 도구예요.</span></p>
+  </section>
+  <section class="wrap section split">
+    <div></div>
+    <ul class="tools">
+      {
+        tools.map((tool) => (
+          <li>
+            <a class="tool" href={tool.href}>
+              <span class="tool__tag">{tool.tag}</span>
+              <span class="tool__name">{tool.name}</span>
+              <span class="tool__desc">{tool.desc}</span>
+              <span class="more-link">열기 →</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .tools {
+    display: grid;
+    gap: 16px;
+  }
+  .tool {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    transition: border-color 0.15s;
+  }
+  .tool:hover {
+    border-color: var(--text);
+  }
+  .tool__tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-deep);
+    letter-spacing: 0.04em;
+  }
+  .tool__name {
+    font-size: clamp(22px, 2.6vw, 28px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .tool__desc {
+    color: var(--muted);
+    max-width: 40em;
+  }
+  .tool .more-link {
+    margin-top: 8px;
+  }
+</style>

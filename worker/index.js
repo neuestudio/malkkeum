@@ -17,6 +17,7 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/contact') return contact(request, env);
+    if (url.pathname === '/api/trash-calendar.ics') return trashCalendar(url);
 
     const canonicalHost = env.CANONICAL_HOST;
     const local = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
@@ -131,3 +132,105 @@ function b64(s) {
   for (const byte of new TextEncoder().encode(s)) bin += String.fromCharCode(byte);
   return btoa(bin);
 }
+
+// ─── 쓰레기 배출일 캘린더 (.ics) ─────────────────────────────
+// /api/trash-calendar.ics?g=MO.TH&gt=2000&f=TU.FR&ft=2000&r=WE&rt=1900&a=30
+// g·f·r = 일반쓰레기·음식물·재활용 요일, *t = 시각(HHMM), a = 몇 분 전 알림(0·30·60·1440)
+const TRASH_TYPES = {
+  g: { name: '일반쓰레기(종량제 봉투) 배출일', tip: '종량제 봉투 입구를 묶어 정해진 장소와 시간에 내놓아요.' },
+  f: { name: '음식물 쓰레기 배출일', tip: '물기를 꼭 짜고, 뼈·조개껍데기·달걀껍데기 같은 일반쓰레기는 빼요.' },
+  r: { name: '재활용 분리배출일', tip: '내용물을 비우고 헹군 뒤 종류별로 나눠요. 페트병은 라벨을 떼고 납작하게.' },
+};
+const DAYS = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+
+function trashCalendar(url) {
+  const q = url.searchParams;
+  const alarm = [0, 30, 60, 1440].includes(Number(q.get('a'))) ? Number(q.get('a')) : 30;
+  // 서울 기준 오늘 날짜
+  const now = new Date(Date.now() + 9 * 3600 * 1000);
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const events = [];
+
+  for (const [key, info] of Object.entries(TRASH_TYPES)) {
+    const days = (q.get(key) || '').split('.').filter((d) => DAYS.includes(d));
+    if (!days.length) continue;
+    const t = /^([01]\d|2[0-3])([0-5]\d)$/.exec(q.get(key + 't') || '') || [, '20', '00'];
+    // 오늘부터 7일 안에서 고른 요일 중 가장 가까운 날을 첫 일정으로
+    let first = null;
+    for (let i = 0; i < 7 && !first; i++) {
+      const d = new Date(now.getTime() + i * 86400000);
+      if (days.includes(DAYS[d.getUTCDay()])) first = d;
+    }
+    const ymd = first.toISOString().slice(0, 10).replace(/-/g, '');
+    const lines = [
+      'BEGIN:VEVENT',
+      `UID:malkkeum-trash-${key}-${days.join('')}-${t[1]}${t[2]}@malkkeumi.com`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=Asia/Seoul:${ymd}T${t[1]}${t[2]}00`,
+      'DURATION:PT30M',
+      `RRULE:FREQ=WEEKLY;BYDAY=${days.join(',')}`,
+      `SUMMARY:${info.name}`,
+      `DESCRIPTION:${info.tip}\\n분리배출 가이드: https://malkkeumi.com/ko/tools/trash-day/`,
+      'URL:https://malkkeumi.com/ko/tools/trash-day/',
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:${info.name}`,
+      `TRIGGER:${alarm === 0 ? 'PT0M' : alarm === 1440 ? '-P1D' : `-PT${alarm}M`}`,
+      'END:VALARM',
+      'END:VEVENT',
+    ];
+    events.push(...lines);
+  }
+
+  if (!events.length) return new Response('요일을 하나 이상 골라 주세요.', { status: 400, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Malkkeum//Trash Day//KO',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:말끔 쓰레기 배출일',
+    'X-WR-TIMEZONE:Asia/Seoul',
+    'BEGIN:VTIMEZONE',
+    'TZID:Asia/Seoul',
+    'BEGIN:STANDARD',
+    'DTSTART:19700101T000000',
+    'TZOFFSETFROM:+0900',
+    'TZOFFSETTO:+0900',
+    'TZNAME:KST',
+    'END:STANDARD',
+    'END:VTIMEZONE',
+    ...events,
+    'END:VCALENDAR',
+  ]
+    .map(foldLine)
+    .join('\r\n');
+
+  return new Response(ics + '\r\n', {
+    headers: {
+      'Content-Type': 'text/calendar; charset=utf-8',
+      'Content-Disposition': 'inline; filename="malkkeum-trash-day.ics"',
+      'Cache-Control': 'no-store',
+      'X-Robots-Tag': 'noindex',
+    },
+  });
+}
+
+// iCalendar 규칙: 한 줄은 75바이트를 넘으면 접어서 이어 쓴다
+function foldLine(line) {
+  const enc = new TextEncoder();
+  if (enc.encode(line).length <= 75) return line;
+  const out = [];
+  let cur = '';
+  for (const ch of line) {
+    if (enc.encode(cur + ch).length > (out.length ? 74 : 75)) {
+      out.push(cur);
+      cur = '';
+    }
+    cur += ch;
+  }
+  out.push(cur);
+  return out.join('\r\n ');
+}
+

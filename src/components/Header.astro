@@ -1,5 +1,6 @@
 ---
 import { PUBLIC_LANGS, path, t, ui, type Lang } from '../lib/i18n';
+import { TOOL_LANGS } from '../lib/content';
 
 interface Props {
   lang: Lang;
@@ -14,6 +15,7 @@ const navItems = [
   { key: 'magazine', href: path(lang, 'magazine') },
   { key: 'picks', href: path(lang, 'picks') },
   { key: 'store', href: path(lang, 'store') },
+  ...(TOOL_LANGS.includes(lang) ? [{ key: 'tools', href: path(lang, 'tools') } as const] : []),
 ] as const;
 const otherLangs = PUBLIC_LANGS.filter((l) => l !== lang);
 ---

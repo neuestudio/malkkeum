@@ -44,5 +44,9 @@ export async function detailPaths(name: Name) {
 
 export const langPaths = () => PUBLIC_LANGS.map((lang) => ({ params: { lang } }));
 
+// 도구는 한국 제도(종량제 등)에 맞춘 기능이라 한국어에만 둔다
+export const TOOL_LANGS: Lang[] = ['ko'];
+export const toolLangPaths = () => PUBLIC_LANGS.filter((l) => TOOL_LANGS.includes(l)).map((lang) => ({ params: { lang } }));
+
 export const SEASON_BY_MONTH = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'] as const;
 export const currentSeason = (d = new Date()) => SEASON_BY_MONTH[d.getMonth()];

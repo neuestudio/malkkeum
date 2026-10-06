@@ -11,7 +11,7 @@ export const ui = {
     tagline: '어려운 청소도 말끔하게',
     siteDescription:
       '쉬운 청소부터 방충망·세탁조·소파 묵은때까지. 난이도, 소요 시간, 준비물, 단계별 방법을 한눈에 정리한 청소 가이드 플랫폼, 말끔.',
-    nav: { guides: '청소법', magazine: '매거진', picks: '추천', store: '스토어', search: '검색' },
+    nav: { guides: '청소법', magazine: '매거진', picks: '추천', store: '스토어', tools: '도구', search: '검색' },
     featured: 'FEATURED',
     readMore: '보러가기',
     viewAll: '전체 보기',
@@ -93,7 +93,7 @@ export const ui = {
     tagline: 'Cleaning, done neatly',
     siteDescription:
       'From quick wipes to window screens, washing machines and stubborn sofa stains. Step-by-step cleaning guides with difficulty, time and supplies at a glance.',
-    nav: { guides: 'Guides', magazine: 'Magazine', picks: 'Picks', store: 'Store', search: 'Search' },
+    nav: { guides: 'Guides', magazine: 'Magazine', picks: 'Picks', store: 'Store', tools: 'Tools', search: 'Search' },
     featured: 'FEATURED',
     readMore: 'Read',
     viewAll: 'View all',

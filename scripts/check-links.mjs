@@ -10,7 +10,7 @@ const broken = [];
 for (const file of pages) {
   const html = readFileSync(file, 'utf8');
   for (const [, href] of html.matchAll(/href="(\/[^"#?]*)/g)) {
-    if (href.startsWith('//')) continue;
+    if (href.startsWith('//') || href.startsWith('/api/')) continue; // Worker가 처리하는 주소
     const target = join(DIST, href);
     const ok = href === '/' || existsSync(target) || existsSync(join(target, 'index.html'));
     if (!ok) broken.push(`${file.slice(DIST.length)} → ${href}`);
