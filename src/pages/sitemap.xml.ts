@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ site }) => {
   for (const p of ['', 'guides', 'magazine', 'picks', 'store', 'about', 'contact', 'privacy', 'terms']) {
     rows.push({ alts: Object.fromEntries(PUBLIC_LANGS.map((l) => [l, path(l, p)])) });
   }
-  for (const p of ['tools', 'tools/trash-day']) {
+  for (const p of ['tools', 'tools/trash-day', 'tools/supplies']) {
     rows.push({ alts: Object.fromEntries(PUBLIC_LANGS.filter((l) => TOOL_LANGS.includes(l)).map((l) => [l, path(l, p)])) });
   }
   for (const name of ['guides', 'magazine', 'picks'] as const) {

@@ -1,0 +1,512 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Crumbs from '../../../components/Crumbs.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import Disclosure from '../../../components/Disclosure.astro';
+import { entries, slugOf, toolLangPaths } from '../../../lib/content';
+import { path, t, type Lang } from '../../../lib/i18n';
+import { productUrl } from '../../../lib/links';
+import { imageOf } from '../../../lib/images';
+
+export const getStaticPaths = toolLangPaths;
+const lang = Astro.params.lang as Lang;
+const s = t(lang);
+
+// 기본 품목: [id, 이름, 기본 교체 주기(일), 연결 상품 id, 분류, 처음부터 켜 둘지]
+const PRESETS: [string, string, number, string | null, string, boolean][] = [
+  ['dish-soap', '주방세제', 45, 'dish-soap', '주방', true],
+  ['sponge', '수세미·스펀지', 21, 'soft-sponge', '주방', true],
+  ['cloth', '행주', 60, 'microfiber-cloth', '주방', false],
+  ['gloves', '고무장갑', 60, 'rubber-gloves', '주방', false],
+  ['paper-towel', '키친타월', 30, 'paper-towel', '주방', false],
+  ['toilet-paper', '두루마리 휴지', 30, null, '욕실', true],
+  ['toothbrush', '칫솔', 90, null, '욕실', false],
+  ['toilet-brush', '변기 솔', 120, 'toilet-brush', '욕실', false],
+  ['mold', '곰팡이 제거제', 90, 'mold-gel', '욕실', false],
+  ['detergent', '세탁세제', 60, 'liquid-detergent', '세탁', true],
+  ['tub-cleaner', '세탁조 클리너', 30, 'oxygen-tub-cleaner', '세탁', true],
+  ['wool', '울 세제', 120, 'wool-detergent', '세탁', false],
+  ['absorber', '옷장·신발장 제습제', 60, 'moisture-absorber', '생활', true],
+  ['citric', '구연산', 90, 'citric-acid', '생활', false],
+  ['soda', '베이킹소다', 90, 'baking-soda', '생활', false],
+  ['percarbonate', '과탄산소다', 90, 'percarbonate', '생활', false],
+  ['trash-bag', '종량제 봉투', 30, null, '생활', false],
+];
+
+const products = await entries('products', lang);
+const presets = PRESETS.map(([id, name, cycle, pid, group, on]) => {
+  const p = pid ? products.find((x) => slugOf(x.id) === pid) : undefined;
+  return {
+    id,
+    name,
+    cycle,
+    group,
+    on,
+    url: pid ? productUrl(lang, pid, p?.data.url) ?? null : null,
+    img: pid ? (imageOf('products', pid, p?.data.image).src?.replace(/\.webp$/, '-800.webp') ?? null) : null,
+  };
+});
+const hasAffiliate = presets.some((p) => p.url);
+
+const title = '생필품 재고 체크 — 교체 주기 알림으로 떨어지기 전에 사기';
+const description =
+  '주방세제, 수세미, 휴지, 세탁세제, 제습제처럼 자주 떨어지는 생필품을 산 날만 기록하면 다음 구매일을 계산해 캘린더 알림으로 알려줘요. 생필품 교체 주기 표도 함께 정리했어요.';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '말끔 생필품 재고 체크',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'iOS, Android, Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    url: new URL(path(lang, 'tools/supplies'), Astro.site).toString(),
+    inLanguage: lang,
+  },
+];
+---
+
+<Base lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="wrap page-top">
+    <Crumbs items={[{ name: s.nav.tools, href: path(lang, 'tools') }, { name: '생필품 재고 체크' }]} />
+    <header class="sp-head split">
+      <div></div>
+      <div>
+        <h1 class="title-xl">생필품, 떨어지기 전에 알려드려요</h1>
+        <p class="sp-sum dim">산 날만 적어 두면 다음에 살 날을 계산해요. 캘린더에 넣어 두면 그날 알림이 와요.</p>
+        {hasAffiliate && <div style="margin-top:14px"><Disclosure lang={lang} /></div>}
+      </div>
+    </header>
+  </section>
+
+  <section class="wrap split">
+    <h2 class="label">우리 집 재고</h2>
+    <div class="sp" id="supplies">
+      <script is:inline type="application/json" id="presets" set:html={JSON.stringify(presets)} />
+      <p class="sp-status" id="status" aria-live="polite"></p>
+      <div id="list"></div>
+
+      <details class="sp-more">
+        <summary>품목 더 보기·직접 추가</summary>
+        <div id="off-list" class="sp-off"></div>
+        <form class="sp-add" id="add-form">
+          <label><span>품목 이름</span><input id="add-name" maxlength="20" placeholder="예: 정수기 필터" required /></label>
+          <label><span>교체 주기(일)</span><input id="add-cycle" type="number" min="1" max="730" value="30" required /></label>
+          <button class="btn btn--line" type="submit">추가</button>
+        </form>
+      </details>
+
+      <div class="sp-actions">
+        <a class="btn" id="ics-link" href="#" rel="nofollow">재구매 알림을 캘린더에 추가</a>
+        <p class="sp-note" id="ics-note">사용 중인 품목마다 다음 구매일 오전 10시에 알림이 오고, 주기마다 반복돼요.</p>
+      </div>
+      <p class="sp-note">기록은 이 기기의 브라우저에만 저장돼요. 다른 휴대폰이나 브라우저에서는 보이지 않고, 브라우저 기록을 지우면 사라져요.</p>
+    </div>
+  </section>
+
+  <div class="wrap"><AdSlot lang={lang} /></div>
+
+  <article class="wrap section split" data-pagefind-body>
+    <div></div>
+    <div class="prose">
+      <h2>생필품 교체 주기, 이 정도가 기준이에요</h2>
+      <p>아래 주기는 2~3인 가구가 보통 쓰는 양을 기준으로 잡은 출발점이에요. 몇 번 써 보면서 우리 집에 맞게 일수를 고쳐 주세요.</p>
+      <table>
+        <thead><tr><th>품목</th><th>기본 주기</th><th>바꿔야 할 신호</th></tr></thead>
+        <tbody>
+          <tr><td>수세미·스펀지</td><td>2~4주</td><td>모양이 망가지거나 헹궈도 냄새가 남을 때</td></tr>
+          <tr><td>행주</td><td>1~2개월</td><td>삶거나 소독해도 냄새가 빠지지 않을 때</td></tr>
+          <tr><td>고무장갑</td><td>1~2개월</td><td>구멍이 나거나 안쪽이 끈적할 때</td></tr>
+          <tr><td>칫솔</td><td>약 3개월</td><td>솔이 벌어졌을 때</td></tr>
+          <tr><td>변기 솔</td><td>3~6개월</td><td>솔이 눌리거나 받침에 물때가 낄 때</td></tr>
+          <tr><td>세탁조 클리너</td><td>월 1회 사용</td><td>빨래에서 쿰쿰한 냄새가 날 때</td></tr>
+          <tr><td>옷장·신발장 제습제</td><td>1~3개월</td><td>물이 가득 찼을 때</td></tr>
+          <tr><td>정수기·샤워기 필터</td><td>제품 표기 기준</td><td>물줄기가 약해지거나 색이 변할 때</td></tr>
+        </tbody>
+      </table>
+      <p>도구별 세척법과 교체 시기는 <a href={path(lang, 'magazine/cleaning-tools-care')}>청소 도구 관리와 교체 주기</a>에 더 자세히 정리했어요.</p>
+
+      <h2>쟁여 두기, 얼마나가 적당할까요</h2>
+      <ul>
+        <li><strong>부피 큰 소모품</strong>(휴지, 키친타월)은 한 묶음 여유분이면 충분해요. 수납공간을 차지하면 청소가 더 어려워져요.</li>
+        <li><strong>가루 세제</strong>(구연산, 베이킹소다, 과탄산소다)는 습기를 먹으면 굳어요. 대용량보다 몇 달 안에 쓸 양을 사는 게 좋아요.</li>
+        <li><strong>제습제</strong>는 계절이 바뀔 때 필요량이 크게 달라져요. 장마철과 겨울 결로철 전에 미리 챙기세요.</li>
+      </ul>
+
+      <h2>자주 묻는 질문</h2>
+      <p><strong>"새로 샀어요"는 언제 누르나요?</strong><br>새 제품을 뜯어 쓰기 시작한 날 눌러 주세요. 그날부터 주기를 다시 계산해요.</p>
+      <p><strong>캘린더 알림은 바뀐 날짜를 따라오나요?</strong><br>캘린더에 넣은 알림은 넣은 시점의 날짜로 반복돼요. 구매 날짜가 많이 달라졌다면 예전 "말끔" 일정을 지우고 다시 추가해 주세요.</p>
+      <p><strong>쓰레기 버리는 날도 알림을 받을 수 있나요?</strong><br>네. <a href={path(lang, 'tools/trash-day')}>쓰레기 배출일 알림</a>에서 요일을 고르면 매주 알림이 와요.</p>
+    </div>
+  </article>
+</Base>
+
+
+<style>
+  .sp-head {
+    margin: 28px 0 40px;
+  }
+  .sp-sum {
+    margin-top: 16px;
+    font-size: clamp(17px, 1.6vw, 20px);
+    max-width: 34em;
+  }
+  .sp {
+    display: grid;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: clamp(18px, 3vw, 28px);
+  }
+  .sp-status {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .sp :global(.sp-group) {
+    margin-top: 8px;
+  }
+  .sp :global(.sp-group-h) {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--text);
+  }
+  .sp :global(.sp-item) {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 6px 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .sp :global(.sp-thumb) {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    background: var(--bg);
+    grid-row: span 2;
+  }
+  .sp :global(.sp-top) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+  }
+  .sp :global(.sp-name) {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .sp :global(.sp-badge) {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+  }
+  .sp :global(.sp-badge.ok) {
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+  }
+  .sp :global(.sp-badge.soon) {
+    background: #f5ecd2;
+    color: #7a5d12;
+  }
+  .sp :global(.sp-badge.now) {
+    background: #f4dfd6;
+    color: #8a3f22;
+  }
+  .sp :global(.sp-badge.none) {
+    background: var(--bg);
+    color: var(--muted);
+  }
+  .sp :global(.sp-bar) {
+    height: 6px;
+    background: var(--line);
+    margin: 6px 0 2px;
+    max-width: 320px;
+  }
+  .sp :global(.sp-bar i) {
+    display: block;
+    height: 100%;
+    background: var(--accent-deep);
+  }
+  .sp :global(.sp-bar.soon i) {
+    background: var(--medium);
+  }
+  .sp :global(.sp-bar.now i) {
+    background: var(--hard);
+  }
+  .sp :global(.sp-ctrl) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .sp :global(.sp-ctrl input) {
+    font: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 5px 8px;
+  }
+  .sp :global(.sp-ctrl input[type='number']) {
+    width: 64px;
+  }
+  .sp :global(.sp-btns) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .sp :global(.sp-btn) {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 1px solid var(--text);
+  }
+  .sp :global(.sp-buy) {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    background: var(--text);
+    color: var(--bg);
+  }
+  .sp :global(.sp-remove) {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: underline;
+  }
+  .sp-more summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 0;
+  }
+  .sp-off {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 16px;
+  }
+  .sp-off :global(button) {
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .sp-off :global(button)::before {
+    content: '+ ';
+    color: var(--accent-deep);
+    font-weight: 700;
+  }
+  .sp-add {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .sp-add label {
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .sp-add input {
+    font: inherit;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    width: 160px;
+  }
+  .sp-add input[type='number'] {
+    width: 90px;
+  }
+  .sp-actions {
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+    padding-top: 6px;
+  }
+  .sp-note {
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  type Preset = { id: string; name: string; cycle: number; group: string; on: boolean; url: string | null; img: string | null };
+  type Item = { on: boolean; cycle: number; last: string; name?: string; custom?: boolean };
+
+  const STORE = 'malkkeum-supplies';
+  const presets: Preset[] = JSON.parse(document.getElementById('presets')!.textContent || '[]');
+  const GROUPS = ['주방', '욕실', '세탁', '생활', '직접 추가'];
+  const DAY = 86400000;
+
+  const todayStr = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  const toDate = (s: string) => {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  };
+
+  // 저장된 상태 + 기본값
+  let state: Record<string, Item> = {};
+  try {
+    state = JSON.parse(localStorage.getItem(STORE) || '{}') || {};
+  } catch {}
+  for (const p of presets) state[p.id] ??= { on: p.on, cycle: p.cycle, last: '' };
+  const save = () => {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+    } catch {}
+  };
+
+  const list = document.getElementById('list')!;
+  const offList = document.getElementById('off-list')!;
+  const status = document.getElementById('status')!;
+  const icsLink = document.getElementById('ics-link') as HTMLAnchorElement;
+  const icsNote = document.getElementById('ics-note')!;
+
+  const presetOf = (id: string) => presets.find((p) => p.id === id);
+  const nameOf = (id: string) => presetOf(id)?.name ?? state[id].name ?? id;
+
+  function info(it: Item) {
+    if (!it.last) return { cls: 'none', label: '산 날을 입력해 주세요', pct: 0, left: Infinity };
+    const left = Math.round((toDate(it.last).getTime() + it.cycle * DAY - toDate(todayStr()).getTime()) / DAY);
+    const pct = Math.min(100, Math.max(0, ((it.cycle - left) / it.cycle) * 100));
+    if (left <= 0) return { cls: 'now', label: left === 0 ? '오늘 살 때예요' : `${-left}일 지났어요`, pct: 100, left };
+    if (left <= 7) return { cls: 'soon', label: `${left}일 남았어요`, pct, left };
+    return { cls: 'ok', label: `${left}일 남았어요`, pct, left };
+  }
+
+  function el<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, text?: string) {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function render() {
+    list.replaceChildren();
+    offList.replaceChildren();
+    const ids = Object.keys(state);
+    let now = 0;
+    let soon = 0;
+
+    for (const g of GROUPS) {
+      const inGroup = ids.filter((id) => state[id].on && (presetOf(id)?.group ?? '직접 추가') === g);
+      if (!inGroup.length) continue;
+      const box = el('div', { class: 'sp-group' });
+      box.append(el('p', { class: 'sp-group-h' }, g));
+      for (const id of inGroup) {
+        const it = state[id];
+        const p = presetOf(id);
+        const f = info(it);
+        if (f.cls === 'now') now++;
+        if (f.cls === 'soon') soon++;
+
+        const row = el('div', { class: 'sp-item', 'data-id': id });
+        const thumb = el('img', { class: 'sp-thumb', alt: '', src: p?.img ?? '/favicon.svg', width: '56', height: '56', loading: 'lazy' });
+        const top = el('div', { class: 'sp-top' });
+        top.append(el('span', { class: 'sp-name' }, nameOf(id)), el('span', { class: `sp-badge ${f.cls}` }, f.label));
+        const bar = el('div', { class: `sp-bar ${f.cls}`, role: 'img', 'aria-label': `사용 기간 ${Math.round(f.pct)}% 지남` });
+        const fill = el('i');
+        fill.style.width = `${f.pct}%`;
+        bar.append(fill);
+
+        const ctrl = el('div', { class: 'sp-ctrl' });
+        const lastLabel = el('label');
+        lastLabel.append('산 날 ', el('input', { type: 'date', value: it.last, max: todayStr(), 'data-field': 'last', 'aria-label': `${nameOf(id)} 산 날` }));
+        const cycleLabel = el('label');
+        cycleLabel.append('주기 ', el('input', { type: 'number', min: '1', max: '730', value: String(it.cycle), 'data-field': 'cycle', 'aria-label': `${nameOf(id)} 교체 주기(일)` }), '일');
+        ctrl.append(lastLabel, cycleLabel);
+
+        const btns = el('div', { class: 'sp-btns' });
+        btns.append(el('button', { type: 'button', class: 'sp-btn', 'data-act': 'bought' }, '오늘 샀어요'));
+        if (p?.url) btns.append(el('a', { class: 'sp-buy', href: p.url, target: '_blank', rel: 'sponsored nofollow noopener', 'aria-label': `${p.name} – 말끔 추천상품 사러가기` }, '말끔 추천상품 사러가기 ↗'));
+        btns.append(el('button', { type: 'button', class: 'sp-remove', 'data-act': 'off' }, it.custom ? '삭제' : '목록에서 빼기'));
+
+        const body = el('div');
+        body.append(top, bar, ctrl, btns);
+        row.append(thumb, body);
+        box.append(row);
+      }
+      list.append(box);
+    }
+
+    // 꺼 둔 기본 품목은 '더 보기'에 버튼으로
+    for (const p of presets) if (!state[p.id].on) offList.append(el('button', { type: 'button', 'data-on': p.id }, p.name));
+
+    const tracked = ids.filter((id) => state[id].on);
+    const dated = tracked.filter((id) => state[id].last);
+    status.textContent = !tracked.length
+      ? '아래 "품목 더 보기"에서 우리 집 생필품을 골라 주세요.'
+      : !dated.length
+        ? '쓰고 있는 품목의 산 날을 입력하거나 "오늘 샀어요"를 눌러 주세요.'
+        : now || soon
+        ? `지금 사야 해요 ${now}개 · 일주일 안에 ${soon}개`
+        : '모두 넉넉해요.';
+
+    // 캘린더 링크: 산 날이 있는 사용 중 품목만
+    const q = new URLSearchParams();
+    const ready = tracked.filter((id) => state[id].last);
+    for (const id of ready) q.append('i', `${nameOf(id)}|${state[id].cycle}|${state[id].last.replace(/-/g, '')}`);
+    if (ready.length) {
+      icsLink.href = `/api/supplies-calendar.ics?${q}`;
+      icsLink.removeAttribute('aria-disabled');
+      icsLink.style.opacity = '';
+      icsNote.textContent = `${ready.length}개 품목의 다음 구매일 오전 10시에 알림이 오고, 주기마다 반복돼요.`;
+    } else {
+      icsLink.removeAttribute('href');
+      icsLink.setAttribute('aria-disabled', 'true');
+      icsLink.style.opacity = '0.4';
+      icsNote.textContent = '"오늘 샀어요"를 누르거나 산 날을 입력하면 알림을 추가할 수 있어요.';
+    }
+    save();
+  }
+
+  list.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-act]');
+    if (!btn) return;
+    const id = btn.closest<HTMLElement>('.sp-item')!.dataset.id!;
+    if (btn.dataset.act === 'bought') state[id].last = todayStr();
+    if (btn.dataset.act === 'off') {
+      if (state[id].custom) delete state[id];
+      else state[id].on = false;
+    }
+    render();
+  });
+  list.addEventListener('change', (e) => {
+    const input = e.target as HTMLInputElement;
+    const id = input.closest<HTMLElement>('.sp-item')?.dataset.id;
+    if (!id || !input.dataset.field) return;
+    if (input.dataset.field === 'last') state[id].last = input.value;
+    if (input.dataset.field === 'cycle') {
+      const n = Math.round(Number(input.value));
+      if (n >= 1 && n <= 730) state[id].cycle = n;
+    }
+    render();
+  });
+  offList.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-on]');
+    if (!btn) return;
+    state[btn.dataset.on!].on = true;
+    render();
+  });
+  document.getElementById('add-form')!.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = (document.getElementById('add-name') as HTMLInputElement).value.trim().slice(0, 20);
+    const cycle = Math.round(Number((document.getElementById('add-cycle') as HTMLInputElement).value));
+    if (!name || !(cycle >= 1 && cycle <= 730)) return;
+    state[`c-${Date.now()}`] = { on: true, cycle, last: todayStr(), name, custom: true };
+    (e.target as HTMLFormElement).reset();
+    render();
+  });
+  render();
+</script>

@@ -18,6 +18,7 @@ export default {
 
     if (url.pathname === '/api/contact') return contact(request, env);
     if (url.pathname === '/api/trash-calendar.ics') return trashCalendar(url);
+    if (url.pathname === '/api/supplies-calendar.ics') return suppliesCalendar(url);
 
     const canonicalHost = env.CANONICAL_HOST;
     const local = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
@@ -211,6 +212,80 @@ function trashCalendar(url) {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
       'Content-Disposition': 'inline; filename="malkkeum-trash-day.ics"',
+      'Cache-Control': 'no-store',
+      'X-Robots-Tag': 'noindex',
+    },
+  });
+}
+
+// ─── 생필품 재구매 캘린더 (.ics) ─────────────────────────────
+// /api/supplies-calendar.ics?i=주방세제|45|20261006&i=수세미|21|20261001
+// i = 품목 이름 | 교체 주기(일) | 마지막으로 산 날(YYYYMMDD). 다음 구매일부터 주기마다 반복
+function suppliesCalendar(url) {
+  const today = new Date(Date.now() + 9 * 3600 * 1000);
+  const todayYmd = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const esc = (t) => t.replace(/\\/g, '\\\\').replace(/[,;]/g, (c) => '\\' + c);
+  const events = [];
+
+  for (const raw of url.searchParams.getAll('i').slice(0, 40)) {
+    const [nameRaw, cycleRaw, lastRaw] = raw.split('|');
+    const name = (nameRaw || '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, 30);
+    const cycle = Math.round(Number(cycleRaw));
+    const m = /^(\d{4})(\d{2})(\d{2})$/.exec(lastRaw || '');
+    if (!name || !(cycle >= 1 && cycle <= 730) || !m) continue;
+    // 다음 구매일: 마지막 구매일 + 주기. 이미 지났다면 아직 안 산 것이니 오늘 첫 알림
+    let due = Date.UTC(+m[1], +m[2] - 1, +m[3]) + cycle * 86400000;
+    if (due < todayYmd) due = todayYmd;
+    const ymd = new Date(due).toISOString().slice(0, 10).replace(/-/g, '');
+    events.push(
+      'BEGIN:VEVENT',
+      `UID:malkkeum-supply-${encodeURIComponent(name).replace(/%/g, '')}-${cycle}@malkkeumi.com`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=Asia/Seoul:${ymd}T100000`,
+      'DURATION:PT30M',
+      `RRULE:FREQ=DAILY;INTERVAL=${cycle}`,
+      `SUMMARY:${esc(name)} 살 때예요`,
+      `DESCRIPTION:${esc(name)}을(를) 바꾸거나 새로 살 때가 됐어요. 샀다면 말끔 재고 체크에서 '새로 샀어요'를 눌러 주세요.\\nhttps://malkkeumi.com/ko/tools/supplies/`,
+      'URL:https://malkkeumi.com/ko/tools/supplies/',
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:${esc(name)} 살 때예요`,
+      'TRIGGER:PT0M',
+      'END:VALARM',
+      'END:VEVENT',
+    );
+  }
+
+  if (!events.length) return new Response('알림을 받을 품목을 하나 이상 골라 주세요.', { status: 400, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Malkkeum//Supplies//KO',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:말끔 생필품 재구매',
+    'X-WR-TIMEZONE:Asia/Seoul',
+    'BEGIN:VTIMEZONE',
+    'TZID:Asia/Seoul',
+    'BEGIN:STANDARD',
+    'DTSTART:19700101T000000',
+    'TZOFFSETFROM:+0900',
+    'TZOFFSETTO:+0900',
+    'TZNAME:KST',
+    'END:STANDARD',
+    'END:VTIMEZONE',
+    ...events,
+    'END:VCALENDAR',
+  ]
+    .map(foldLine)
+    .join('\r\n');
+
+  return new Response(ics + '\r\n', {
+    headers: {
+      'Content-Type': 'text/calendar; charset=utf-8',
+      'Content-Disposition': 'inline; filename="malkkeum-supplies.ics"',
       'Cache-Control': 'no-store',
       'X-Robots-Tag': 'noindex',
     },
