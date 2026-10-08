@@ -31,8 +31,11 @@ const year = new Date().getFullYear();
         </ul>
       </div>
     </div>
-    <p class="ft__notice">{site.AFFILIATE_NOTICE[lang]}</p>
-    <p class="ft__mark serif" aria-hidden="true">Malkkeum</p>
+    <p class="ft__notice">
+      {lang === 'ko' ? '문의' : 'Contact'} {site.CONTACT_EMAIL}<br />
+      {site.AFFILIATE_NOTICE[lang]}
+    </p>
+    <p class="ft__mark" aria-hidden="true"><span class="serif">Malkkeum</span><span class="ft__sub">Recipe</span></p>
     <div class="ft__bottom">
       <span>© {year} {s.siteName}</span>
       <a href="#top">↑ Top</a>
@@ -73,7 +76,19 @@ const year = new Date().getFullYear();
     font-size: 12px;
     opacity: 0.55;
   }
+  .ft__sub {
+    font-size: clamp(9px, 1.07vw, 15px);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-left: 0.6em;
+    opacity: 0.75;
+  }
   .ft__mark {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    row-gap: 0.25em;
     font-size: clamp(88px, 22vw, 340px);
     line-height: 0.9;
     letter-spacing: -0.03em;

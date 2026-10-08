@@ -9,7 +9,7 @@ interface Props {
 }
 const { lang, slug, title } = Astro.props;
 const s = t(lang).sheet;
-const fileName = `${lang === 'ko' ? '말끔' : 'Malkkeum'}_${title.replace(/[\\/:*?"<>|]/g, '')}.pdf`;
+const fileName = `${lang === 'ko' ? '말끔레시피' : 'MalkkeumRecipe'}_${title.replace(/[\\/:*?"<>|]/g, '')}.pdf`;
 ---
 
 <aside class="sheet-bar">

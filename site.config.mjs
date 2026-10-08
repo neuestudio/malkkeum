@@ -21,6 +21,10 @@ export default {
   // 개인정보처리방침·이용약관 시행일
   POLICY_DATE: '2026-10-01',
 
+  // 운영 주체와 공개 연락처 (소개·문의·푸터·개인정보처리방침·글쓴이 표시에 쓰인다)
+  OPERATOR: { ko: '말끔레시피', en: 'Malkkeum Recipe' },
+  CONTACT_EMAIL: 'malkkeumi01@gmail.com',
+
   // 쿠팡 파트너스 고지 문구 (공정위 지침상 글마다 눈에 띄게 표시해야 한다)
   AFFILIATE_NOTICE: {
     ko: '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.',

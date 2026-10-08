@@ -5,7 +5,7 @@ description: A home cleaning checklist split into daily 10-minute tasks, weekly,
 kind: guide
 season: [all]
 sheet:
-  title: Malkkeum Cleaning Routine Checklist
+  title: Malkkeum Recipe Cleaning Routine Checklist
   subtitle: Split tasks by frequency and ten minutes a day keeps your home in shape. Tick a box as you go.
   sections:
     - title: Daily (10 minutes)

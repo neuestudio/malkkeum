@@ -7,6 +7,8 @@ import GuideCard from '../../../components/GuideCard.astro';
 import MagazineCard from '../../../components/MagazineCard.astro';
 import AdSlot from '../../../components/AdSlot.astro';
 import SheetBar from '../../../components/SheetBar.astro';
+import Byline from '../../../components/Byline.astro';
+import site from '../../../../site.config.mjs';
 import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../../../lib/content';
 import { formatDate, path, t, type Lang } from '../../../lib/i18n';
 import { imageOf } from '../../../lib/images';
@@ -35,8 +37,8 @@ const jsonLd = [
     mainEntityOfPage: url,
     datePublished: d.publishedAt.toISOString(),
     dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
-    author: { '@type': 'Organization', name: s.siteName },
-    publisher: { '@type': 'Organization', name: s.siteName },
+    author: { '@type': 'Organization', name: site.OPERATOR[lang], url: new URL(path(lang, 'about'), Astro.site).toString() },
+    publisher: { '@type': 'Organization', name: s.siteName, url: new URL(path(lang), Astro.site).toString(), logo: new URL('/favicon.svg', Astro.site).toString() },
     ...(hero.src ? { image: new URL(hero.src, Astro.site).toString() } : {}),
   },
   {
@@ -55,9 +57,10 @@ const jsonLd = [
   <article class="wrap page-top" data-pagefind-body>
     <Crumbs items={[{ name: s.nav.magazine, href: path(lang, 'magazine') }, { name: s.kind[d.kind] }]} />
     <header class="a-head">
-      <p class="meta">{s.kind[d.kind]} · {formatDate(d.publishedAt, lang)}</p>
+
       <h1 class="title-xl">{d.title}</h1>
       <p class="a-sum dim">{d.summary}</p>
+      <div class="a-by"><Byline lang={lang} published={d.publishedAt} updated={d.updatedAt} prefix={s.kind[d.kind]} /></div>
     </header>
     <figure class="a-hero">
       <Media {...hero} sizes="100vw" alt={d.heroAlt ?? d.title} label={s.kind[d.kind]} tone="sage" eager width={2000} height={1333} />
@@ -65,7 +68,6 @@ const jsonLd = [
     <div class="a-body">
       <div class="prose"><Content /></div>
       {d.sheet && <SheetBar lang={lang} slug={slug} title={d.sheet.title} />}
-      {d.updatedAt && <p class="meta" style="margin-top:32px">{s.updated} {formatDate(d.updatedAt, lang)}</p>}
     </div>
   </article>
 
@@ -94,6 +96,9 @@ const jsonLd = [
     max-width: 880px;
     margin: 28px auto 40px;
     text-align: center;
+  }
+  .a-by :global(.byline) {
+    justify-content: center;
   }
   .a-head .meta {
     margin-bottom: 16px;

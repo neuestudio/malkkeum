@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import site from '../../../site.config.mjs';
 import { langPaths } from '../../lib/content';
 import { path, t, type Lang } from '../../lib/i18n';
 
@@ -43,6 +44,13 @@ const f = ko
     <h1 class="label">{s.footer.contact}</h1>
     <p class="lead">{f.desc}</p>
   </section>
+  <section class="wrap split">
+    <div></div>
+    <p class="mail">
+      {lang === 'ko' ? '이메일로 바로 보내셔도 돼요' : 'Or email us directly'}:{' '}
+      <a href={`mailto:${site.CONTACT_EMAIL}`}>{site.CONTACT_EMAIL}</a>
+    </p>
+  </section>
   <section class="wrap section split">
     <div></div>
     <form class="form" id="contact" method="post" action="/api/contact" data-sending={f.sending} data-ok={f.ok} data-fail={f.fail}>
@@ -80,6 +88,13 @@ const f = ko
 </Base>
 
 <style>
+  .mail {
+    overflow-wrap: anywhere;
+  }
+  .mail a {
+    color: var(--accent-deep);
+    border-bottom: 1px solid var(--accent);
+  }
   .form {
     display: grid;
     gap: 24px;

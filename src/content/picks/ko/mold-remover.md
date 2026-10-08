@@ -40,4 +40,4 @@ publishedAt: 2026-09-30
 
 사용 순서는 [욕실 실리콘 검은 곰팡이 제거](/ko/guides/silicone-mold/)와 [욕실 타일 줄눈 때 제거](/ko/guides/tile-grout/)에 단계별로 정리했어요.
 
-## 말끔의 선택
+## 말끔레시피의 선택

@@ -55,4 +55,4 @@ publishedAt: 2026-10-01
 
 청소기 스펙 보는 법은 [무선청소기 고르는 법](/ko/picks/cordless-vacuum-guide/)에 따로 정리했어요.
 
-## 말끔의 선택
+## 말끔레시피의 선택

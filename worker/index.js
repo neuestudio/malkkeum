@@ -103,10 +103,10 @@ async function contact(request, env) {
   // 도메인 연결 + Email Routing 설정 전에는 메일을 보낼 수 없다 (README 참고)
   if (!env.MAILER || !env.CONTACT_FROM || !env.CONTACT_TO) return json(503, { error: 'mail-not-configured' });
 
-  const subject = `[말끔 문의] ${topic} - ${name}`;
+  const subject = `[말끔레시피 문의] ${topic} - ${name}`;
   const text = [`이름: ${name}`, `이메일: ${email}`, `유형: ${topic}`, `언어: ${lang}`, '', message].join('\n');
   const raw = [
-    `From: =?UTF-8?B?${b64('말끔 문의폼')}?= <${env.CONTACT_FROM}>`,
+    `From: =?UTF-8?B?${b64('말끔레시피 문의폼')}?= <${env.CONTACT_FROM}>`,
     `To: <${env.CONTACT_TO}>`,
     `Reply-To: <${email}>`,
     `Subject: =?UTF-8?B?${b64(subject)}?=`,
@@ -188,10 +188,10 @@ function trashCalendar(url) {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Malkkeum//Trash Day//KO',
+    'PRODID:-//Malkkeum Recipe//Trash Day//KO',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    'X-WR-CALNAME:말끔 쓰레기 배출일',
+    'X-WR-CALNAME:말끔레시피 쓰레기 배출일',
     'X-WR-TIMEZONE:Asia/Seoul',
     'BEGIN:VTIMEZONE',
     'TZID:Asia/Seoul',
@@ -246,7 +246,7 @@ function suppliesCalendar(url) {
       'DURATION:PT30M',
       `RRULE:FREQ=DAILY;INTERVAL=${cycle}`,
       `SUMMARY:${esc(name)} 살 때예요`,
-      `DESCRIPTION:${esc(name)}을(를) 바꾸거나 새로 살 때가 됐어요. 샀다면 말끔 재고 체크에서 '새로 샀어요'를 눌러 주세요.\\nhttps://malkkeumi.com/ko/tools/supplies/`,
+      `DESCRIPTION:${esc(name)}을(를) 바꾸거나 새로 살 때가 됐어요. 샀다면 말끔레시피 재고 체크에서 '새로 샀어요'를 눌러 주세요.\\nhttps://malkkeumi.com/ko/tools/supplies/`,
       'URL:https://malkkeumi.com/ko/tools/supplies/',
       'BEGIN:VALARM',
       'ACTION:DISPLAY',
@@ -262,10 +262,10 @@ function suppliesCalendar(url) {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Malkkeum//Supplies//KO',
+    'PRODID:-//Malkkeum Recipe//Supplies//KO',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    'X-WR-CALNAME:말끔 생필품 재구매',
+    'X-WR-CALNAME:말끔레시피 생필품 재구매',
     'X-WR-TIMEZONE:Asia/Seoul',
     'BEGIN:VTIMEZONE',
     'TZID:Asia/Seoul',

@@ -12,6 +12,8 @@ import { formatDate, path, t, type Lang } from '../../../lib/i18n';
 import { toneOf } from '../../../lib/tone';
 import { imageOf } from '../../../lib/images';
 import { productUrl } from '../../../lib/links';
+import Byline from '../../../components/Byline.astro';
+import site from '../../../../site.config.mjs';
 import KitCore, { type KitItem } from '../../../components/KitCore.astro';
 import KitList from '../../../components/KitList.astro';
 
@@ -55,6 +57,8 @@ const jsonLd = [
     step: d.steps.map((st, i) => ({ '@type': 'HowToStep', position: i + 1, name: st.title, text: st.body, url: `${url}#step-${i + 1}` })),
     datePublished: d.publishedAt.toISOString(),
     dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
+    author: { '@type': 'Organization', name: site.OPERATOR[lang], url: new URL(path(lang, 'about'), Astro.site).toString() },
+    publisher: { '@type': 'Organization', name: s.siteName, url: new URL(path(lang), Astro.site).toString(), logo: new URL('/favicon.svg', Astro.site).toString() },
   },
   {
     '@context': 'https://schema.org',
@@ -79,6 +83,7 @@ const midAd = d.steps.length >= 5 ? 3 : 0;
       <div>
         <h1 class="title-xl">{d.title}</h1>
         <p class="g-sum dim">{d.summary}</p>
+        <Byline lang={lang} published={d.publishedAt} updated={d.updatedAt} />
         {hasAffiliate && <div style="margin-top:14px"><Disclosure lang={lang} /></div>}
       </div>
     </header>
@@ -154,7 +159,6 @@ const midAd = d.steps.length >= 5 ? 3 : 0;
       <div class="prose"><Content /></div>
     </section>
 
-    <p class="g-date split"><span></span><span class="meta">{s.published} {formatDate(d.publishedAt, lang)}{d.updatedAt && ` · ${s.updated} ${formatDate(d.updatedAt, lang)}`}</span></p>
   </article>
 
   {kit && <KitList lang={lang} name={kit.name} items={kitAll} picks={usedPicks} />}

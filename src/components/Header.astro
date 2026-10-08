@@ -24,6 +24,7 @@ const otherLangs = PUBLIC_LANGS.filter((l) => l !== lang);
   <div class="wrap hd__in">
     <a class="logo" href={path(lang)} aria-label={s.siteName}>
       <span class="logo__en serif">Malkkeum</span>
+      <span class="logo__sub">Recipe</span>
     </a>
     <nav aria-label="main">
         <ul class="nav">
@@ -97,6 +98,13 @@ const otherLangs = PUBLIC_LANGS.filter((l) => l !== lang);
     font-size: 28px;
     line-height: 1;
     letter-spacing: -0.01em;
+  }
+  .logo__sub {
+    font-size: 7.5px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
   }
   @media (max-width: 899px) {
     .logo__en {

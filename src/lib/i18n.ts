@@ -7,10 +7,10 @@ export const DEFAULT_LANG: Lang = PUBLIC_LANGS[0];
 
 export const ui = {
   ko: {
-    siteName: '말끔',
+    siteName: '말끔레시피',
     tagline: '어려운 청소도 말끔하게',
     siteDescription:
-      '쉬운 청소부터 방충망·세탁조·소파 묵은때까지. 난이도, 소요 시간, 준비물, 단계별 방법을 한눈에 정리한 청소 가이드 플랫폼, 말끔.',
+      '쉬운 청소부터 방충망·세탁조·소파 묵은때까지. 난이도, 소요 시간, 준비물, 단계별 방법을 한눈에 정리한 청소 가이드 플랫폼, 말끔레시피.',
     nav: { guides: '청소법', magazine: '매거진', picks: '추천', store: '스토어', tools: '도구', search: '검색' },
     featured: 'FEATURED',
     readMore: '보러가기',
@@ -60,7 +60,7 @@ export const ui = {
     guidesIntro: (n: number) => [`말끔하게 끝내는 청소 가이드 ${n}개.`, '공간, 대상, 난이도로 골라보세요.'],
     magazineIntro: ['지금 이 계절에 필요한 청소,', '살림을 가볍게 만드는 이야기.'],
     picksIntro: ['무엇을 사야 할지 고민될 때,', '고르는 기준부터 알려드려요.'],
-    storeIntro: ['말끔이 고른 청소 아이템.', '어디에 어떻게 쓰는지까지 함께 알려드려요.'],
+    storeIntro: ['말끔레시피가 고른 청소 아이템.', '어디에 어떻게 쓰는지까지 함께 알려드려요.'],
     productCategory: { cleaner: '세제·클리너', laundry: '세탁', bathroom: '욕실', tool: '청소 도구', appliance: '가전', home: '생활용품', pet: '반려동물' },
     howToUse: '이럴 때 써요',
     readPick: '관련 추천 글',
@@ -89,7 +89,7 @@ export const ui = {
     notFound: { title: '페이지를 찾을 수 없어요', body: '주소가 바뀌었거나 삭제된 페이지예요.', cta: '홈으로' },
   },
   en: {
-    siteName: 'Malkkeum',
+    siteName: 'Malkkeum Recipe',
     tagline: 'Cleaning, done neatly',
     siteDescription:
       'From quick wipes to window screens, washing machines and stubborn sofa stains. Step-by-step cleaning guides with difficulty, time and supplies at a glance.',

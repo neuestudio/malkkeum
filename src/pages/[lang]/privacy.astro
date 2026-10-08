@@ -11,7 +11,7 @@ const ko = lang === 'ko';
 const date = site.POLICY_DATE;
 ---
 
-<Base lang={lang} title={s.footer.privacy} description={ko ? '말끔이 수집하는 개인정보의 항목과 이용 목적, 보관 기간, 쿠키와 광고(Google AdSense), 제휴 링크에 관한 안내예요.' : 'How Malkkeum collects and uses personal information, cookies, advertising (Google AdSense) and affiliate links.'}>
+<Base lang={lang} title={s.footer.privacy} description={ko ? '말끔레시피가 수집하는 개인정보의 항목과 이용 목적, 보관 기간, 쿠키와 광고(Google AdSense), 제휴 링크에 관한 안내예요.' : 'How Malkkeum Recipe collects and uses personal information, cookies, advertising (Google AdSense) and affiliate links.'}>
   <section class="wrap page-top split">
     <h1 class="label">{s.footer.privacy}</h1>
     <p class="meta">{ko ? `시행일 ${date}` : `Effective ${date}`}</p>
@@ -22,7 +22,7 @@ const date = site.POLICY_DATE;
       {
         ko ? (
           <>
-            <p>말끔(이하 "사이트")은 이용자의 개인정보를 소중히 다루며, 「개인정보 보호법」 등 관련 법령을 지킵니다. 이 방침은 사이트가 어떤 정보를 왜 수집하고 어떻게 보호하는지 설명합니다.</p>
+            <p>말끔레시피(이하 "사이트")는 이용자의 개인정보를 소중히 다루며, 「개인정보 보호법」 등 관련 법령을 지킵니다. 이 방침은 사이트가 어떤 정보를 왜 수집하고 어떻게 보호하는지 설명합니다.</p>
 
             <h2>1. 수집하는 개인정보와 목적</h2>
             <p>사이트는 회원가입 없이 이용할 수 있으며, 아래의 경우에만 개인정보를 수집합니다.</p>
@@ -66,14 +66,15 @@ const date = site.POLICY_DATE;
             <p>사이트는 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.</p>
 
             <h2>8. 개인정보 보호책임자</h2>
-            <p>개인정보 관련 문의, 불만, 피해 구제는 <a href={path(lang, 'contact')}>문의 페이지</a>로 연락해 주세요. 개인정보 침해에 대한 신고나 상담은 개인정보침해신고센터(privacy.kisa.or.kr, 국번 없이 118)에도 할 수 있습니다.</p>
+            <p>개인정보 보호책임자: 말끔레시피 편집팀 · 이메일 {site.CONTACT_EMAIL}</p>
+            <p>개인정보 관련 문의, 불만, 피해 구제는 위 이메일이나 <a href={path(lang, 'contact')}>문의 페이지</a>로 연락해 주세요. 개인정보 침해에 대한 신고나 상담은 개인정보침해신고센터(privacy.kisa.or.kr, 국번 없이 118)에도 할 수 있습니다.</p>
 
             <h2>9. 방침의 변경</h2>
             <p>이 방침이 바뀌면 시행일과 함께 이 페이지에 공지합니다.</p>
           </>
         ) : (
           <>
-            <p>Malkkeum ("the site") respects your privacy. This policy explains what we collect, why, and how we protect it.</p>
+            <p>Malkkeum Recipe ("the site") respects your privacy. This policy explains what we collect, why, and how we protect it.</p>
             <h2>1. What we collect</h2>
             <table>
               <thead><tr><th>When</th><th>What</th><th>Why</th><th>Kept for</th></tr></thead>
@@ -96,7 +97,7 @@ const date = site.POLICY_DATE;
             <h2>4. Processors</h2>
             <p>Cloudflare, Inc. (hosting, contact email delivery), Google LLC (advertising).</p>
             <h2>5. Your rights</h2>
-            <p>You may request access to, correction or deletion of your information at any time via the <a href={path(lang, 'contact')}>contact page</a>.</p>
+            <p>You may request access to, correction or deletion of your information at any time at {site.CONTACT_EMAIL} or via the <a href={path(lang, 'contact')}>contact page</a>.</p>
             <h2>6. Children</h2>
             <p>We do not knowingly collect information from children under 14.</p>
             <h2>7. Changes</h2>

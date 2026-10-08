@@ -30,7 +30,7 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: '말끔 쓰레기 배출일 알림',
+    name: '말끔레시피 쓰레기 배출일 알림',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'iOS, Android, Web',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
@@ -157,9 +157,9 @@ const jsonLd = [
       <p>배출일은 집 안 냄새를 잡기 좋은 날이기도 해요. 쓰레기를 내놓는 김에 <a href={path(lang, 'guides/sink-drain')}>싱크대 배수구 거름망</a>을 비우고, 음식물 통은 베이킹소다 물로 한 번 헹궈 두세요. 냄새가 오래 배어 있다면 <a href={path(lang, 'guides/shoe-cabinet')}>신발장 냄새 잡기</a>처럼 베이킹소다를 통 바닥에 조금 뿌려 두는 것도 좋아요.</p>
 
       <h2>자주 묻는 질문</h2>
-      <p><strong>요일이 바뀌면 어떻게 하나요?</strong><br>캘린더에서 예전 "말끔" 일정을 지운 뒤, 이 페이지에서 새 요일을 골라 다시 추가하세요.</p>
+      <p><strong>요일이 바뀌면 어떻게 하나요?</strong><br>캘린더에서 예전 "말끔레시피" 일정을 지운 뒤, 이 페이지에서 새 요일을 골라 다시 추가하세요.</p>
       <p><strong>알림이 안 울려요.</strong><br>휴대폰 캘린더 앱의 알림이 꺼져 있지 않은지 확인하세요. 구글 캘린더로 추가했다면 알림 시간은 구글 캘린더의 기본 알림 설정을 따라요.</p>
-      <p><strong>내 정보가 저장되나요?</strong><br>고른 요일은 이 기기의 브라우저에만 저장되고, 말끔 서버에는 남지 않아요.</p>
+      <p><strong>내 정보가 저장되나요?</strong><br>고른 요일은 이 기기의 브라우저에만 저장되고, 말끔레시피 서버에는 남지 않아요.</p>
     </div>
   </article>
 </Base>
@@ -355,7 +355,7 @@ const jsonLd = [
           dates: `${start}/${end}`,
           ctz: 'Asia/Seoul',
           recur: `RRULE:FREQ=WEEKLY;BYDAY=${ORDER.filter((x) => v.days.includes(x)).join(',')}`,
-          details: '말끔 쓰레기 배출일 알림 · https://malkkeumi.com/ko/tools/trash-day/',
+          details: '말끔레시피 쓰레기 배출일 알림 · https://malkkeumi.com/ko/tools/trash-day/',
         });
         const a = document.createElement('a');
         a.href = `https://calendar.google.com/calendar/render?${p}`;

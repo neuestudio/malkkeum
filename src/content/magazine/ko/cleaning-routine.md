@@ -5,7 +5,7 @@ description: 매일 10분, 주 1회, 월 1회, 계절별로 나눈 집 청소 �
 kind: guide
 season: [all]
 sheet:
-  title: 말끔 청소 루틴 체크리스트
+  title: 말끔레시피 청소 루틴 체크리스트
   subtitle: 할 일을 주기별로 나누면 하루 10분으로 집이 유지돼요. 한 칸씩 체크하며 써 보세요.
   sections:
     - title: 매일 (10분)

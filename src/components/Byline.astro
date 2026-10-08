@@ -1,0 +1,42 @@
+---
+// 글쓴이·검수·날짜 표시. 누가 어떤 기준으로 만든 글인지 보여준다 (편집 원칙은 소개 페이지)
+import site from '../../site.config.mjs';
+import { formatDate, path, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  published: Date;
+  updated?: Date;
+  prefix?: string; // 예: 매거진 종류
+}
+const { lang, published, updated, prefix } = Astro.props;
+const ko = lang === 'ko';
+---
+
+<p class="byline">
+  {prefix && <span>{prefix}</span>}
+  <span>{ko ? '작성' : 'Written by'} {ko ? '말끔레시피 에디터' : 'Malkkeum Recipe editors'}</span>
+  <span>{ko ? '검수' : 'Reviewed by'} {ko ? '말끔레시피 편집팀' : 'the Malkkeum Recipe team'}</span>
+  <span>{formatDate(updated ?? published, lang)} {updated ? (ko ? '수정' : 'updated') : ko ? '발행' : 'published'}</span>
+  <a href={`${path(lang, 'about')}#principles`}>{ko ? '편집 원칙' : 'How we write'}</a>
+</p>
+
+<style>
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+  .byline > span + span::before {
+    content: '·';
+    margin: 0 8px;
+  }
+  .byline a {
+    margin-left: 14px;
+    color: var(--accent-deep);
+    border-bottom: 1px solid var(--accent);
+  }
+</style>

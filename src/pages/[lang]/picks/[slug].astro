@@ -10,6 +10,8 @@ import { detailPaths, entries, pickBySlugs, slugOf, translationsOf } from '../..
 import { formatDate, path, t, type Lang } from '../../../lib/i18n';
 import { imageOf } from '../../../lib/images';
 import { productUrl } from '../../../lib/links';
+import Byline from '../../../components/Byline.astro';
+import site from '../../../../site.config.mjs';
 
 export const getStaticPaths = () => detailPaths('picks');
 
@@ -35,7 +37,8 @@ const jsonLd = [
     mainEntityOfPage: url,
     datePublished: d.publishedAt.toISOString(),
     dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
-    author: { '@type': 'Organization', name: s.siteName },
+    author: { '@type': 'Organization', name: site.OPERATOR[lang], url: new URL(path(lang, 'about'), Astro.site).toString() },
+    publisher: { '@type': 'Organization', name: s.siteName, url: new URL(path(lang), Astro.site).toString(), logo: new URL('/favicon.svg', Astro.site).toString() },
   },
 ];
 ---
@@ -48,6 +51,7 @@ const jsonLd = [
       <div>
         <h1 class="title-xl">{d.title}</h1>
         <p class="p-sum dim">{d.summary}</p>
+        <Byline lang={lang} published={d.publishedAt} updated={d.updatedAt} />
         <div style="margin-top:20px"><Disclosure lang={lang} /></div>
       </div>
     </header>
@@ -80,7 +84,6 @@ const jsonLd = [
       }
     </ul>
     <Disclosure lang={lang} />
-    <p class="meta" style="margin-top:24px">{s.published} {formatDate(d.publishedAt, lang)}</p>
   </article>
 
   <div class="wrap"><AdSlot lang={lang} /></div>
