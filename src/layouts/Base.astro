@@ -26,7 +26,7 @@ const abs = (p: string) => new URL(p, site.SITE_URL).toString();
 const fullTitle = title ? `${title} | ${s.siteName}` : `${s.siteName} — ${s.tagline}`;
 const desc = description ?? s.siteDescription;
 const canonical = abs(Astro.url.pathname);
-const ogImage = abs(image ?? '/og-default.png');
+const ogImage = abs(image ?? (lang === 'en' ? '/og-default-en.png' : '/og-default.png'));
 const altEntries = Object.entries(alternates) as [Lang, string][];
 ---
 
