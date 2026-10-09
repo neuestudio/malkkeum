@@ -23,7 +23,26 @@ const picks = (await entries('picks', lang)).sort(
   (a, b) => Number(!!imageOf('picks', slugOf(b.id), b.data.heroImage).src) - Number(!!imageOf('picks', slugOf(a.id), a.data.heroImage).src),
 ); // 대표 이미지가 있는 글을 먼저
 
-const hero = guides.find((g) => g.data.featured) ?? guides[0];
+// 맨 위 배너: featured 매거진(시즌 글) → featured 청소법 → 최신 청소법
+const heroMag = magazine.find((m) => m.data.featured);
+const heroGuide = guides.find((g) => g.data.featured) ?? guides[0];
+const hero = heroMag
+  ? {
+      image: imageOf('magazine', slugOf(heroMag.id), heroMag.data.heroImage),
+      alt: heroMag.data.heroAlt ?? heroMag.data.title,
+      tone: 'sage' as const,
+      href: path(lang, `magazine/${slugOf(heroMag.id)}`),
+      title: heroMag.data.title,
+      meta: s.kind[heroMag.data.kind],
+    }
+  : heroGuide && {
+      image: imageOf('guides', slugOf(heroGuide.id), heroGuide.data.heroImage),
+      alt: heroGuide.data.heroAlt ?? heroGuide.data.title,
+      tone: toneOf(heroGuide.data.space),
+      href: path(lang, `guides/${slugOf(heroGuide.id)}`),
+      title: heroGuide.data.title,
+      meta: `${s.difficulty[heroGuide.data.difficulty]} · ${s.minutes(heroGuide.data.duration)}`,
+    };
 const season = currentSeason();
 // 이번 계절로 지정한 글이 3개 이상이면 그것만, 적으면 연중 글로 채운다
 const explicit = guides.filter((g) => g.data.season.includes(season));
@@ -54,22 +73,20 @@ const jsonLd = [
       <section class="hero">
         <div class="hero__media">
           <Media
-            {...imageOf('guides', slugOf(hero.id), hero.data.heroImage)}
+            {...hero.image}
             sizes="100vw"
-            alt={hero.data.heroAlt ?? hero.data.title}
-            tone={toneOf(hero.data.space)}
+            alt={hero.alt}
+            tone={hero.tone}
             eager
             width={2400}
             height={1350}
           />
         </div>
         <div class="hero__shade" />
-        <a class="hero__bar wrap" href={path(lang, `guides/${slugOf(hero.id)}`)}>
+        <a class="hero__bar wrap" href={hero.href}>
           <span class="card__cap hero__tag">{s.featured}</span>
-          <span class="hero__title">{hero.data.title}</span>
-          <span class="hero__meta">
-            {s.difficulty[hero.data.difficulty]} · {s.minutes(hero.data.duration)}
-          </span>
+          <span class="hero__title">{hero.title}</span>
+          <span class="hero__meta">{hero.meta}</span>
           <span class="hero__cta">{s.readMore} →</span>
         </a>
       </section>

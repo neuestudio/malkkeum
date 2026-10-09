@@ -54,6 +54,8 @@ const magazine = defineCollection({
     summary: z.string().min(20).max(160),
     description: z.string().min(40).max(170),
     kind: z.enum(['season', 'guide', 'column']),
+    // 메인 맨 위 배너에 올릴 글. 청소법의 featured보다 먼저 쓰인다 (시즌 글을 띄울 때)
+    featured: z.boolean().default(false),
     // A4 인쇄용 시트. 있으면 PDF가 만들어지고 글에 "PDF로 받기" 버튼이 생긴다
     sheet: z
       .object({

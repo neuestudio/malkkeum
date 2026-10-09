@@ -3,6 +3,7 @@ title: Prevent Winter Condensation and Mold, Starting in Autumn
 summary: Before the droplets on your windows turn into mold on the walls. Why condensation forms and what to prepare in autumn.
 description: Why winter condensation and mold form, and what to do in autumn. Clean window tracks, move furniture off walls, ventilate, manage humidity and insulate windows.
 kind: season
+featured: true
 season: [autumn, winter]
 related: [window-rail, shoe-cabinet, curtain]
 publishedAt: 2026-09-30

@@ -3,6 +3,7 @@ title: 겨울 결로·곰팡이, 가을에 미리 막는 법
 summary: 겨울 아침 창문에 맺힌 물방울이 벽지 곰팡이로 번지기 전에. 결로가 생기는 원리와 가을에 해 둘 준비를 정리했어요.
 description: 겨울 결로와 곰팡이가 생기는 원리, 가을에 미리 할 창틀 청소와 가구 배치, 환기 습관, 적정 습도, 결로 방지 용품 활용법을 정리했어요.
 kind: season
+featured: true
 season: [autumn, winter]
 related: [window-rail, shoe-cabinet, curtain]
 publishedAt: 2026-09-30
