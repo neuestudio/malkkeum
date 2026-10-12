@@ -24,6 +24,7 @@ export default {
   // 운영 주체와 공개 연락처 (소개·문의·푸터·개인정보처리방침·글쓴이 표시에 쓰인다)
   OPERATOR: { ko: '말끔레시피', en: 'Malkkeum Recipe' },
   CONTACT_EMAIL: 'malkkeumi01@gmail.com',
+  INSTAGRAM: 'https://www.instagram.com/malkkeumi',
 
   // 쿠팡 파트너스 고지 문구 (공정위 지침상 글마다 눈에 띄게 표시해야 한다)
   AFFILIATE_NOTICE: {

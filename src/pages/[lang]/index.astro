@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import site from '../../../site.config.mjs';
 import Media from '../../components/Media.astro';
 import GuideCard from '../../components/GuideCard.astro';
 import MagazineCard from '../../components/MagazineCard.astro';
@@ -52,6 +53,15 @@ const safety = magazine.find((m) => slugOf(m.id) === 'never-mix-cleaners');
 const [magLead, ...magRest] = magazine;
 
 const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: s.siteName,
+    url: new URL(path(lang), Astro.site).toString(),
+    logo: new URL('/favicon.svg', Astro.site).toString(),
+    email: site.CONTACT_EMAIL,
+    sameAs: [site.INSTAGRAM],
+  },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',

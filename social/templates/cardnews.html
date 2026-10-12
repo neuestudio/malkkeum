@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>말끔레시피 카드뉴스</title>
+<style>
+/* 말끔레시피 카드뉴스 템플릿 (1080×1350, 인스타 4:5). 색·서체는 브랜드 가이드 그대로 */
+@font-face{font-family:'Pretendard';src:url('fonts/PretendardVariable.woff2') format('woff2-variations');font-weight:45 920}
+@font-face{font-family:'Instrument Serif';font-style:italic;src:url('fonts/InstrumentSerif-Italic.ttf') format('truetype')}
+:root{
+  --bg:#F7F4EA; --paper:#FFFDF7; --ink:#2A211A; --muted:#736D66; --line:#E3DDCF;
+  --sage:#B7C4A4; --sage-deep:#56654A; --sage-soft:#E4E9DC;
+  --easy:#7F9870; --medium:#C9A23F; --hard:#B95D3C; --hard-soft:#F3E2DA;
+  --sans:'Pretendard',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:#ccc;font-family:var(--sans);color:var(--ink);word-break:keep-all;-webkit-font-smoothing:antialiased}
+#root{display:flex;flex-direction:column;gap:40px;padding:0}
+.slide{position:relative;width:1080px;height:1350px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;padding:88px 88px 0}
+
+/* 공통: 상단 꼬리표, 하단 로고 */
+.top{display:flex;justify-content:space-between;align-items:baseline}
+.kicker{display:flex;align-items:center;gap:14px;font-size:26px;font-weight:700;letter-spacing:.04em}
+.kicker::before{content:'';width:13px;height:13px;background:currentColor;transform:rotate(45deg)}
+.pg{font-family:var(--serif);font-style:italic;font-size:38px;color:var(--muted)}
+.foot{position:absolute;left:88px;right:88px;bottom:64px;display:flex;justify-content:space-between;align-items:baseline;font-size:22px;color:var(--muted)}
+.lockup{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--serif);font-style:italic;font-size:38px;color:var(--ink);line-height:1}
+.lockup small{font-family:var(--sans);font-style:normal;font-weight:600;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--sage-deep)}
+
+/* 표지 */
+.cover{padding:0}
+.cover .ph{height:700px;background-size:cover;background-position:center}
+.cover .panel{flex:1;padding:56px 88px 0;display:flex;flex-direction:column;gap:22px}
+.pill{align-self:flex-start;font-size:26px;font-weight:700;padding:8px 20px;background:var(--sage-soft);color:var(--sage-deep)}
+.pill.warn{background:var(--hard-soft);color:#8E4329}
+.cover h1,.text h2,.cta h2{white-space:pre-line}
+.cover h1{font-size:82px;font-weight:700;line-height:1.2;letter-spacing:-.04em}
+.cover .sub{font-size:34px;line-height:1.5;color:var(--muted);font-weight:500;letter-spacing:-.02em}
+.cover .meta{display:flex;gap:26px;font-size:28px;color:var(--muted);align-items:center}
+.cover .meta i{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:10px;vertical-align:1px}
+.swipe{font-family:var(--serif);font-style:italic;font-size:34px;color:var(--ink)}
+
+/* 본문 */
+.text h2{font-size:78px;font-weight:700;line-height:1.28;letter-spacing:-.04em;margin-top:84px}
+.text h2 em{font-style:normal;color:var(--sage-deep)}
+.text.warn h2 em{color:var(--hard)}
+.text .body{font-size:41px;line-height:1.65;letter-spacing:-.02em;margin-top:40px;color:var(--ink)}
+.text .body b{font-weight:700}
+.text .note{margin-top:auto;margin-bottom:170px;font-size:34px;line-height:1.6;color:var(--muted);border-top:2px solid var(--ink);padding-top:22px}
+.formula{margin-top:56px;display:flex;flex-direction:column;gap:0;border-top:3px solid var(--ink)}
+.formula .row{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;padding:40px 0;border-bottom:2px solid var(--line);font-size:44px;font-weight:700;letter-spacing:-.03em}
+.formula .op{font-family:var(--serif);font-style:italic;font-size:54px;text-align:center;color:var(--muted)}
+.formula .res{grid-column:1 / -1;font-size:34px;font-weight:600;color:var(--hard);margin-top:14px}
+/* 조합 하나: 크게 세로로 */
+.eq{margin-top:64px;display:flex;flex-direction:column;gap:6px;border-top:3px solid var(--ink);padding-top:44px}
+.eq b{font-size:78px;font-weight:700;letter-spacing:-.045em;line-height:1.2}
+.eq .op{font-family:var(--serif);font-style:italic;font-size:80px;line-height:.9;color:var(--muted)}
+.eq .res{margin-top:34px;align-self:flex-start;font-size:48px;font-weight:700;letter-spacing:-.03em;padding:16px 28px;background:var(--hard-soft);color:#8E4329}
+.text .body.end{margin-top:auto;margin-bottom:170px;font-size:34px;color:var(--muted)}
+.warn .formula .res::before{content:'→ '}
+
+.list{list-style:none;padding:0;margin-top:52px;display:flex;flex-direction:column;border-top:3px solid var(--ink)}
+.list li{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:36px 0;border-bottom:2px solid var(--line);font-size:41px;line-height:1.5;letter-spacing:-.02em}
+.list li::before{content:'';width:26px;height:26px;border:3px solid var(--ink);margin-top:17px}
+.list.dots li::before{border:0;background:var(--sage-deep);border-radius:50%;width:16px;height:16px;margin:22px 0 0 4px}
+.warn .list.dots li::before{background:var(--hard)}
+.list li b{font-weight:700}
+
+/* 재료 3종 같은 카드 */
+.agent{margin-top:60px;display:flex;flex-direction:column;gap:30px}
+.agent .nm{display:flex;align-items:baseline;gap:20px}
+.agent .nm b{font-size:92px;font-weight:700;letter-spacing:-.04em}
+.agent .nm span{font-size:38px;color:var(--muted);font-weight:500}
+.agent dl{display:grid;grid-template-columns:240px 1fr;border-top:3px solid var(--ink)}
+.agent dt,.agent dd{padding:38px 0;border-bottom:2px solid var(--line);font-size:41px;line-height:1.45}
+.agent dt{color:var(--muted);font-weight:600}
+.agent dd{font-weight:500}
+.agent dd.no{color:var(--hard)}
+
+/* 단계 */
+.steps{margin-top:84px;display:flex;flex-direction:column;gap:70px}
+.step{display:grid;grid-template-columns:126px 1fr;gap:32px}
+.step .no{width:112px;height:84px;display:grid;place-items:center;background:var(--ink);color:var(--bg);font-size:42px;font-weight:700;font-variant-numeric:tabular-nums}
+.step b{display:block;font-size:56px;font-weight:700;letter-spacing:-.03em;line-height:1.3}
+.step p{font-size:39px;line-height:1.6;color:var(--ink);margin-top:10px;letter-spacing:-.02em}
+
+/* 마지막 장 */
+.cta{background:var(--sage)}
+.cta .kicker,.cta .pg{color:var(--ink)}
+.cta h2{font-size:76px;font-weight:700;line-height:1.28;letter-spacing:-.04em;margin-top:150px}
+.cta .body{font-size:41px;line-height:1.6;margin-top:40px;letter-spacing:-.02em}
+.cta .save{margin-top:70px;display:inline-flex;align-self:flex-start;align-items:center;gap:18px;font-size:32px;font-weight:700;border:3px solid var(--ink);padding:20px 32px}
+.cta .big{position:absolute;left:84px;bottom:150px;font-family:var(--serif);font-style:italic;font-size:178px;line-height:1;display:flex;align-items:baseline;gap:26px}
+.cta .big small{font-family:var(--sans);font-style:normal;font-weight:600;font-size:22px;letter-spacing:.3em;text-transform:uppercase;opacity:.8}
+.cta .foot{color:var(--ink)}
+.cta .foot .lockup small{color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const esc = s => String(s ?? '');
+const lockup = '<span class="lockup">Malkkeum<small>Recipe</small></span>';
+const foot = (extra='malkkeumi.com') => `<div class="foot">${lockup}<span>${extra}</span></div>`;
+const pg = (i, n) => `<span class="pg">${String(i).padStart(2,'0')} / ${String(n).padStart(2,'0')}</span>`;
+
+const kinds = {
+  cover: (s, i, n, d) => `
+    <section class="slide cover" data-i="${i}">
+      <div class="ph" style="background-image:url('${esc(s.image)}')"></div>
+      <div class="panel">
+        <span class="pill ${s.tone === 'warn' ? 'warn' : ''}">${esc(s.tag)}</span>
+        <h1>${esc(s.title)}</h1>
+        ${s.sub ? `<p class="sub">${esc(s.sub)}</p>` : ''}
+        ${s.meta ? `<p class="meta">${s.meta}</p>` : ''}
+      </div>
+      <div class="foot">${lockup}<span class="swipe">swipe →</span></div>
+    </section>`,
+  text: (s, i, n) => `
+    <section class="slide text ${s.tone || ''}" data-i="${i}">
+      <div class="top"><span class="kicker">${esc(s.kicker)}</span>${pg(i, n)}</div>
+      <h2>${esc(s.title)}</h2>
+      ${s.body && !s.formula ? `<p class="body">${esc(s.body)}</p>` : ''}
+      ${s.formula && s.formula.length === 1 ? `<div class="eq"><b>${s.formula[0][0]}</b><span class="op">+</span><b>${s.formula[0][1]}</b><span class="res">→ ${s.formula[0][2]}</span></div>` : ''}
+      ${s.formula && s.formula.length > 1 ? `<div class="formula">${s.formula.map(f => `<div class="row"><span>${f[0]}</span><span class="op">+</span><span>${f[1]}</span>${f[2] ? `<span class="res">${f[2]}</span>` : ''}</div>`).join('')}</div>` : ''}
+      ${s.body && s.formula ? `<p class="body end">${esc(s.body)}</p>` : ''}
+      ${s.list ? `<ul class="list ${s.bullet || ''}">${s.list.map(x => `<li><span>${x}</span></li>`).join('')}</ul>` : ''}
+      ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
+      ${foot()}
+    </section>`,
+  agent: (s, i, n) => `
+    <section class="slide text" data-i="${i}">
+      <div class="top"><span class="kicker">${esc(s.kicker)}</span>${pg(i, n)}</div>
+      <div class="agent">
+        <p class="nm"><b>${esc(s.name)}</b><span>${esc(s.nature)}</span></p>
+        <dl>${s.rows.map(r => `<dt>${r[0]}</dt><dd class="${r[2] || ''}">${r[1]}</dd>`).join('')}</dl>
+      </div>
+      ${foot()}
+    </section>`,
+  steps: (s, i, n) => `
+    <section class="slide text" data-i="${i}">
+      <div class="top"><span class="kicker">${esc(s.kicker)}</span>${pg(i, n)}</div>
+      <div class="steps">${s.items.map(x => `<div class="step"><span class="no">${x.no}</span><div><b>${x.title}</b><p>${x.body}</p></div></div>`).join('')}</div>
+      ${foot()}
+    </section>`,
+  cta: (s, i, n) => `
+    <section class="slide cta" data-i="${i}">
+      <div class="top"><span class="kicker">${esc(s.kicker || '저장해 두세요')}</span>${pg(i, n)}</div>
+      <h2>${esc(s.title)}</h2>
+      ${s.body ? `<p class="body">${esc(s.body)}</p>` : ''}
+      <span class="save">↓ 프로필 링크 · malkkeumi.com</span>
+      <div class="big">Malkkeum<small>Recipe</small></div>
+    </section>`,
+};
+
+window.render = (data) => {
+  const n = data.slides.length;
+  document.getElementById('root').innerHTML = data.slides.map((s, idx) => kinds[s.type](s, idx + 1, n, data)).join('');
+};
+</script>
+</body>
+</html>
