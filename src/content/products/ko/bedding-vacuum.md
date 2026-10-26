@@ -1,5 +1,5 @@
 ---
-name: "침구 청소기"
+name: "혼스 침구 청소기 HSBC-1000"
 short: "침구청소기"
 category: appliance
 type: "침구 전용 · 두드림·흡입"

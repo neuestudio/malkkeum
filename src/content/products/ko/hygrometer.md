@@ -1,5 +1,5 @@
 ---
-name: "디지털 온습도계"
+name: "카스 디지털 온습도계 T023"
 short: "온습도계"
 category: home
 type: "디지털 · 탁상형"
