@@ -7,7 +7,7 @@ export default {
   SITE_URL: 'https://malkkeumi.com',
 
   // 구글 애드센스 게시자 ID (예: 'pub-1234567890123456'). 비어 있으면 광고 코드와 광고 칸이 출력되지 않는다.
-  ADSENSE_PUB_ID: '',
+  ADSENSE_PUB_ID: 'pub-1704342756411700',
 
   // 검색엔진 소유 확인 코드 (meta 태그의 content 값만). 비어 있으면 출력하지 않는다.
   GOOGLE_SITE_VERIFICATION: '',

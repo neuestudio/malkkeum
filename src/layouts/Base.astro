@@ -67,6 +67,7 @@ const altEntries = Object.entries(alternates) as [Lang, string][];
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
 
+    {site.ADSENSE_PUB_ID && <meta name="google-adsense-account" content={`ca-${site.ADSENSE_PUB_ID}`} />}
     {
       site.ADSENSE_PUB_ID && (
         <script
