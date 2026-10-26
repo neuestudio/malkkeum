@@ -1,0 +1,198 @@
+---
+// 서울 자치구별 쓰레기 버리는 날 (공공데이터 기반, 한국어만)
+import Base from '../../../../layouts/Base.astro';
+import Crumbs from '../../../../components/Crumbs.astro';
+import { waste, wasteVisible, KINDS, dayLabel, timeLabel, alertLink, fmtBasis, type District } from '../../../../lib/waste';
+
+export function getStaticPaths() {
+  if (!wasteVisible) return [];
+  return waste.districts.filter((d) => !d.missing).map((d) => ({ params: { lang: 'ko', gu: d.slug }, props: { d } }));
+}
+const { d } = Astro.props as { d: District };
+const zones = d.zones;
+const many = zones.length > 1;
+const one = zones[0];
+// 문의처와 대형폐기물 안내는 구역마다 같은 경우가 많아 겹치지 않게 모은다
+const uniq = <T,>(xs: T[]) => [...new Set(xs.filter(Boolean))];
+const contacts = uniq(zones.map((z) => [z.dept, z.phone].filter(Boolean).join(' ')));
+const bulk = uniq(zones.map((z) => z.bulk.method));
+
+const title = `${d.name} 쓰레기 버리는 날 — 배출 요일·시간·장소`;
+// 구역이 여러 개여도 요일·시간이 모두 같으면 한 문장으로 안내한다 (예: 강동구는 수거 업체만 다름)
+const sameAll = zones.every((z) => JSON.stringify([z.days, z.time]) === JSON.stringify([one.days, one.time]));
+const base = `일반쓰레기 ${dayLabel(one.days.g, one.daysText.g)} ${timeLabel(one.time.g)}에 배출해요.`;
+const summary = !many
+  ? `${d.name}는 ${base}`
+  : sameAll
+    ? `${d.name}는 모든 동이 ${base} 동마다 수거 업체가 달라요.`
+    : `${d.name}는 동네(권역)마다 배출 요일이 달라요. 아래에서 우리 동을 찾아보세요.`;
+const example = (zones.find((z) => z.area)?.area || '').split(',')[0].trim();
+const description = `${d.name} 일반쓰레기·음식물·재활용 배출 요일과 시간, 배출 장소, 수거하지 않는 날, 대형폐기물 신청 방법과 구청 문의처를 정리했어요. 공공데이터 ${fmtBasis(d.basis)} 기준.`;
+---
+
+<Base lang="ko" title={title} description={description} noindex={d.stale}>
+  <section class="wrap page-top">
+    <Crumbs items={[{ name: '쓰레기 버리는 날', href: '/ko/trash/' }, { name: '서울', href: '/ko/trash/' }, { name: d.name }]} />
+    <header class="wt-head split">
+      <div></div>
+      <div>
+        <h1 class="title-xl">{d.name} 쓰레기 버리는 날</h1>
+        <p class="wt-sum dim">{summary}</p>
+        <p class="wt-basis">{d.source ? '구청 안내' : '공공데이터'} {fmtBasis(d.basis)} 기준 · {waste.source.fetchedAt} 확인</p>
+      </div>
+    </header>
+  </section>
+
+  {
+    d.stale && (
+      <section class="wrap split">
+        <div />
+        <p class="wt-warn">
+          이 정보는 <b>{fmtBasis(d.basis)}</b>에 등록된 내용이라 지금은 바뀌었을 수 있어요. 버리기 전에 구청에 한 번 확인해 주세요.
+          {contacts[0] && <span> 문의: {contacts[0]}</span>}
+        </p>
+      </section>
+    )
+  }
+
+  <section class="wrap section split">
+    <h2 class="label">{many ? '우리 동 찾기' : '배출 요일과 시간'}</h2>
+    <div class="wt-body">
+      {many && (
+        <label class="wt-find">
+          <span>동 이름</span>
+          <input id="wt-q" type="search" placeholder={example ? `예: ${example}` : '동 이름'} autocomplete="off" />
+        </label>
+      )}
+      <ul class="wt-zones" id="wt-zones">
+        {zones.map((z) => (
+          <li class="wt-zone" data-area={`${z.zone} ${z.area}`}>
+            {many && (
+              <div class="wt-zone__head">
+                <b>{z.zone || '전체'}</b>
+                {z.area && <p>{z.area}</p>}
+              </div>
+            )}
+            <table class="wt-table">
+              <thead>
+                <tr><th>구분</th><th>요일</th><th>시간</th></tr>
+              </thead>
+              <tbody>
+                {KINDS.map((k) => (
+                  <tr>
+                    <td><i class="wt-dot" style={`background:${k.color}`} />{k.name}</td>
+                    <td class="wt-days">{dayLabel(z.days[k.key], z.daysText[k.key])}</td>
+                    <td class="num">{timeLabel(z.time[k.key])}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <dl class="wt-meta">
+              {(z.placeType || z.place) && <><dt>배출 장소</dt><dd>{[z.placeType, z.place].filter(Boolean).join(' · ')}</dd></>}
+              {z.noPickup && <><dt>수거 안 하는 날</dt><dd>{z.noPickup}</dd></>}
+              {z.contractor && <><dt>수거 업체</dt><dd>{z.contractor}</dd></>}
+            </dl>
+            <a class="wt-alert" href={alertLink(z)}>이 요일로 캘린더 알림 받기 →</a>
+          </li>
+        ))}
+      </ul>
+      {many && <p class="wt-none" id="wt-none" hidden>찾는 동이 없어요. 동 이름을 다시 확인하거나 구청에 문의해 주세요.</p>}
+    </div>
+  </section>
+
+  <section class="wrap section split">
+    <h2 class="label">버리는 방법</h2>
+    <div class="wt-body">
+      <dl class="wt-how">
+        {KINDS.map((k) => {
+          const ms = uniq(zones.map((z) => z.method[k.key]));
+          return ms.length ? (<><dt>{k.name}</dt><dd>{ms.map((m) => <p>{m}</p>)}</dd></>) : null;
+        })}
+      </dl>
+    </div>
+  </section>
+
+  {
+    bulk.length > 0 && (
+      <section class="wrap section split">
+        <h2 class="label">대형폐기물</h2>
+        <div class="wt-body">
+          {bulk.map((b) => <p class="wt-p">{b}</p>)}
+          <p class="wt-p dim">가구·가전처럼 큰 물건은 신고하고 수수료를 낸 뒤 스티커를 붙여 배출해요.</p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="wrap section split">
+    <h2 class="label">문의와 출처</h2>
+    <div class="wt-body wt-src">
+      {contacts.length > 0 && <p><b>{d.name} 담당 부서</b> {contacts.join(' / ')}</p>}
+      {d.source ? (
+        <p>
+          출처: <a href={d.source.url} target="_blank" rel="noopener">{d.source.name}</a>. 공공데이터에 {d.name} 정보가 없어 구청 안내 페이지를 옮겼고, 구청 페이지 최종 수정일은 {fmtBasis(d.basis)}예요.
+        </p>
+      ) : (
+        <p>
+          출처: <a href={waste.source.url} target="_blank" rel="noopener">{waste.source.name}</a> (공공데이터포털). 구청이 등록한 내용을 그대로 옮겼고, 데이터 기준일은 {fmtBasis(d.basis)}예요.
+        </p>
+      )}
+      <p>
+        정보가 실제와 다르다면 <a href="/ko/contact/">정정 제보</a>로 알려 주세요. 확인 후 바로 고칠게요.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const q = document.getElementById('wt-q') as HTMLInputElement | null;
+  if (q) {
+    const items = [...document.querySelectorAll<HTMLElement>('.wt-zone')];
+    const none = document.getElementById('wt-none')!;
+    q.addEventListener('input', () => {
+      const v = q.value.trim().replace(/\s/g, '');
+      let shown = 0;
+      for (const el of items) {
+        const hit = !v || (el.dataset.area || '').replace(/\s/g, '').includes(v);
+        el.hidden = !hit;
+        if (hit) shown++;
+      }
+      none.hidden = shown > 0;
+    });
+  }
+</script>
+
+<style>
+  .wt-head { margin-top: 24px; }
+  .wt-sum { margin-top: 16px; font-size: 18px; max-width: 40em; }
+  .wt-basis { margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .wt-warn { padding: 16px 20px; background: #f3e2da; color: #6e3420; font-size: 15px; line-height: 1.7; }
+  .wt-body { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .wt-find { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+  .wt-find input { flex: 1; max-width: 320px; padding: 10px 12px; font: inherit; font-size: 16px; color: var(--text); background: var(--surface); border: 1px solid var(--line); }
+  .wt-zones { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .wt-zone { padding: 20px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .wt-zone[hidden] { display: none; }
+  .wt-zone__head b { font-size: 18px; }
+  .wt-zone__head p { margin-top: 4px; font-size: 14px; color: var(--muted); }
+  .wt-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .wt-table th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; padding: 0 8px 8px 0; border-bottom: 1px solid var(--text); }
+  .wt-table td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .wt-days { font-weight: 600; }
+  .wt-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+  .wt-meta { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 14px; }
+  .wt-meta dt { color: var(--muted); }
+  .wt-meta dd { margin: 0; }
+  .wt-alert { align-self: flex-start; font-size: 14px; font-weight: 600; color: var(--accent-deep); border-bottom: 1px solid var(--accent); }
+  .wt-none { color: var(--muted); }
+  .wt-how { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px 16px; margin: 0; }
+  .wt-how dt { font-weight: 600; }
+  .wt-how dd { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .wt-p { max-width: 40em; }
+  .wt-src { font-size: 14px; color: var(--muted); }
+  .wt-src a { color: var(--accent-deep); border-bottom: 1px solid var(--accent); }
+  @media (max-width: 560px) {
+    .wt-meta, .wt-how { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .wt-meta dd, .wt-how dd { margin-bottom: 8px; }
+  }
+</style>

@@ -382,6 +382,20 @@ const jsonLd = [
     }
   } catch {}
 
+  // 지역 쓰레기 페이지에서 넘어온 경우: ?g=MO.WE.FR&gt=1900 형식 (캘린더 링크와 같은 형식)
+  try {
+    const url = new URLSearchParams(location.search);
+    if (['g', 'f', 'r'].some((k) => url.has(k))) {
+      for (const row of rows) {
+        const k = row.dataset.key!;
+        const days = (url.get(k) || '').split('.').filter(Boolean);
+        row.querySelectorAll<HTMLButtonElement>('.td-day').forEach((b) => b.setAttribute('aria-pressed', String(days.includes(b.dataset.day!))));
+        const t = url.get(k + 't');
+        if (t && /^\d{4}$/.test(t)) (row.querySelector('input') as HTMLInputElement).value = `${t.slice(0, 2)}:${t.slice(2)}`;
+      }
+    }
+  } catch {}
+
   form.addEventListener('click', (e) => {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.td-day');
     if (!btn) return;

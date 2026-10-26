@@ -7,7 +7,8 @@
     "build": "astro build && node scripts/pdf.mjs && pagefind --site dist && node scripts/check-links.mjs",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "images": "node scripts/images.mjs"
+    "images": "node scripts/images.mjs",
+    "data:waste": "node scripts/waste-data.mjs"
   },
   "dependencies": {
     "astro": "^7.3.5"

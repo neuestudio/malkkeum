@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { PUBLIC_LANGS, path, type Lang } from '../lib/i18n';
 import { langOf, slugOf, TOOL_LANGS } from '../lib/content';
+import { waste, wastePublic } from '../lib/waste';
 
 // 번역본이 있는 페이지끼리 xhtml:link 로 묶는다 (hreflang)
 export const GET: APIRoute = async ({ site }) => {
@@ -14,6 +15,10 @@ export const GET: APIRoute = async ({ site }) => {
   }
   for (const p of ['tools', 'tools/trash-day', 'tools/supplies']) {
     rows.push({ alts: Object.fromEntries(PUBLIC_LANGS.filter((l) => TOOL_LANGS.includes(l)).map((l) => [l, path(l, p)])) });
+  }
+  if (wastePublic) {
+    rows.push({ alts: { ko: '/ko/trash/' } });
+    for (const d of waste.districts.filter((x) => !x.missing && !x.stale)) rows.push({ alts: { ko: `/ko/trash/seoul/${d.slug}/` }, lastmod: new Date(waste.source.fetchedAt) });
   }
   for (const name of ['guides', 'magazine', 'picks'] as const) {
     const all = (await getCollection(name)).filter((e) => PUBLIC_LANGS.includes(langOf(e.id)));

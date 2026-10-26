@@ -8,6 +8,8 @@ export default {
 
   // 구글 애드센스 게시자 ID (예: 'pub-1234567890123456'). 비어 있으면 광고 코드와 광고 칸이 출력되지 않는다.
   ADSENSE_PUB_ID: 'pub-1704342756411700',
+  // 지역 쓰레기 배출 페이지(/ko/trash/) 공개 여부. 애드센스 승인 뒤 true. 끈 상태에서도 npm run dev나 WASTE_PREVIEW=1 빌드에서는 보인다
+  WASTE_PUBLIC: false,
 
   // 검색엔진 소유 확인 코드 (meta 태그의 content 값만). 비어 있으면 출력하지 않는다.
   GOOGLE_SITE_VERIFICATION: '',
