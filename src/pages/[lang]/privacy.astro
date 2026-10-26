@@ -11,7 +11,7 @@ const ko = lang === 'ko';
 const date = site.POLICY_DATE;
 ---
 
-<Base lang={lang} title={s.footer.privacy} description={ko ? '말끔레시피가 수집하는 개인정보의 항목과 이용 목적, 보관 기간, 쿠키와 광고(Google AdSense), 제휴 링크에 관한 안내예요.' : 'How Malkkeum Recipe collects and uses personal information, cookies, advertising (Google AdSense) and affiliate links.'}>
+<Base lang={lang} title={s.footer.privacy} description={ko ? '말끔레시피가 수집하는 개인정보의 항목과 이용 목적, 보관 기간, 쿠키와 광고(Google AdSense), 이용 통계(Google Analytics), 제휴 링크에 관한 안내예요.' : 'How Malkkeum Recipe collects and uses personal information, cookies, advertising (Google AdSense) and affiliate links.'}>
   <section class="wrap page-top split">
     <h1 class="label">{s.footer.privacy}</h1>
     <p class="meta">{ko ? `시행일 ${date}` : `Effective ${date}`}</p>
@@ -30,7 +30,7 @@ const date = site.POLICY_DATE;
               <thead><tr><th>구분</th><th>항목</th><th>목적</th><th>보관 기간</th></tr></thead>
               <tbody>
                 <tr><td>문의하기</td><td>이름, 이메일, 문의 내용</td><td>문의 확인 및 답변</td><td>답변 완료 후 1년</td></tr>
-                <tr><td>자동 수집</td><td>접속 기록, 브라우저 정보, 쿠키</td><td>서비스 안정성 확보, 광고 제공</td><td>아래 쿠키 항목 참고</td></tr>
+                <tr><td>자동 수집</td><td>접속 기록, 브라우저 정보, 쿠키</td><td>서비스 안정성 확보, 이용 통계 분석, 광고 제공</td><td>아래 쿠키 항목 참고</td></tr>
               </tbody>
             </table>
 
@@ -42,6 +42,7 @@ const date = site.POLICY_DATE;
               <li>제3자 사업자의 맞춤 광고 쿠키는 <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">www.aboutads.info</a>에서 해제할 수 있습니다.</li>
               <li>Google이 데이터를 사용하는 방식은 <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">Google 파트너 사이트 정책</a>에서 확인할 수 있습니다.</li>
             </ul>
+            <p>사이트는 이용 통계를 위해 Google Analytics를 사용합니다. 방문한 페이지, 머문 시간, 유입 경로, 기기·브라우저 종류, 대략적인 지역 같은 정보가 쿠키로 수집되며, 이름이나 이메일처럼 개인을 직접 알아볼 수 있는 정보는 수집하지 않습니다. 수집된 정보는 어떤 글이 도움이 되는지 파악하고 사이트를 개선하는 데만 사용하며, 보관 기간은 14개월입니다. <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">Google Analytics 차단 브라우저 부가기능</a>으로 수집을 거부할 수 있습니다.</p>
             <p>브라우저 설정에서 쿠키 저장을 거부할 수 있으며, 이 경우에도 사이트의 글은 모두 읽을 수 있습니다.</p>
 
             <h2>3. 제휴 링크</h2>
@@ -52,7 +53,7 @@ const date = site.POLICY_DATE;
               <thead><tr><th>수탁자</th><th>위탁 업무</th></tr></thead>
               <tbody>
                 <tr><td>Cloudflare, Inc.</td><td>웹사이트 호스팅, 문의 메일 전달</td></tr>
-                <tr><td>Google LLC</td><td>광고 게재 (AdSense)</td></tr>
+                <tr><td>Google LLC</td><td>광고 게재 (AdSense), 이용 통계 분석 (Google Analytics)</td></tr>
               </tbody>
             </table>
 
@@ -92,10 +93,11 @@ const date = site.POLICY_DATE;
               <li>See <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses data from partner sites</a>.</li>
             </ul>
             <p>Visitors from the EEA, UK and Switzerland are asked for consent before personalized ads are shown.</p>
+            <p>We use Google Analytics for usage statistics. Cookies record pages visited, time on page, referral source, device and browser type and approximate region. We do not collect names, email addresses or anything that directly identifies you. The data is used only to understand which guides help and to improve the site, and is kept for 14 months. You can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">Google Analytics Opt-out Browser Add-on</a>.</p>
             <h2>3. Affiliate links</h2>
             <p>We take part in affiliate programs. Retailers use their own cookies to track purchases under their own privacy policies. We never receive your payment details.</p>
             <h2>4. Processors</h2>
-            <p>Cloudflare, Inc. (hosting, contact email delivery), Google LLC (advertising).</p>
+            <p>Cloudflare, Inc. (hosting, contact email delivery), Google LLC (advertising, usage statistics).</p>
             <h2>5. Your rights</h2>
             <p>You may request access to, correction or deletion of your information at any time at {site.CONTACT_EMAIL} or via the <a href={path(lang, 'contact')}>contact page</a>.</p>
             <h2>6. Children</h2>

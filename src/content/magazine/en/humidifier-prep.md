@@ -34,9 +34,17 @@ sheet:
         - Top up old water with new water
 related: [electric-kettle, shower-head, fridge]
 publishedAt: 2026-09-30
+updatedAt: 2026-10-22
 ---
 
 Once the heating comes on, indoor humidity can drop into the 30% range. When your throat starts to feel scratchy, it is time for the humidifier. But if it went into storage last spring without a proper dry, the tank and transducer probably have **white scale and pink water mold**. Clean it before you switch it on.
+
+## Signs it needs cleaning now
+
+- **Pink or black stains** at the bottom or corners of the tank, or a slimy feel.
+- A **musty smell** when it runs.
+- **Noticeably less mist** than before. On ultrasonic models this is usually limescale on the transducer.
+- **White dust** settling on furniture nearby. Ultrasonic models spray out the minerals in tap water too.
 
 ## Know your humidifier type
 
@@ -73,6 +81,21 @@ Once the heating comes on, indoor humidity can drop into the 30% range. When you
 
 Do **not add any cleaners, disinfectants, fragrances or essential oils** to humidifier water. A humidifier turns water into fine particles you breathe in, so anything in the water goes straight into your lungs. Always rinse the citric acid out thoroughly before filling.
 
+## Where to put it
+
+- Place it **a little above the floor**, on a table or shelf, so moisture spreads evenly.
+- Keep it **away from walls, curtains and furniture**. Wherever moisture collects, mold starts.
+- Point the outlet **away from faces and electronics**.
+- Exact distance and height vary by model, so follow the placement guide in the manual.
+
 ## When you put it away
 
 Repeat this cleaning in spring and **dry it completely** before storage. It will halve next autumn's work.
+
+## Frequently asked questions
+
+**Can I use vinegar instead of citric acid?**
+Yes, but vinegar tends to leave a smell, so rinse several times. Odorless citric acid is easier.
+
+**What humidity should I aim for?**
+40–60% is right. Keep a hygrometer nearby, and turn the humidifier down when droplets start forming on your windows in the morning. How condensation turns into mold is covered in [Prevent Winter Condensation and Mold, Starting in Autumn](/en/magazine/condensation-mold/).

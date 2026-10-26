@@ -1,0 +1,12 @@
+---
+// NEW / UPDATED 표시. 배포 시점이 아니라 방문자가 여는 순간 날짜로 판단한다 (Base.astro의 스크립트).
+// 발행 14일 이내면 NEW, 그 뒤 수정 14일 이내면 UPDATED, 아니면 숨김. 정적 사이트라 빌드 날짜로 정하면 오래된 글에 남는다.
+interface Props {
+  published: Date;
+  updated?: Date;
+}
+const { published, updated } = Astro.props;
+const day = (d?: Date) => d?.toISOString().slice(0, 10);
+---
+
+<span class="fresh" data-pub={day(published)} data-upd={day(updated)} hidden></span>

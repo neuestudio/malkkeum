@@ -312,6 +312,23 @@ ol {
 .card:hover .card__img > * {
   transform: scale(1.03);
 }
+.fresh:not([hidden]) {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  vertical-align: 2px;
+  background: var(--accent-deep);
+  color: var(--surface);
+}
+.fresh[data-kind='updated'] {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
 .card__cap {
   display: flex;
   gap: 8px;

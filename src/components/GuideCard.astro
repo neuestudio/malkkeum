@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Media from './Media.astro';
+import Fresh from './Fresh.astro';
 import { slugOf } from '../lib/content';
 import { path, t, type Lang } from '../lib/i18n';
 import { toneOf } from '../lib/tone';
@@ -25,7 +26,7 @@ const s = t(lang);
   <div class="card__img">
     <Media {...imageOf('guides', slugOf(entry.id), d.heroImage)} alt={d.heroAlt ?? d.title} label={s.target[d.target]} tone={toneOf(d.space)} />
   </div>
-  <p class="card__cap">{s.space[d.space]}</p>
+  <p class="card__cap">{s.space[d.space]}<Fresh published={d.publishedAt} updated={d.updatedAt} /></p>
   <h3 class="card__title">{d.title}</h3>
   <p class="card__meta">
     <span class={`diff diff--${d.difficulty}`}>{s.difficulty[d.difficulty]}</span> · {s.minutes(d.duration)} · {d.frequency}

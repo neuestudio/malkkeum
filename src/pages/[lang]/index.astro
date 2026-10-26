@@ -9,7 +9,8 @@ import AdSlot from '../../components/AdSlot.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import GuideFilter from '../../components/GuideFilter.astro';
 import { currentSeason, entries, langPaths, slugOf } from '../../lib/content';
-import { path, t, type Lang } from '../../lib/i18n';
+import { formatDate, path, t, type Lang } from '../../lib/i18n';
+import Fresh from '../../components/Fresh.astro';
 import { toneOf } from '../../lib/tone';
 import { imageOf } from '../../lib/images';
 
@@ -48,6 +49,13 @@ const season = currentSeason();
 // 이번 계절로 지정한 글이 3개 이상이면 그것만, 적으면 연중 글로 채운다
 const explicit = guides.filter((g) => g.data.season.includes(season));
 const seasonal = (explicit.length >= 3 ? explicit : [...explicit, ...guides.filter((g) => g.data.season.includes('all'))]).slice(0, 10);
+// 새로 올라온 레시피: 청소법과 매거진을 발행일 순으로 섞어 4개
+const latest = [
+  ...guides.map((e) => ({ kind: 'guides' as const, e, label: s.nav.guides })),
+  ...magazine.map((e) => ({ kind: 'magazine' as const, e, label: s.nav.magazine })),
+]
+  .sort((a, b) => b.e.data.publishedAt.getTime() - a.e.data.publishedAt.getTime() || a.e.id.localeCompare(b.e.id))
+  .slice(0, 4);
 const HOME_LIMIT = 6; // 모바일 2열·데스크톱 3열 모두 빈칸 없이 떨어지는 수
 const safety = magazine.find((m) => slugOf(m.id) === 'never-mix-cleaners');
 const [magLead, ...magRest] = magazine;
@@ -108,6 +116,28 @@ const jsonLd = [
     <p class="lead">
       {s.intro[0]} <span class="dim">{s.intro[1]}</span>
     </p>
+  </section>
+
+  <section class="wrap section latest" aria-labelledby="latest-h">
+    <div class="section-head">
+      <h2 class="label" id="latest-h">{s.latest}</h2>
+      <a class="more-link" href={path(lang, 'guides')}>{s.viewAll}</a>
+    </div>
+    <ol class="latest__list">
+      {latest.map(({ kind, e, label }) => (
+        <li>
+          <a href={path(lang, `${kind}/${slugOf(e.id)}`)}>
+            <span class="latest__date">{formatDate(e.data.publishedAt, lang)}</span>
+            <span class="latest__kind">{label}</span>
+            <span class="latest__title">
+              {e.data.title}
+              <Fresh published={e.data.publishedAt} updated={e.data.updatedAt} />
+            </span>
+            <span class="latest__go" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
   </section>
 
   {
@@ -202,6 +232,58 @@ const jsonLd = [
 </Base>
 
 <style>
+  .latest__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--text);
+  }
+  .latest__list a {
+    display: grid;
+    grid-template-columns: 150px 90px minmax(0, 1fr) 24px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .latest__list a:hover .latest__title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .latest__date {
+    font-size: 14px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .latest__kind {
+    font-size: 13px;
+    color: var(--accent-deep);
+    font-weight: 600;
+  }
+  .latest__title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    min-width: 0;
+  }
+  .latest__go {
+    text-align: right;
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .latest__list a {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 4px 12px;
+    }
+    .latest__title {
+      grid-column: 1 / -1;
+      font-size: 16px;
+    }
+    .latest__go {
+      display: none;
+    }
+  }
+
   /* 대배너 (레퍼런스1) */
   .hero {
     position: relative;

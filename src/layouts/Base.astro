@@ -80,6 +80,31 @@ const altEntries = Object.entries(alternates) as [Lang, string][];
 
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     <slot name="head" />
+    {
+      site.GA_MEASUREMENT_ID && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.GA_MEASUREMENT_ID}`} />
+          <script is:inline define:vars={{ gaId: site.GA_MEASUREMENT_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', gaId);
+            // 중요한 행동만 따로 센다: 쿠팡 클릭, 캘린더 추가 (외부 링크·PDF 다운로드는 GA 기본 측정)
+            document.addEventListener('click', function (e) {
+              var a = e.target.closest && e.target.closest('a');
+              if (!a) return;
+              var href = a.getAttribute('href') || '';
+              if (/(^|\s)sponsored(\s|$)/.test(a.rel)) {
+                gtag('event', 'affiliate_click', { link_url: a.href, item_name: (a.getAttribute('aria-label') || a.textContent || '').trim().slice(0, 80), page_path: location.pathname });
+              } else if (href.indexOf('.ics') > -1 || href.indexOf('calendar.google.com') > -1) {
+                gtag('event', 'calendar_add', { method: href.indexOf('calendar.google.com') > -1 ? 'google' : 'ics', page_path: location.pathname });
+              }
+            }, true);
+          </script>
+        </>
+      )
+    }
   </head>
   <body id="top">
     <a class="skip" href="#main">{s.skip}</a>
@@ -88,5 +113,16 @@ const altEntries = Object.entries(alternates) as [Lang, string][];
       <slot />
     </main>
     <Footer lang={lang} />
+    <script is:inline>
+      // NEW: 발행 14일 이내, UPDATED: 수정 14일 이내 (components/Fresh.astro)
+      (function () {
+        var DAY = 864e5, now = Date.now();
+        document.querySelectorAll('.fresh').forEach(function (el) {
+          var pub = Date.parse(el.dataset.pub), upd = el.dataset.upd ? Date.parse(el.dataset.upd) : 0;
+          if (now >= pub && now - pub < 14 * DAY) { el.textContent = 'NEW'; el.dataset.kind = 'new'; el.hidden = false; }
+          else if (upd && now >= upd && now - upd < 14 * DAY) { el.textContent = 'UPDATED'; el.dataset.kind = 'updated'; el.hidden = false; }
+        });
+      })();
+    </script>
   </body>
 </html>

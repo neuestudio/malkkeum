@@ -7,6 +7,7 @@ featured: true
 season: [autumn, winter]
 related: [window-rail, shoe-cabinet, curtain]
 publishedAt: 2026-09-30
+updatedAt: 2026-10-22
 ---
 
 Have you ever found a pool of water under your window on a winter morning? When that water creeps along the window seal and into the corners of the wallpaper, by spring it has turned into black mold. Condensation happens in the depths of winter, but **the prevention starts in autumn**.
@@ -39,6 +40,27 @@ Closed storage spaces trap moisture. Add absorbers and replace them as soon as t
 - **Dry laundry in one room only.** If you dry indoors, close the door and run a dehumidifier or open a window slightly.
 - **Wipe the windows each morning.** Simply drying the droplets with a towel greatly reduces mold on frames.
 
+## Condensation or a leak?
+
+A damp wall is not always condensation. The fix depends on the cause.
+
+| | Condensation | Leak |
+|---|---|---|
+| When | Worst on cold mornings, dries with ventilation | Stays wet whatever the weather |
+| Where | Window frames, outer-wall corners, behind furniture | Ceilings, around pipes, under an upstairs bathroom |
+| Looks like | Droplets or a broad damp patch | A stain spreading from one spot |
+| What to do | Ventilate, control humidity, insulate | Tell your building manager or landlord and get the leak checked |
+
+If a leak is the cause, mold comes back soon after cleaning. Fix the source first.
+
 ## If mold has already appeared
 
 Mold on window caulk can be removed the same way as [black mold on bathroom silicone](/en/guides/silicone-mold/). Mold on wallpaper often remains underneath even after wiping the surface. If it has spread widely, removing the wallpaper, disinfecting and drying the wall, then re-papering is the real fix.
+
+## Frequently asked questions
+
+**Won't opening windows in winter make it colder?**
+A short 10-minute cross-breeze swaps the air before walls and furniture cool down. It works better against condensation, and costs less heat, than leaving a window slightly open for a long time.
+
+**Do I need a dehumidifier?**
+It helps in rooms with heavy condensation or homes that dry laundry indoors. For small spaces like wardrobes and shoe cabinets, moisture absorbers are enough.

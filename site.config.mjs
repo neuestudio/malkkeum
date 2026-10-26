@@ -11,6 +11,8 @@ export default {
 
   // 검색엔진 소유 확인 코드 (meta 태그의 content 값만). 비어 있으면 출력하지 않는다.
   GOOGLE_SITE_VERIFICATION: '',
+  // 구글 애널리틱스(GA4) 측정 ID. 비우면 분석 코드를 넣지 않는다
+  GA_MEASUREMENT_ID: 'G-VR3GN0Z5VC',
   NAVER_SITE_VERIFICATION: '83fc74ae8841bcafd4d34956fbe73589b278cb89',
 
   // 콘텐츠를 공개하는 언어. 첫 번째가 기본 언어이자 x-default.
@@ -19,7 +21,7 @@ export default {
   PUBLIC_LANGS: process.env.PREVIEW_ALL_LANGS ? PREVIEW_LANGS : ['ko', 'en'],
 
   // 개인정보처리방침·이용약관 시행일
-  POLICY_DATE: '2026-10-01',
+  POLICY_DATE: '2026-10-22',
 
   // 운영 주체와 공개 연락처 (소개·문의·푸터·개인정보처리방침·글쓴이 표시에 쓰인다)
   OPERATOR: { ko: '말끔레시피', en: 'Malkkeum Recipe' },

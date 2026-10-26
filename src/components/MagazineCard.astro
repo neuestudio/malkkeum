@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Media from './Media.astro';
+import Fresh from './Fresh.astro';
 import { slugOf } from '../lib/content';
 import { formatDate, path, t, type Lang } from '../lib/i18n';
 import { imageOf } from '../lib/images';
@@ -20,7 +21,7 @@ const s = t(lang);
     <Media {...imageOf('magazine', slugOf(entry.id), d.heroImage)} sizes={size === 'lg' ? '(min-width: 900px) 60vw, 100vw' : '(min-width: 900px) 20vw, 100vw'} alt={d.heroAlt ?? d.title} label={s.kind[d.kind]} tone="sage" />
   </div>
   <div class="mag-card__body">
-    <p class="card__cap">{s.kind[d.kind]} · {formatDate(d.publishedAt, lang)}{d.sheet && <span class="pdf-tag">{s.sheet.badge}</span>}</p>
+    <p class="card__cap">{s.kind[d.kind]} · {formatDate(d.publishedAt, lang)}{d.sheet && <span class="pdf-tag">{s.sheet.badge}</span>}<Fresh published={d.publishedAt} updated={d.updatedAt} /></p>
     <h3 class="card__title">{d.title}</h3>
     {size === 'lg' && <p class="mag-card__sum dim">{d.summary}</p>}
   </div>

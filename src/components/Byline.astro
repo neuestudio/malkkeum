@@ -1,6 +1,7 @@
 ---
 // 글쓴이·검수·날짜 표시. 누가 어떤 기준으로 만든 글인지 보여준다 (편집 원칙은 소개 페이지)
 import site from '../../site.config.mjs';
+import Fresh from './Fresh.astro';
 import { formatDate, path, type Lang } from '../lib/i18n';
 
 interface Props {
@@ -17,7 +18,7 @@ const ko = lang === 'ko';
   {prefix && <span>{prefix}</span>}
   <span>{ko ? '작성' : 'Written by'} {ko ? '말끔레시피 에디터' : 'Malkkeum Recipe editors'}</span>
   <span>{ko ? '검수' : 'Reviewed by'} {ko ? '말끔레시피 편집팀' : 'the Malkkeum Recipe team'}</span>
-  <span>{formatDate(updated ?? published, lang)} {updated ? (ko ? '수정' : 'updated') : ko ? '발행' : 'published'}</span>
+  <span>{formatDate(updated ?? published, lang)} {updated ? (ko ? '수정' : 'updated') : ko ? '발행' : 'published'}<Fresh published={published} updated={updated} /></span>
   <a href={`${path(lang, 'about')}#principles`}>{ko ? '편집 원칙' : 'How we write'}</a>
 </p>
 
