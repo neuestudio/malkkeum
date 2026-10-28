@@ -1,5 +1,5 @@
 ---
-name: 베이킹소다 대용량
+name: "암앤해머 베이킹소다 6.12kg"
 short: 베이킹소다
 category: cleaner
 type: 약알칼리 · 가루
