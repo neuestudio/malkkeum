@@ -24,7 +24,7 @@ export default {
   'mold-spray': 'https://link.coupang.com/a/ic8FXKp1WK', // 유한락스 멀티액션 곰팡이제거제 510ml (3개)
   'squeegee': 'https://link.coupang.com/a/ialbyHSSCy', // 훠링 실리콘 물기제거기
   'toilet-brush': 'https://link.coupang.com/a/ic85rdrT3Y', // 꼬까 골프 사각지대없는 변기브러쉬
-  'drain-hair-remover': 'https://link.coupang.com/a/ic89oiWkfI', // 앞날창창 세면대 머리카락 제거기 (5개)
+  'drain-hair-remover': 'https://link.coupang.com/a/ic9285kzym', // 인앳홈 배수구 청소 클리너 후크
 
   // 청소 도구
   'microfiber-cloth': 'https://link.coupang.com/a/iak71QHR8u', // 프로그 레인보우 극세사 행주 (2세트)
