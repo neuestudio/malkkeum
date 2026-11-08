@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
           <li><a href={path(lang, 'guides')}>{s.nav.guides}</a></li>
           <li><a href={path(lang, 'magazine')}>{s.nav.magazine}</a></li>
           <li><a href={path(lang, 'picks')}>{s.nav.picks}</a></li>
-          <li><a href={path(lang, 'store')}>{s.nav.store}</a></li>
+          {site.STORE_IN_NAV && <li><a href={path(lang, 'store')}>{s.nav.store}</a></li>}
           {TOOL_LANGS.includes(lang) && <li><a href={path(lang, 'tools')}>{s.nav.tools}</a></li>}
         </ul>
         <ul>

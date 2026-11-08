@@ -35,4 +35,6 @@ export default {
     ko: '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.',
     en: 'This page contains affiliate links. We may earn a small commission at no extra cost to you.',
   },
+  // 상단·하단 메뉴에 스토어 표시 여부. 애드센스 재심사 동안 잠시 숨김 (페이지 주소는 그대로 열림)
+  STORE_IN_NAV: false,
 };

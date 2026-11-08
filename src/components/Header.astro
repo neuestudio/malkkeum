@@ -1,6 +1,7 @@
 ---
 import { PUBLIC_LANGS, path, t, ui, type Lang } from '../lib/i18n';
 import { TOOL_LANGS } from '../lib/content';
+import site from '../../site.config.mjs';
 
 interface Props {
   lang: Lang;
@@ -14,7 +15,7 @@ const navItems = [
   { key: 'guides', href: path(lang, 'guides') },
   { key: 'magazine', href: path(lang, 'magazine') },
   { key: 'picks', href: path(lang, 'picks') },
-  { key: 'store', href: path(lang, 'store') },
+  ...(site.STORE_IN_NAV ? [{ key: 'store', href: path(lang, 'store') } as const] : []),
   ...(TOOL_LANGS.includes(lang) ? [{ key: 'tools', href: path(lang, 'tools') } as const] : []),
 ] as const;
 const otherLangs = PUBLIC_LANGS.filter((l) => l !== lang);
